@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Lobster|Roboto');
 
+$navColor : #232d46;
+
 nav{
   background-color: #fef9ff;
   //background: url("/assets/img/header/cartographer.png");
   //background-repeat: repeat-x;
-  position: fixed;
+  //position: fixed;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,22 +22,50 @@ nav{
   .menu{
     flex: 10;
     font-family: 'Roboto', sans-serif;
+    //border: aqua 1px solid;
+
 
   }
   ul{
     list-style: none;
-
-
+    //border: aqua 1px solid;
+    margin: 0 auto;
   }
+
   li{
-    padding: 7px;
+    padding: 10px;
     text-align: center;
+    position: relative;
     display: inline-block;
     //border: bisque 1px solid;
   }
+
+  a.active{
+    color: lighten($navColor,30);
+    &:before{
+      width:80%;
+    }
+  }
+
   a{
     text-decoration: none;
     font-size: 20px;
+    color: $navColor;
+    &:before{
+      content: '';
+      display: block;
+      height: 5px;
+      width: 0%;
+      background: #75ded2;
+      position: absolute;
+      top: 0;
+    }
+    &:hover{
+      color: lighten($navColor,30) ;
+    }
+    &:hover::before{
+      width:80%;
+    }
   }
 
   .menu-icon{
@@ -44,3 +74,4 @@ nav{
     display: none;
   }
 }
+
