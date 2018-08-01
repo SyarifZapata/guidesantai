@@ -8,6 +8,9 @@ import { AboutComponent } from './about/about.component';
 import { RouterModule, Routes} from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { UebungTextToSpeechComponent } from './uebung-text-to-speech/uebung-text-to-speech.component';
+import { ChoosenImgComponent } from './uebung-text-to-speech/choosen-img/choosen-img.component';
+import { DecorationComponent } from './navbar/decoration/decoration.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -24,7 +27,10 @@ const appRoutes: Routes = [
     UebungenComponent,
     AboutComponent,
     HomeComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    UebungTextToSpeechComponent,
+    ChoosenImgComponent,
+    DecorationComponent
   ],
   imports: [
     BrowserModule,
