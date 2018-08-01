@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+declare var responsiveVoice: any;
+
 @Component({
   selector: 'app-choosen-img',
   templateUrl: './choosen-img.component.html',
@@ -12,4 +14,7 @@ export class ChoosenImgComponent implements OnInit {
   ngOnInit() {
   }
 
+  playVoice(){
+    responsiveVoice.speak('Wie geht es dir', 'Deutsch Female', {rate: 0.8});
+  }
 }
