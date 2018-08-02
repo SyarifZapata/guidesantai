@@ -11,12 +11,20 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { UebungTextToSpeechComponent } from './uebung-text-to-speech/uebung-text-to-speech.component';
 import { ChoosenImgComponent } from './uebung-text-to-speech/choosen-img/choosen-img.component';
 import { DecorationComponent } from './navbar/decoration/decoration.component';
+import { ImgCategoryComponent } from './uebung-text-to-speech/img-category/img-category.component';
+import { ImgListComponent } from './uebung-text-to-speech/img-category/img-list/img-list.component';
+import {SharedFunctionsService} from './shared-functions.service';
+
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'home', component: HomeComponent},
   {path: 'about', component: AboutComponent},
-  {path: 'uebungen', component: UebungenComponent},
+  {path: 'uebungen', component: UebungenComponent,
+    children: [
+      {path: 'category/:id', component: ImgListComponent},
+      {path: '', component: ImgCategoryComponent}
+    ]},
   {path: '**', component: NotFoundComponent}
 ];
 
@@ -30,13 +38,19 @@ const appRoutes: Routes = [
     NotFoundComponent,
     UebungTextToSpeechComponent,
     ChoosenImgComponent,
-    DecorationComponent
+    DecorationComponent,
+    ImgCategoryComponent,
+    ImgListComponent,
+  ],
+  entryComponents: [
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [
+    SharedFunctionsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

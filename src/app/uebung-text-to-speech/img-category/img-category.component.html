@@ -1,0 +1,26 @@
+<div>
+  <h3>Kategorien</h3>
+</div>
+
+
+<div class="container">
+
+  <div #container (click)="addCategory()" class="box">
+    <div class="textContainer">
+      <i class="fa fa-plus fa-5x"></i>
+    </div>
+    <div  class="textContainer">
+      <div class="text">Neue Kategorie</div>
+    </div>
+  </div>
+
+  <div  *ngFor="let category of categories" class="box" id="{{category.id}}">
+    <div (click)="playVoice(category.text)" class="image"></div>
+    <div  class="textContainer">
+      <div [textContent]="category.text" (input)="category.text=$event.target.textContent" contenteditable="true" class="text"></div>
+      <!--<div class="text">{{category.text}}</div>-->
+    </div>
+  </div>
+
+
+</div>

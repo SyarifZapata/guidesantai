@@ -1,0 +1,64 @@
+@import "../../variables";
+
+h3{
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  width: 150px;
+  margin: 10px auto;
+
+  &:after {
+    content: '';
+    display: block;
+    height: 3px;
+    width: 100%;
+    background: $navColor2;
+    top: 0;
+  }
+}
+.container {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  align-items:center;
+  justify-content: center;
+  border-top: $borderColor 1px solid;
+  border-bottom: $borderColor 1px solid;
+  width: 80%;
+  padding: 10px;
+
+
+  .box{
+    border: #ef5151 1px solid;
+    border-radius: 10px;
+    height: 130px;
+    width: 130px;
+    display: grid;
+    grid-template-rows: 3fr 1fr;
+
+    margin:10px;
+
+    .image{
+      text-align: center;
+
+    }
+
+    .textContainer{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      .text{
+        max-width: 130px;
+        max-height: 20px;
+        overflow: hidden;
+        text-align: center;
+
+      }
+    }
+
+
+  }
+}

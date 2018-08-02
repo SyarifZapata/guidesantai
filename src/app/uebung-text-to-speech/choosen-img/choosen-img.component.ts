@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {SharedFunctionsService} from '../../shared-functions.service';
 
-declare var responsiveVoice: any;
 
 @Component({
   selector: 'app-choosen-img',
@@ -8,13 +8,16 @@ declare var responsiveVoice: any;
   styleUrls: ['./choosen-img.component.scss']
 })
 export class ChoosenImgComponent implements OnInit {
+  text = '';
 
-  constructor() { }
+  constructor(private _sharedFunctionsService: SharedFunctionsService) { }
 
   ngOnInit() {
   }
 
   playVoice(){
-    responsiveVoice.speak('Wie geht es dir', 'Deutsch Female', {rate: 0.8});
+    this._sharedFunctionsService.playVoice(this.text);
   }
+
+
 }
