@@ -8,15 +8,12 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./img-category.component.scss']
 })
 export class ImgCategoryComponent implements OnInit {
-  @ViewChild('container',{read: ViewContainerRef}) container;
-  currentId = 1;
-  categories = [
-    {id: 0, text: 'Hallo'},
-    {id: 1, text: 'Essen'}
-  ];
 
-  model = 'Essen';
-  text = this.model;
+  currentId = 0;
+  categories: Array<{id: number, text: String}> = [] ;
+
+
+  text = 'Kategorie';
 
   constructor(private _sharedFunctionService: SharedFunctionsService, private route: ActivatedRoute, private router: Router) { }
 
@@ -24,9 +21,9 @@ export class ImgCategoryComponent implements OnInit {
 
   }
 
-  playVoice(arg){
+  playVoice(arg, id){
     this._sharedFunctionService.playVoice(arg);
-    this.router.navigate(['/'],{relativeTo: this.route});
+    this.router.navigate(['/uebungen/category', id],{relativeTo: this.route});
     // console.log(this.categories);
   }
 

@@ -14,8 +14,8 @@
     </div>
   </div>
 
-  <div  *ngFor="let category of categories" class="box" id="{{category.id}}">
-    <div (click)="playVoice(category.text)" class="image"></div>
+  <div  *ngFor="let category of categories" class="box">
+    <div (click)="playVoice(category.text, category.id)" class="image"></div>
     <div  class="textContainer">
       <div [textContent]="category.text" (input)="category.text=$event.target.textContent" contenteditable="true" class="text"></div>
       <!--<div class="text">{{category.text}}</div>-->
