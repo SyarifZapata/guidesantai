@@ -1,6 +1,7 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {SharedFunctionsService} from '../../shared-functions.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {DataService} from '../../data.service';
 
 @Component({
   selector: 'app-img-category',
@@ -10,15 +11,16 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class ImgCategoryComponent implements OnInit {
 
   currentId = 0;
-  categories: Array<{id: number, text: String}> = [] ;
+  categories: Array<any>;
 
 
   text = 'Kategorie';
 
-  constructor(private _sharedFunctionService: SharedFunctionsService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private _dataService: DataService, private _sharedFunctionService: SharedFunctionsService, private route: ActivatedRoute, private router: Router) {
+    this._dataService.getCategories().subscribe(res => this.categories = res);
+  }
 
   ngOnInit() {
-
   }
 
   playVoice(arg, id){

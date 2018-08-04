@@ -14,6 +14,8 @@ import { DecorationComponent } from './navbar/decoration/decoration.component';
 import { ImgCategoryComponent } from './uebung-text-to-speech/img-category/img-category.component';
 import { ImgListComponent } from './uebung-text-to-speech/img-category/img-list/img-list.component';
 import {SharedFunctionsService} from './shared-functions.service';
+import {HttpModule} from '@angular/http';
+import {DataService} from './data.service';
 
 
 const appRoutes: Routes = [
@@ -46,10 +48,12 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    HttpModule
   ],
   providers: [
-    SharedFunctionsService
+    SharedFunctionsService,
+    DataService
   ],
   bootstrap: [AppComponent]
 })
