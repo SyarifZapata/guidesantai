@@ -11,8 +11,10 @@ export class DataService {
 
   constructor(private _http: Http) { }
 
-  getCategories() {
-    return this._http.get('/api/categories').pipe(map(result => this.result = result.json().data));
+  getCategories(user) {
+    const url = '/api/users/'.concat(user);
+    console.log(url);
+    return this._http.get(url).pipe(map(result => this.result = result.json().data));
   }
 
 }

@@ -26,14 +26,16 @@ let response = {
   message: null
 };
 
-// get users
-router.get('/categories', (req, res) => {
+// get users categories
+router.get('/users/:user', (req, res) => {
+  var user = req.params.user;
   connection((db) => {
-    db.collection('categories')
-      .find()
+    db.collection('users')
+      .find({name:user},{projection: {categories: 1}})
       .toArray()
-      .then((categories) => {
-        response.data = categories;
+      .then((users) => {
+        response.data = users[0].categories;
+        console.log(response.data);
         res.json(response);
       })
       .catch((err) =>{
@@ -41,5 +43,20 @@ router.get('/categories', (req, res) => {
       });
   });
 });
+
+
+// insert users
+router.post('/users/insert', (req,res,next) => {
+  var user = req.body;
+  //Add filter here
+  connection((db) => {
+    db.collection("users").insertOne(user, function(err, res) {
+      if (err) throw err;
+      console.log("1 document inserted");
+      db.close();
+    });
+  });
+});
+
 
 module.exports = router;

@@ -1,2 +1,17 @@
-<app-choosen-img></app-choosen-img>
-<router-outlet></router-outlet>
+<!--<app-choosen-img></app-choosen-img>-->
+<!--<router-outlet></router-outlet>-->
+<div>
+  <h3>Uebung Aussprache</h3>
+</div>
+
+<br>
+
+<div class="containerForm">
+  <div class="input-group mb-3">
+    <input (keyup)="onKey($event)" type="text" class="form-control" placeholder="Benutzer Name" aria-label="Benutzer Name" aria-describedby="button-addon2">
+    <div class="input-group-append">
+      <button (click)="addUser()" class="btn btn-outline-secondary" type="button" id="button-addon2">Speichern</button>
+    </div>
+  </div>
+</div>
+

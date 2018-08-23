@@ -24,8 +24,8 @@ const appRoutes: Routes = [
   {path: 'about', component: AboutComponent},
   {path: 'uebungen', component: UebungenComponent,
     children: [
-      {path: 'category/:id', component: ImgListComponent},
-      {path: '', component: ImgCategoryComponent}
+      {path: ':user', component: ImgCategoryComponent},
+      {path: '', component: UebungTextToSpeechComponent}
     ]},
   {path: '**', component: NotFoundComponent}
 ];

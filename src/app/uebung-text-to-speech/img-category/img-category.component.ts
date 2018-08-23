@@ -17,7 +17,10 @@ export class ImgCategoryComponent implements OnInit {
   text = 'Kategorie';
 
   constructor(private _dataService: DataService, private _sharedFunctionService: SharedFunctionsService, private route: ActivatedRoute, private router: Router) {
-    this._dataService.getCategories().subscribe(res => this.categories = res);
+    this._dataService.getCategories('syarif').subscribe((res) =>{
+      this.categories = res;
+      console.log(this.categories);
+    });
   }
 
   ngOnInit() {
@@ -26,12 +29,13 @@ export class ImgCategoryComponent implements OnInit {
   playVoice(arg, id){
     this._sharedFunctionService.playVoice(arg);
     this.router.navigate(['/uebungen/category', id],{relativeTo: this.route});
-    // console.log(this.categories);
+
   }
 
   addCategory(){
     this.currentId++;
     this.categories.push({id: this.currentId, text: this.text});
+    console.log(this.categories);
   }
 
 }

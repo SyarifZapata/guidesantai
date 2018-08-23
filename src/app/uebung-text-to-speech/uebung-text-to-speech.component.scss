@@ -1,0 +1,28 @@
+@import "../variables";
+
+h3{
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  width: 400px;
+  margin: 10px auto;
+
+  &:after {
+    content: '';
+    display: block;
+    height: 3px;
+    width: 100%;
+    background: $navColor2;
+    top: 0;
+  }
+}
+
+.containerForm{
+  width: 500px;
+  padding: 10px;
+  border: #b0deba 2px solid;
+  border-radius: 5px;
+  margin: 0 auto;
+
+}
