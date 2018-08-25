@@ -35,7 +35,6 @@ router.get('/users/:user', (req, res) => {
       .toArray()
       .then((users) => {
         response.data = users[0].categories;
-        console.log(response.data);
         res.json(response);
       })
       .catch((err) =>{
@@ -45,17 +44,37 @@ router.get('/users/:user', (req, res) => {
 });
 
 
-// insert users
+// insert User
 router.post('/users/insert', (req,res,next) => {
   var user = req.body;
-  //Add filter here
+  console.log(user);
   connection((db) => {
-    db.collection("users").insertOne(user, function(err, res) {
-      if (err) throw err;
-      console.log("1 document inserted");
-      db.close();
-    });
+    db.collection("users")
+      .save(user, (err,rec) =>{
+        if(err){
+          res.send(err);
+        }else {
+          res.json(rec);
+        }
+      });
+    console.log("1 user inserted");
   });
+});
+
+
+// insert categories
+router.post('/users/:user/insert', (req,res,next) => {
+  var user = req.body;
+  console.log(user);
+  // //Add filter here
+   connection((db) => {
+     db.collection("users")
+       .updateOne({name:"syarif"},{$push:{categories: user}})
+       .catch((err) =>{
+         sendError(err,res);
+       });
+      console.log("1 document inserted");
+    });
 });
 
 

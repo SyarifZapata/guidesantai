@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import {DataService} from '../data.service';
+import {SharedFunctionsService} from '../shared-functions.service';
 
 @Component({
   selector: 'app-uebung-text-to-speech',
@@ -13,7 +15,7 @@ export class UebungTextToSpeechComponent implements OnInit {
 
 
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private sharedFunction: SharedFunctionsService, private  _dataService: DataService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
   }
@@ -24,7 +26,18 @@ export class UebungTextToSpeechComponent implements OnInit {
   }
 
   addUser(){
-    this.router.navigate(['/uebungen', this.values],{relativeTo: this.route});
+    this.sharedFunction.setCurrentUser(this.values);
+
+    var user = {
+      name: this.values,
+      categories: []
+    };
+    this._dataService.addUser(user).subscribe((res) =>{
+      console.log(res);
+
+      this.router.navigate(['/uebungen', this.values],{relativeTo: this.route});
+    });
+
   }
 
 }

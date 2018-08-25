@@ -17,7 +17,7 @@ export class ImgCategoryComponent implements OnInit {
   text = 'Kategorie';
 
   constructor(private _dataService: DataService, private _sharedFunctionService: SharedFunctionsService, private route: ActivatedRoute, private router: Router) {
-    this._dataService.getCategories('syarif').subscribe((res) =>{
+    this._dataService.getCategories(this._sharedFunctionService.getCurrentUser()).subscribe((res) =>{
       this.categories = res;
       console.log(this.categories);
     });
@@ -34,8 +34,15 @@ export class ImgCategoryComponent implements OnInit {
 
   addCategory(){
     this.currentId++;
-    this.categories.push({id: this.currentId, text: this.text});
-    console.log(this.categories);
+    var newCategory = {
+      id: this.currentId,
+      text: this.text
+    };
+    console.log(this.currentId);
+
+    this._dataService.addCategoriy(newCategory);
+
+
   }
 
 }
