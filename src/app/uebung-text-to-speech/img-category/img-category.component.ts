@@ -38,9 +38,11 @@ export class ImgCategoryComponent implements OnInit {
       id: this.currentId,
       text: this.text
     };
-    console.log(this.currentId);
+    this.categories.push(newCategory);
 
-    this._dataService.addCategoriy(newCategory);
+    // this._dataService.addCategoriy(newCategory).subscribe((res) => {
+    //   console.log('one category is added');
+    // });
 
 
   }
