@@ -39,12 +39,11 @@ h3{
 
   .controlBox{
     border-right: #b0deba 1px solid;
-    align-self: stretch;
+    align-items: start;
+    align-self: start;
     display: grid;
     justify-content: center;
   }
-
-
 
   .box{
     border: #ef5151 1px solid;

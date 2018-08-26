@@ -34,17 +34,17 @@ export class ImgCategoryComponent implements OnInit {
 
   addCategory(){
     this.currentId++;
-    var newCategory = {
+    const newCategory = {
       id: this.currentId,
       text: this.text
     };
     this.categories.push(newCategory);
+  }
 
-    // this._dataService.addCategoriy(newCategory).subscribe((res) => {
-    //   console.log('one category is added');
-    // });
-
-
+  saveCategory(){
+    this._dataService.addCategory(this.categories, this._sharedFunctionService.getCurrentUser()).subscribe((res) => {
+      console.log(res);
+    });
   }
 
 }

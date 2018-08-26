@@ -64,16 +64,22 @@ router.post('/users/insert', (req,res,next) => {
 
 // insert categories
 router.post('/users/:user/insert', (req,res,next) => {
-  var user = req.body;
+  var user = req.params.user;
+  var categories = req.body;
   console.log(user);
   // //Add filter here
    connection((db) => {
      db.collection("users")
-       .updateOne({name:"syarif"},{$push:{categories: user}})
-       .catch((err) =>{
-         sendError(err,res);
+       .updateOne({name:user},{$push:{categories: {$each:categories}}}, (err,rec) => {
+         if(err){
+           res.send(err);
+         }else {
+           res.json(rec);
+           console.log("document/s inserted");
+         }
        });
-      console.log("1 document inserted");
+
+
     });
 });
 

@@ -6,12 +6,22 @@
 <div class="container">
 
 <div class="controlBox">
+
   <div #container (click)="addCategory()" class="box">
     <div class="textContainer">
       <i class="fa fa-plus fa-5x"></i>
     </div>
     <div  class="textContainer">
       <div class="text">Neue Kategorie</div>
+    </div>
+  </div>
+
+  <div (click)="saveCategory()" class="box">
+    <div class="textContainer">
+      <i class="fa fa-save fa-5x"></i>
+    </div>
+    <div  class="textContainer">
+      <div class="text">speichern</div>
     </div>
   </div>
 </div>
