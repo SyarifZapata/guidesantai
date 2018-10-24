@@ -1,21 +1,24 @@
 <div class="container">
   <div class="row card syarif-login">
-    <form class="col s12">
+    <form [formGroup]="loginForm" class="col s12">
       <div class="row">
         <div class="input-field col m6 offset-m3 s12">
           <i class="material-icons prefix">account_circle</i>
-          <input id="username" (keyup)="onKey($event)" type="text" class="validate">
+          <input formControlName="username" id="username" type="text" class="validate">
           <label for="username">Username / email</label>
         </div>
         <div class="input-field col m6 offset-m3 s12">
           <i class="material-icons prefix">vpn_key</i>
-          <input id="password" type="password" class="validate">
+          <input formControlName="password" id="password" type="password" class="validate">
           <label for="password">Password</label>
         </div>
       </div>
       <div class="row">
         <div class="col m6 offset-m3 s12 syarif-submit">
-          <a class="waves-effect waves-light btn-small"><i class="material-icons right">chevron_right</i>login</a>
+          <a class="waves-effect waves-light btn-small" (click)="login()"><i class="material-icons right">chevron_right</i>login</a>
+        </div>
+        <div class="input-field col m6 offset-m3 s12">
+          <p>Sie haben kein Konto? <a class="anmelden-link green-text" routerLink="/register">Registrieren</a></p>
         </div>
       </div>
     </form>

@@ -17,6 +17,7 @@ import {HttpModule} from '@angular/http';
 import {DataService} from './data.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 const appRoutes: Routes = [
@@ -53,7 +54,9 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
-    HttpModule
+    HttpModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     SharedFunctionsService,
