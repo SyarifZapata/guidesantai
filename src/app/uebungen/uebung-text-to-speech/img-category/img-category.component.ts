@@ -1,7 +1,7 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {SharedFunctionsService} from '../../shared-functions.service';
+import {SharedFunctionsService} from '../../../shared-functions.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {DataService} from '../../data.service';
+import {DataService} from '../../../data.service';
 
 @Component({
   selector: 'app-img-category',

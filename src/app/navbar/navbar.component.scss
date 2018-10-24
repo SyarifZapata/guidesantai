@@ -1,83 +1,40 @@
 @import url('https://fonts.googleapis.com/css?family=Lobster|Roboto');
+//
+//@import "../variables";
 
-@import "../variables";
+
+
+.menu-icon{
+  width: 100%;
+  text-align: left;
+  display: none;
+}
+
 
 .containerNav{
+  background-color: #75ded2;
   background: url("../../assets/img/header/header.png");
   background-repeat: repeat-x;
-  //position: fixed;
-  height: 20px;
-  border-top: $navColor2 5px solid;
+  height: 30px;
 }
 
-nav{
-  background-color: #fef9ff;
+.syarif-logo {
+  font-family: 'Lobster', cursive;
+  margin-right: 15px;
+}
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+.syarif-icon {
+  margin-left: 15px;
+}
 
-  .logo{
-    flex: 2;
-    text-align: center;
-    font-family: 'Lobster', cursive;
-    font-size: 30px;
-    //border: aqua 1px solid;
-  }
-  .menu{
-    flex: 10;
-    font-family: 'Roboto', sans-serif;
-    //border: aqua 1px solid;
-
-
-  }
-  ul{
-    list-style: none;
-    //border: aqua 1px solid;
-    margin: 0 auto;
-  }
-
-  li{
-    padding: 10px;
-    text-align: center;
-    position: relative;
-    display: inline-block;
-    //border: bisque 1px solid;
-  }
-
+ul{
   a.active{
-    color: seagreen;
-    &:before{
-      width:80%;
-    }
-  }
-
-  a{
-    text-decoration: none;
-    font-size: 20px;
-    color: black;
-    &:before{
-      content: '';
-      display: block;
-      height: 5px;
-      width: 0%;
-      background: #75ded2;
-      position: absolute;
-      top: 0;
-    }
-    &:hover{
-      color: lighten(#ef5151,10) ;
-    }
-    &:hover::before{
-      width:80%;
-    }
-  }
-
-  .menu-icon{
-    width: 100%;
-    text-align: right;
-    display: none;
+    background-color: rgba(0,0,0,.1);
   }
 }
+
+
+
+
+
 

@@ -8,14 +8,15 @@ import { AboutComponent } from './about/about.component';
 import { RouterModule, Routes} from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { UebungTextToSpeechComponent } from './uebung-text-to-speech/uebung-text-to-speech.component';
-import { ChoosenImgComponent } from './uebung-text-to-speech/choosen-img/choosen-img.component';
-import { DecorationComponent } from './navbar/decoration/decoration.component';
-import { ImgCategoryComponent } from './uebung-text-to-speech/img-category/img-category.component';
-import { ImgListComponent } from './uebung-text-to-speech/img-category/img-list/img-list.component';
+import { UebungTextToSpeechComponent } from './uebungen/uebung-text-to-speech/uebung-text-to-speech.component';
+import { ChoosenImgComponent } from './uebungen/uebung-text-to-speech/choosen-img/choosen-img.component';
+import { ImgCategoryComponent } from './uebungen/uebung-text-to-speech/img-category/img-category.component';
+import { ImgListComponent } from './uebungen/uebung-text-to-speech/img-category/img-list/img-list.component';
 import {SharedFunctionsService} from './shared-functions.service';
 import {HttpModule} from '@angular/http';
 import {DataService} from './data.service';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 
 const appRoutes: Routes = [
@@ -27,6 +28,8 @@ const appRoutes: Routes = [
       {path: ':user', component: ImgCategoryComponent},
       {path: '', component: UebungTextToSpeechComponent}
     ]},
+  {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
   {path: '**', component: NotFoundComponent}
 ];
 
@@ -40,9 +43,10 @@ const appRoutes: Routes = [
     NotFoundComponent,
     UebungTextToSpeechComponent,
     ChoosenImgComponent,
-    DecorationComponent,
     ImgCategoryComponent,
     ImgListComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   entryComponents: [
   ],

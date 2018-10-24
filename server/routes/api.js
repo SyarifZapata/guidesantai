@@ -8,7 +8,7 @@ const {Pool} = require('pg');
 const pool = new Pool({
   user: 'arkad',
   host: 'localhost',
-  database: 'recipedb',
+  database: 'aliceapp',
   password: '71522-Bkneu',
   port: 5432,
 });

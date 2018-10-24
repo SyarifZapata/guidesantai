@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {SharedFunctionsService} from '../../shared-functions.service';
+import {SharedFunctionsService} from '../../../shared-functions.service';
 
 
 @Component({

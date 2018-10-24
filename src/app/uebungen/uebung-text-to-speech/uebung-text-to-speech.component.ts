@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {DataService} from '../data.service';
-import {SharedFunctionsService} from '../shared-functions.service';
+import {DataService} from '../../data.service';
+import {SharedFunctionsService} from '../../shared-functions.service';
 
 @Component({
   selector: 'app-uebung-text-to-speech',

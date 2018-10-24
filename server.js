@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'dist')));
 
 //api location
-app.use('/api', api);
+app.use('/api/', api);
 
 
 //send all request to angular app
