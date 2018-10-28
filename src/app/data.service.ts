@@ -17,18 +17,17 @@ export class DataService {
     return this._http.get(url).pipe(map(result => this.result = result.json().data));
   }
 
-  // map works with pipe, somehow
-  addCategory(category, user) {
-      var headers = new Headers();
-      var url = 'http://localhost:3000/api/users/'.concat(user).concat('/insert');
-      headers.append('Content-Type', 'application/json');
-      return this._http.post(url, JSON.stringify(category), {headers: headers}).pipe(map(res => res.json()));
-  }
-
+  // register new user
   addUser(user){
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this._http.post('http://localhost:3000/api/users/insert', JSON.stringify(user), {headers: headers}).pipe(map(res => res.json()));
+    return this._http.post('http://localhost:3000/api/auth/register', JSON.stringify(user), {headers: headers}).pipe(map(res => res.json()));
+  }
+
+  login(user){
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this._http.post('http://localhost:3000/api/auth/login', JSON.stringify(user), {headers: headers}).pipe(map(res => res.json()));
   }
 
 }

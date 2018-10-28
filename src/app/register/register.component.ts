@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {DataService} from '../data.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +18,7 @@ export class RegisterComponent implements OnInit {
 
   });
 
-  constructor() { }
+  constructor(private  _dataService: DataService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
   }
@@ -25,7 +27,12 @@ export class RegisterComponent implements OnInit {
     if(!this.registerForm.valid || (this.registerForm.controls.email.value != this.registerForm.controls.cEmail.value)){
       console.log('Invalid Form'); return;
     }else {
-      console.log(JSON.stringify(this.registerForm.value));
+       this._dataService.addUser(this.registerForm.value)
+          .subscribe((res) =>{
+        console.log(res);
+
+        // this.router.navigate(['/uebungen', this.values],{relativeTo: this.route});
+      });
     }
   }
 

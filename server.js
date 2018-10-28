@@ -16,6 +16,12 @@ app.use(express.static(path.join(__dirname, 'dist')));
 //api location
 app.use('/api/', api);
 
+app.use((err,req,res,next) => {
+  res.status(err.status || 500);
+  res.json({
+    message: err.message
+  })
+});
 
 //send all request to angular app
 app.get('*', (req,res) => {
