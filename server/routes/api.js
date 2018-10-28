@@ -76,9 +76,15 @@ router.post('/auth/login', (req,res,next) => {
       if(user){
         // console.log(user[0].dataValues.password)
         bcrypt.compare(req.body.password, user[0].dataValues.password).then((result)=> {
-          res.json({
-            result
-          })
+          if(result){
+            //password correct
+            res.json({
+              result
+            })
+          }else {
+            next(new Error('Invalid login'));
+          }
+
         });
       }else{
         next(new Error('wrong email'))

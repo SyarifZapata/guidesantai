@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const http = require('http');
 const app = express();
+require('dotenv').config();
 
 //api file for interacting with MongoDb
 const api = require('./server/routes/api');
@@ -28,7 +29,7 @@ app.get('*', (req,res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'))
 });
 
-const port = process.env.PORT || '3000';
+const port = process.env.PORT;
 app.set('port',port);
 
 const server = http.createServer(app);
