@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 const http = require('http');
@@ -24,12 +25,18 @@ app.use((err,req,res,next) => {
   })
 });
 
+app.use(session({
+  secret: process.env.COOKIE_SECRET,
+  resave: false,
+  saveUninitialized: true
+}));
+
 //send all request to angular app
 app.get('*', (req,res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'))
 });
 
-const port = process.env.PORT;
+const port = process.env.PORT || '3000';
 app.set('port',port);
 
 const server = http.createServer(app);

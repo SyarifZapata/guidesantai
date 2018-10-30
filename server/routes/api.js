@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const connection = require('./connection');
 const model = require('./model');
+// require('dotenv').config();
 
 connection
   .authenticate()
@@ -74,15 +75,19 @@ router.post('/auth/login', (req,res,next) => {
       }
     }).then((user) => {
       if(user){
-        // console.log(user[0].dataValues.password)
         bcrypt.compare(req.body.password, user[0].dataValues.password).then((result)=> {
           if(result){
             //password correct
+
+            res.cookie('userID', user[0].dataValues.userID, {
+              httpOnly:true
+              // secure:true
+             });
             res.json({
-              result
-            })
+              message: 'logged in!'
+            });
           }else {
-            next(new Error('Invalid login'));
+            next(new Error('Invalid email or password!'));
           }
 
         });

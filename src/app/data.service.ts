@@ -27,7 +27,7 @@ export class DataService {
   login(user){
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this._http.post('http://localhost:3000/api/auth/login', JSON.stringify(user), {headers: headers}).pipe(map(res => res.json()));
+    return this._http.post('http://localhost:3000/api/auth/login', JSON.stringify(user), {headers: headers}).pipe(map((res) => res.json()));
   }
 
 }
