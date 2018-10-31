@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const connection = require('./connection');
 const model = require('./model');
+const passport = require('passport');
 // require('dotenv').config();
 
 connection
@@ -66,39 +67,50 @@ router.post('/auth/register', (req,res,next) => {
 });
 
 router.post('/auth/login', (req,res,next) => {
-  if(validUser(req.body)){
-    // do login
-    model.User.findAll({
-      limit: 1,
-      where: {
-        email: req.body.email
-      }
-    }).then((user) => {
-      if(user){
-        bcrypt.compare(req.body.password, user[0].dataValues.password).then((result)=> {
-          if(result){
-            //password correct
-
-            res.cookie('userID', user[0].dataValues.userID, {
-              httpOnly:true
-              // secure:true
-             });
-            res.json({
-              message: 'logged in!'
-            });
-          }else {
-            next(new Error('Invalid email or password!'));
-          }
-
-        });
-      }else{
-        next(new Error('wrong email'))
-      }
-    });
-  } else {
-    next(new Error('Invalid Login'));
-  }
+  passport.authenticate('local', (err,user,info) => {
+    if(err) {return next(new Error('something went wrong when login'))}
+    if(!user) {return next(new Error('Invalid login'))}
+    if(user){
+      console.log('until here');
+      req.logIn(user,(err) =>{
+        if(err) {console.log(err.message)}
+        return res.json({
+          message: 'logged in'
+        })
+      })
+    }
+  })(req,res,next);
 });
+
+// router.post('/auth/login', (req,res,next) => {
+//   if(validUser(req.body)){
+//     // do login
+//     model.User.findOne({
+//       where: {
+//         email: req.body.email
+//       }
+//     }).then((user) => {
+//       if(user){
+//         bcrypt.compare(req.body.password, user.dataValues.password).then((result)=> {
+//           if(result){
+//             //password correct
+//
+//             res.json({
+//               message: 'logged in!'
+//             });
+//           }else {
+//             next(new Error('Invalid email or password!'));
+//           }
+//
+//         });
+//       }else{
+//         next(new Error('wrong email'))
+//       }
+//     });
+//   } else {
+//     next(new Error('Invalid Login'));
+//   }
+// });
 
 
 module.exports = router;

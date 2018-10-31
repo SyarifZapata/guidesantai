@@ -18,7 +18,7 @@
           <a class="waves-effect waves-light btn-small" (click)="login()"><i class="material-icons right">chevron_right</i>login</a>
         </div>
         <div class="input-field col m6 offset-m3 s12">
-          <p [style.display]="errorStyle ? 'block' : 'inline'" class="red-text">{{errorMessage}}</p>
+          <p [style.display]="errorStyle ? 'block' : 'none'" class="red-text">{{errorMessage}}</p>
           <p>Sie haben kein Konto? <a class="anmelden-link green-text" routerLink="/register">Registrieren</a></p>
         </div>
       </div>

@@ -8,4 +8,5 @@ const User = connection.define('user', {
   password: { type: Sequelize.STRING(100), allowNull: false }
 });
 
+
 module.exports = {User};

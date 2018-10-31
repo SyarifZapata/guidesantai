@@ -3,11 +3,13 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 const http = require('http');
+const cookieParser = require('cookie-parser');
 const app = express();
+const passport = require('passport');
+
 require('dotenv').config();
 
-//api file for interacting with MongoDb
-const api = require('./server/routes/api');
+
 
 //parsers
 app.use(bodyParser.json());
@@ -15,8 +17,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
-//api location
-app.use('/api/', api);
+
 
 app.use((err,req,res,next) => {
   res.status(err.status || 500);
@@ -25,11 +26,26 @@ app.use((err,req,res,next) => {
   })
 });
 
+app.use(cookieParser());
 app.use(session({
+  name: 'alice.sid',
   secret: process.env.COOKIE_SECRET,
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false, // only save if loggin is successfully done.
+  cookie: {
+    maxAge: 24 * 60 * 60000,
+    httpOnly: false,
+    secure: false
+  }
 }));
+
+require('./passport-config');
+app.use(passport.initialize());
+app.use(passport.session());
+
+//api location
+const api = require('./server/routes/api');
+app.use('/api/', api);
 
 //send all request to angular app
 app.get('*', (req,res) => {
