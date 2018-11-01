@@ -39,15 +39,19 @@ export class LoginComponent implements OnInit {
       return;
     }else {
       this.classValidation.invalid = false;
-      this._dataService.login(this.loginForm.value)
+      this._dataService.login(JSON.stringify(this.loginForm.value))
         .subscribe(
-          data => console.log(data),
+          data => {
+            console.log(data);
+            this._dataService.setLogginStatus(true);
+            this.router.navigate(['/user']);
+          },
           err => {
-            this.errorMessage = JSON.parse(err._body).message;
+            console.log(err.error.message);
+            this.errorStyle = true;
+            this.errorMessage = err.error.message;
             this.classValidation.invalid = true;
           }
-
-          // this.router.navigate(['/uebungen', this.values],{relativeTo: this.route});
         );
     }
   }

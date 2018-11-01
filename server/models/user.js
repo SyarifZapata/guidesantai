@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const connection = require('./connection');
+const connection = require('../connection');
 
 const User = connection.define('user', {
   userID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
@@ -9,4 +9,4 @@ const User = connection.define('user', {
 });
 
 
-module.exports = {User};
+module.exports = User;

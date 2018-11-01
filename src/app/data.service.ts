@@ -1,33 +1,44 @@
 import { Injectable } from '@angular/core';
-import {Http, Response, Headers, RequestOptions} from '@angular/http';
+// import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {map} from 'rxjs/operators';
+import {BehaviorSubject} from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  result: any;
+  /* This is an observable, every component can subscribe to the value of loggedInStatusChange */
+  loggedInStatusChange: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  cast = this.loggedInStatusChange.asObservable();
 
-  constructor(private _http: Http) { }
+  constructor(private _http: HttpClient) { }
 
-  getCategories(user) {
-    const url = '/api/users/'.concat(user);
-    console.log(url);
-    return this._http.get(url).pipe(map(result => this.result = result.json().data));
-  }
 
   // register new user
-  addUser(user){
-    var headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    return this._http.post('http://localhost:3000/api/auth/register', JSON.stringify(user), {headers: headers}).pipe(map(res => res.json()));
+  addUser(body:any){
+    return this._http.post('http://localhost:3000/auth/register',
+      body, { observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
-  login(user){
-    var headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    return this._http.post('http://localhost:3000/api/auth/login', JSON.stringify(user), {headers: headers}).pipe(map((res) => res.json()));
+  login(body:any){
+    return this._http.post('http://localhost:3000/auth/login',
+      body, { observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
+  user(){
+    return this._http.get('http://localhost:3000/auth/user',
+      {observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
+  logout(){
+    return this._http.get('http://localhost:3000/auth/logout',
+      {observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
+  setLogginStatus(value){
+    this.loggedInStatusChange.next(value);
   }
 
 }

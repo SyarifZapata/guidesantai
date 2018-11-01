@@ -4,22 +4,22 @@
       <div class="row">
         <div class="input-field col m6 offset-m3 s12">
           <i class="material-icons prefix">account_circle</i>
-          <input formControlName="username" id="username" type="text" class="validate" required>
+          <input formControlName="username" id="username" type="text" [ngClass]="classValidation" required>
           <label for="username">Username</label>
         </div>
         <div class="input-field col m6 offset-m3 s12">
           <i class="material-icons prefix">drafts</i>
-          <input formControlName="email" id="email" type="email" class="validate" required>
+          <input formControlName="email" id="email" type="email" [ngClass]="classValidation" required>
           <label for="email">E-Mail</label>
         </div>
         <div class="input-field col m6 offset-m3 s12">
           <i class="material-icons prefix">email</i>
-          <input formControlName="cEmail" id="email2" type="email" class="validate" required>
+          <input formControlName="cEmail" id="email2" type="email" [ngClass]="classValidation" required>
           <label for="email2">E-Mail Bestaetigen</label>
         </div>
         <div class="input-field col m6 offset-m3 s12">
           <i class="material-icons prefix">vpn_key</i>
-          <input formControlName="password" id="password" type="password" class="validate" required>
+          <input formControlName="password" id="password" type="password" [ngClass]="classValidation" required>
           <label for="password">Password</label>
         </div>
       </div>
@@ -28,6 +28,7 @@
           <a class="waves-effect waves-light btn-small" (click)="register()"><i class="material-icons right">chevron_right</i>Registrieren</a>
         </div>
         <div class="input-field col m6 offset-m3 s12">
+          <p [style.display]="errorStyle ? 'inline' : 'none'" class="red-text">{{errorMessage}}</p>
           <p>Sie haben bereits ein Konto? <a class="anmelden-link green-text" routerLink="/login">Anmelden</a></p>
         </div>
       </div>

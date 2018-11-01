@@ -7,29 +7,30 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const passport = require('passport');
 
+// dotenv allows you to use process.env.<sth> from the .env file
 require('dotenv').config();
-
-
 
 //parsers
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+// dist folder is where all the built app located
 app.use(express.static(path.join(__dirname, 'dist')));
 
-
-
-app.use((err,req,res,next) => {
-  res.status(err.status || 500);
-  res.json({
-    message: err.message
-  })
-});
-
+/* cookieParser is actually no longer needed in this current express but we
+   let it here until we are sure everything works fine.
+ */
 app.use(cookieParser());
+
+/* Dont forget to uncomment the 'store' key for production
+   Please install the module, see npm.
+ */
 app.use(session({
   name: 'alice.sid',
   secret: process.env.COOKIE_SECRET,
+  //store: new SequelizeStore({
+  //    db: sequelize
+  // })
   resave: false,
   saveUninitialized: false, // only save if loggin is successfully done.
   cookie: {
@@ -39,18 +40,25 @@ app.use(session({
   }
 }));
 
-require('./passport-config');
+/* Don't mess up with the order of the 'app.use's
+   see the documentation to find out the correct order if you experience any errors
+ */
+require('./server/passport-config');
 app.use(passport.initialize());
 app.use(passport.session());
 
-//api location
-const api = require('./server/routes/api');
-app.use('/api/', api);
+/* Please declare all routes here */
+const auth = require('./server/routes/auth');
+app.use('/auth/', auth);
 
-//send all request to angular app
+
+
+/* send all request to index html in dist folder */
 app.get('*', (req,res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'))
 });
+
+
 
 const port = process.env.PORT || '3000';
 app.set('port',port);

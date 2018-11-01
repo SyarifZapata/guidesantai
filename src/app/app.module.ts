@@ -18,6 +18,8 @@ import {DataService} from './data.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { UserComponent } from './user/user.component';
+import {HttpClientModule} from '@angular/common/http';
 
 
 const appRoutes: Routes = [
@@ -29,6 +31,7 @@ const appRoutes: Routes = [
       {path: ':user', component: ImgCategoryComponent},
       {path: '', component: UebungTextToSpeechComponent}
     ]},
+  {path: 'user', component: UserComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: '**', component: NotFoundComponent}
@@ -48,13 +51,14 @@ const appRoutes: Routes = [
     ImgListComponent,
     LoginComponent,
     RegisterComponent,
+    UserComponent,
   ],
   entryComponents: [
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
-    HttpModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule
   ],

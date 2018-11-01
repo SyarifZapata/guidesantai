@@ -17,10 +17,10 @@ export class ImgCategoryComponent implements OnInit {
   text = 'Kategorie';
 
   constructor(private _dataService: DataService, private _sharedFunctionService: SharedFunctionsService, private route: ActivatedRoute, private router: Router) {
-    this._dataService.getCategories(this._sharedFunctionService.getCurrentUser()).subscribe((res) =>{
-      this.categories = res;
-      console.log(this.categories);
-    });
+    // this._dataService.getCategories(this._sharedFunctionService.getCurrentUser()).subscribe((res) =>{
+    //   this.categories = res;
+    //   console.log(this.categories);
+    // });
   }
 
   ngOnInit() {
@@ -32,13 +32,13 @@ export class ImgCategoryComponent implements OnInit {
 
   }
 
-  addCategory(){
-    this.currentId++;
-    const newCategory = {
-      id: this.currentId,
-      text: this.text
-    };
-    this.categories.push(newCategory);
-  }
+  // addCategory(){
+  //   this.currentId++;
+  //   const newCategory = {
+  //     id: this.currentId,
+  //     text: this.text
+  //   };
+  //   this.categories.push(newCategory);
+  // }
 
 }

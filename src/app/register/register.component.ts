@@ -20,6 +20,13 @@ export class RegisterComponent implements OnInit {
 
   constructor(private  _dataService: DataService, private route: ActivatedRoute, private router: Router) { }
 
+  errorMessage = '';
+  errorStyle: boolean;
+  classValidation = {
+    'validate' : true,
+    'invalid' : false
+  };
+
   ngOnInit() {
   }
 
@@ -30,9 +37,14 @@ export class RegisterComponent implements OnInit {
        this._dataService.addUser(this.registerForm.value)
           .subscribe((res) =>{
         console.log(res);
-
-        // this.router.navigate(['/uebungen', this.values],{relativeTo: this.route});
-      });
+      },
+          error => {
+            console.log(error);
+            this.errorStyle = true;
+            this.errorMessage = error.error.message;
+            this.classValidation.invalid = true;
+          }
+            );
     }
   }
 

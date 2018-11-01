@@ -1,26 +1,34 @@
 const passport = require('passport')
   , LocalStrategy = require('passport-local');
-const model = require('./server/routes/model');
-const authHelpers = require('./server/routes/_helper');
+const User = require('./models/user');
+const bcrypt = require('bcrypt');
+
+/* We write this code exactly like in the example found on the internet
+   be careful when using bcrypt.compare it is an asynchronous function.
+ */
 
 passport.use('local', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password'
   },
   (username, password, done) => {
-    model.User.findOne({
+    User.findOne({
         where: {
         email: username
         }
     }).then((user) =>{
       if (!user) { return done(null, false); }
-      if (!authHelpers.comparePass(password, user.password)) { return done(null, false); }
-      return done(null, user);
+      bcrypt.compare(password, user.password, function(err, res) {
+        if(res) {
+          done(null, user)
+        } else {
+          done(null, false)
+        }
+      })
     })
-      .catch((err) =>{
-        console.log(err.message);
-        //wir haben noch error hier
-        return done(err)
+      .catch((error) =>{
+        console.log(error.message);
+        return done(error)
       })
   }
 ));
@@ -30,12 +38,11 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser((id, done) => {
-  model.User.findOne({
+  User.findOne({
     where: {
       userID:id
     }
   }).then((user) => {
-    console.log(user);
     done(null,user)
   }).catch((err) =>{
     console.log(err.message)
