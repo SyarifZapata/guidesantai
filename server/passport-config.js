@@ -12,12 +12,17 @@ passport.use('local', new LocalStrategy({
   passwordField: 'password'
   },
   (username, password, done) => {
-    User.findOne({
-        where: {
-        email: username
-        }
-    }).then((user) =>{
-      if (!user) { return done(null, false); }
+    let getUserByUsername = User.findOne({where:{username: username}});
+    let getUserByEmail = User.findOne({where:{email: username}});
+
+    getUserByEmail.then((user) => {
+      if(user !== null){
+        return user.get();
+      }else {
+        return getUserByUsername;
+      }
+    }).then((user)=>{
+      if(user === null) return done(null, false);
       bcrypt.compare(password, user.password, function(err, res) {
         if(res) {
           done(null, user)
@@ -25,11 +30,29 @@ passport.use('local', new LocalStrategy({
           done(null, false)
         }
       })
+    }).catch((err) =>{
+        console.log(err.message);
+        return done(err);
     })
-      .catch((error) =>{
-        console.log(error.message);
-        return done(error)
-      })
+
+    // User.findOne({
+    //     where: {
+    //     email: username
+    //     }
+    // }).then((user) =>{
+    //   if (!user) { return done(null, false); }
+    //   bcrypt.compare(password, user.password, function(err, res) {
+    //     if(res) {
+    //       done(null, user)
+    //     } else {
+    //       done(null, false)
+    //     }
+    //   })
+    // })
+    //   .catch((error) =>{
+    //     console.log(error.message);
+    //     return done(error)
+    //   })
   }
 ));
 

@@ -67,7 +67,7 @@ router.post('/login', (req,res,next) => {
   passport.authenticate('local', (err,user,info) => {
     if(err) {return next(new Error('something went wrong when login'))}
     if(!user) {
-      res.status(401).json({message:'Die Email oder das Passwort ist falsch'});
+      res.status(401).json({message:'Die E-Mail, der Benutzername oder das Passwort ist falsch'});
     }
     if(user){
       req.logIn(user,(err) =>{
