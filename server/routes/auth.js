@@ -24,11 +24,13 @@ connection.sync();
 
 /* check if the username and the password has the correct type and not empty */
 function validUser(user){
+  const validUsername = typeof user.username === 'string' &&
+                      user.username.trim() !== '';
   const validEmail = typeof user.email === 'string' &&
                       user.email.trim() !== '';
   const validPassword = typeof user.password === 'string' &&
                       user.password.trim() !== '';
-  return validEmail && validPassword;
+  return validEmail && validPassword && validUsername;
 }
 
 /*  Register a new user
@@ -36,25 +38,26 @@ function validUser(user){
  */
 router.post('/register', (req,res,next) => {
   if (validUser(req.body)){
-    User.findOne({ where: {email: req.body.email}}).then(user => {
-      console.log('user', user);
-      // if user not found
-      if(!user){
-        // this is a unique email
-        bcrypt.hash(req.body.password, 10)
-          .then((hash) => {
+    let getUserByUsername = User.findOne({where:{username: req.body.username}});
+    let getUserByEmail = User.findOne({where:{email: req.body.email}});
+
+    getUserByUsername.then((result) => {
+      if(result !== null) throw 'Die Benutzername wurde bereits verwendet';
+      return getUserByEmail
+    }).then((result) => {
+      if(result !== null) throw 'Diese E-mail wurde bereits registriert';
+      bcrypt.hash(req.body.password, 10)
+        .then((hash) => {
           User.create({
             username: req.body.username,
             email: req.body.email,
             password: hash
           })
         });
-      }else{
-        // email in use
-        res.status(401).json({message:'Diese E-mail ist bereits registriert'});
-      }
-
-    })
+      res.status(200).json({message:'Neuer Benutzer wurde erfolgreich registriert'})
+    }).catch((err) =>{
+      res.status(401).json({message:err})
+    });
   } else {
     res.status(401).json({message:'Bitte das Formular korrekt ausfuellen'});
   }
@@ -100,11 +103,6 @@ function isValidUser(req,res,next){
   else return res.status(401).json({message:'Memberbereich, bitte einloggen'})
 }
 
-// const getUserByUsername = User.User;
-
-router.post('/transaction' , (req,res,next) => {
-
-});
 
 
 module.exports = router;

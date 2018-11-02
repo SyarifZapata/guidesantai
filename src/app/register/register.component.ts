@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit {
 
   });
 
-  constructor(private  _dataService: DataService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private  _dataService: DataService, private route: ActivatedRoute, private _router: Router) { }
 
   errorMessage = '';
   errorStyle: boolean;
@@ -35,9 +35,10 @@ export class RegisterComponent implements OnInit {
       console.log('Invalid Form'); return;
     }else {
        this._dataService.addUser(this.registerForm.value)
-          .subscribe((res) =>{
-        console.log(res);
-      },
+         .subscribe((res) =>{
+            console.log(res);
+            this._router.navigate(['/login']);
+          },
           error => {
             console.log(error);
             this.errorStyle = true;
