@@ -7,7 +7,6 @@ import { AboutComponent } from './about/about.component';
 import { RouterModule, Routes} from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import {SharedFunctionsService} from './shared-functions.service';
 import {HttpModule} from '@angular/http';
 import {DataService} from './data.service';
 import { LoginComponent } from './login/login.component';
@@ -48,7 +47,6 @@ const appRoutes: Routes = [
     ReactiveFormsModule
   ],
   providers: [
-    SharedFunctionsService,
     DataService
   ],
   bootstrap: [AppComponent]
