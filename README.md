@@ -2,6 +2,30 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.0.
 
+## Instalation
+1. First you need to run 'npm install'
+2. If you find error with Sass run 'npm rebuild node-sass' or follow instruction given from the error message
+3. If you get problem with bcrypt, try to uninstall 'npm uninstall --save bcrypt' and install it again
+4. install postgreSQL 
+5. create a database and grant access to an owner
+6. create .env in root folder add following lines, for the facebook_appID you should go to facebook developer page and create an app.
+
+PORT = 
+DB_NAME = 
+DB_HOST = 
+DB_USER = 
+DB_PASS = 
+
+COOKIE_SECRET = 
+FACEBOOK_APP_ID = 
+FACEBOOK_SECRET = 
+
+7. open terminal run 'ng build --watch'
+8. open another terminal run 'nodemon server'
+
+
+
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
