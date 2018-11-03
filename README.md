@@ -10,15 +10,15 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 5. create a database and grant access to an owner
 6. create .env in root folder add following lines, for the facebook_appID you should go to facebook developer page and create an app.
 
-PORT = 
-DB_NAME = 
-DB_HOST = 
-DB_USER = 
-DB_PASS = 
+### PORT = 
+### DB_NAME = 
+### DB_HOST = 
+### DB_USER = 
+### DB_PASS = 
 
-COOKIE_SECRET = 
-FACEBOOK_APP_ID = 
-FACEBOOK_SECRET = 
+### COOKIE_SECRET = 
+### FACEBOOK_APP_ID = 
+### FACEBOOK_SECRET = 
 
 7. open terminal run 'ng build --watch'
 8. open another terminal run 'nodemon server'
