@@ -32,7 +32,11 @@ export class RegisterComponent implements OnInit {
 
   register(){
     if(!this.registerForm.valid || (this.registerForm.controls.email.value != this.registerForm.controls.cEmail.value)){
-      console.log('Invalid Form'); return;
+      console.log('Invalid Login');
+      this.errorMessage = 'Das Formular wurde nicht richtig ausgefüllt!';
+      this.errorStyle = true;
+      this.classValidation.invalid = true;
+      return;
     }else {
        this._dataService.addUser(this.registerForm.value)
          .subscribe((res) =>{
