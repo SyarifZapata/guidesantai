@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const connection = require('../connection');
 const User = require('../models/user');
+const FacebookUser = require('../models/facebookUser');
 const passport = require('passport');
 
 /* Test the connection, you should see this message
@@ -25,11 +26,11 @@ connection.sync();
 /* check if the username and the password has the correct type and not empty */
 function validUser(user){
   const validUsername = typeof user.username === 'string' &&
-                      user.username.trim() !== '';
+    user.username.trim() !== '';
   const validEmail = typeof user.email === 'string' &&
-                      user.email.trim() !== '';
+    user.email.trim() !== '';
   const validPassword = typeof user.password === 'string' &&
-                      user.password.trim() !== '';
+    user.password.trim() !== '';
   return validEmail && validPassword && validUsername;
 }
 
@@ -98,10 +99,16 @@ router.get('/user', isValidUser, (req, res, next) => {
     It is built in function provided by passport js
  */
 function isValidUser(req,res,next){
-  if(req.isAuthenticated()) {
-    next();}
+  if(req.isAuthenticated()) {next();}
   else return res.status(401).json({message:'Memberbereich, bitte einloggen'})
 }
+
+/* Auth with facebook */
+router.get('/facebook', passport.authenticate('facebook'));
+
+router.get('/facebook/callback', passport.authenticate('facebook'), (req,res,next) =>{
+  res.redirect('http://localhost:3000/user');
+});
 
 
 
