@@ -1,65 +1,12 @@
 <div class="content" id="msgPool">
-  <div class="row">
-
-
+  <div class="row" *ngFor="let msg of msgs">
 
 	<div class="col m12 s12 msg">
-		<span class="me deep-orange lighten-5">Lorem ipsum dolor sit amet 1</span>
+		<span [ngClass]="{
+  				'grey lighten-1': msg.from=='she',
+  				'deep-orange lighten-5': msg.from=='me'}"
+		class="{{msg.from}}">{{msg.content}}</span>
 	</div>
-	  <div class="col m12 s12 msg">
-		  <span class="me deep-orange lighten-5">Lorem ipsum dolor sit amet 2</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="she grey lighten-1">Lorem ipsum dolor sit amet 3</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="me deep-orange lighten-5">Lorem ipsum dolor sit amet 4</span>
-	  </div>
-
-	  <div class="col m12 s12 msg">
-		  <span class="me deep-orange lighten-5">Lorem ipsum dolor sit amet 4</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="me deep-orange lighten-5">Lorem ipsum dolor sit amet 4</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="me deep-orange lighten-5">Lorem ipsum dolor sit amet 4</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="me deep-orange lighten-5">Lorem ipsum dolor sit amet 4</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="me deep-orange lighten-5">Lorem ipsum dolor sit amet 4</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="me deep-orange lighten-5">Lorem ipsum dolor sit amet 4</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="she grey lighten-1">Lorem ipsum dolor sit amet 3</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="she grey lighten-1">Lorem ipsum dolor sit amet 3</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="she grey lighten-1">Lorem ipsum dolor sit amet 3</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="she grey lighten-1">Lorem ipsum dolor sit amet 3</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="me deep-orange lighten-5">Lorem ipsum dolor sit amet 4</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="me deep-orange lighten-5">Lorem ipsum dolor sit amet 4</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="me deep-orange lighten-5">Lorem ipsum dolor sit amet 4</span>
-	  </div>
-	  <div class="col m12 s12 msg">
-		  <span class="me deep-orange lighten-5">Lorem ipsum dolor sit amet 4</span>
-	  </div>
-
-
 
   </div>
 </div>
