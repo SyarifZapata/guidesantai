@@ -29,10 +29,15 @@ export class UserComponent implements OnInit {
     this._dataService.user().subscribe(
       data => {
         this._dataService.setLogginStatus(true);
+        // data has picture property
+        // @ts-ignore
+        if(data.picture){
+          // @ts-ignore
+          this._dataService.setProfilPicture(data.picture);
+        }
         console.log(data);
-        },
+      },
       error => {
-        console.log('error nya disinii loh');
         console.log(error);
         this._router.navigate(['/login']);
       }

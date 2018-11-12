@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {DataService} from '../data.service';
 import {Router} from '@angular/router';
-import * as $ from 'jquery';
 import * as M from 'materialize-css';
 
 @Component({
@@ -9,27 +8,33 @@ import * as M from 'materialize-css';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit, AfterViewInit{
+export class NavbarComponent implements OnInit, AfterViewInit {
   // We use this value to show logout and memberpage button on the navbar
   loggedIn: boolean;
+  profilPicture: string;
 
   constructor(private _dataService: DataService, private _router: Router) { }
 
-  /* jquery initalization doesnt work, uses vanila js instead */
-  ngAfterViewInit(){
-    // $(document).ready(() => {
-    //   $('.dropdown-trigger').dropdown();
-    // });
-
-    document.addEventListener('DOMContentLoaded', function() {
-      const elems = document.querySelectorAll('.dropdown-trigger');
-      const instances = M.Dropdown.init(elems, []);
-    });
-  }
-
   ngOnInit() {
     // The value of logged in always get updated whenever it is changed by other component.
-    this._dataService.cast.subscribe(value => this.loggedIn = value);
+    this._dataService.loggedInStatus.subscribe(value => this.loggedIn = value);
+    this._dataService.profilPicture.subscribe(value => this.profilPicture = value);
+  }
+
+  ngAfterViewInit(){
+    document.addEventListener('DOMContentLoaded', function() {
+      const elems = document.querySelectorAll('.dropdown-trigger');
+      const instances = M.Dropdown.init(elems, {
+        widthConstraint: true
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const elems = document.querySelectorAll('.dropdown-trigger1');
+      const instances = M.Dropdown.init(elems, {
+        coverTrigger: false,
+      });
+    });
   }
 
   logout(){
@@ -42,8 +47,10 @@ export class NavbarComponent implements OnInit, AfterViewInit{
 
       error => {
         console.log(error);
+        console.log('mama mia');
       }
     )
   }
 
 }
+

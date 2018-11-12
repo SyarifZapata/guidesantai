@@ -11,7 +11,9 @@ export class DataService {
 
   /* This is an observable, every component can subscribe to the value of loggedInStatusChange */
   loggedInStatusChange: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  cast = this.loggedInStatusChange.asObservable();
+  profilPictureChange: BehaviorSubject<string> = new BehaviorSubject<string>('./assets/img/profil/unknown_profile.png');
+  loggedInStatus = this.loggedInStatusChange.asObservable();
+  profilPicture = this.profilPictureChange.asObservable();
 
   constructor(private _http: HttpClient) { }
 
@@ -39,6 +41,10 @@ export class DataService {
 
   setLogginStatus(value){
     this.loggedInStatusChange.next(value);
+  }
+
+  setProfilPicture(value){
+    this.profilPictureChange.next(value);
   }
 
 }

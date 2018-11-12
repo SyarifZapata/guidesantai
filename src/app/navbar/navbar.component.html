@@ -1,32 +1,54 @@
 
 <nav>
   <div class="nav-wrapper">
-    <div class="syarif-icon">
-      <!-- Dropdown Trigger -->
-      <a class='dropdown-trigger' href='#' data-target='dropdownMenu'><i class="medium material-icons left hide-on-large-only">dehaze</i></a>
 
-      <!-- Dropdown Structure -->
-      <ul id='dropdownMenu' class='dropdown-content'>
-        <li><a routerLinkActive="active" routerLink="/home"><i class="material-icons">view_module</i>Home</a></li>
-        <li [style.display]="loggedIn ? 'block' : 'none'"><a routerLinkActive="active" routerLink="/user"><i class="material-icons">view_module</i>Memberbereich</a></li>
-        <li><a class="syarif-separator" routerLinkActive="active" routerLink="/about"><i class="material-icons">view_module</i>Über Mich</a></li>
-        <li class="divider" tabindex="-1"></li>
-        <li [style.display]="loggedIn ? 'block' : 'none'"><a routerLinkActive="active" (click)="logout()"><i class="material-icons">view_module</i>Auslogen</a></li>
-        <li [style.display]="loggedIn ? 'none' : 'block'"><a routerLinkActive="active" routerLink="/login"><i class="material-icons">face</i>Login</a></li>
-        <li [style.display]="loggedIn ? 'none' : 'block'"><a routerLinkActive="active" routerLink="/register"><i class="material-icons">account_circle</i>Registrieren</a></li>
-      </ul>
+    <!-- Dropdown Structure Profile-->
+    <ul id="profil-dropdown" class="dropdown-content">
+      <li><a routerLinkActive="active" routerLink="/user">Konto</a></li>
+      <li class="divider" tabindex="-1"></li>
+      <li><a (click)="logout()">Abmelden</a></li>
+    </ul>
 
-    </div>
-
-    <a href="#" class="syarif-logo brand-logo right">Sang-Hackaton</a>
-    <ul id="nav-mobile" class="left hide-on-med-and-down syarif-nav">
+    <a href="#" class="syarif-logo brand-logo left">Sang-Hackaton</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down syarif-nav">
       <li><a  routerLinkActive="active" routerLink="/home">Home</a></li>
-      <li><a  [style.display]="loggedIn ? 'block' : 'none'" routerLinkActive="active" routerLink="/user">Memberbereich</a> </li>
       <li><a  class="syarif-separator" routerLinkActive="active" routerLink="/about">Über Mich</a> </li>
       <li><a  [style.display]="loggedIn ? 'none' : 'block'" routerLinkActive="active" routerLink="/login">Login</a> </li>
       <li><a  [style.display]="loggedIn ? 'none' : 'block'" routerLinkActive="active" routerLink="/register">Registrieren</a> </li>
-      <li><a  [style.display]="loggedIn ? 'block' : 'none'" routerLinkActive="active" (click)="logout()">ausloggen</a> </li>
+      <li>
+        <div [style.display]="loggedIn ? 'block' : 'none'"  class="row dropdown-trigger1" data-target="profil-dropdown">
+          <div class="col s4">
+            <img  src={{profilPicture}} alt="" class="circle syarif-profil-picture responsive-img">
+          </div>
+          <div class="col s8">
+            <a href="#!" >Profile<i class="material-icons right">arrow_drop_down</i></a>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="right">
+      <div class="syarif-icon row hide-on-large-only ">
+        <div class="col s8">
+          <img  [style.display]="loggedIn ? 'block' : 'none'"  src={{profilPicture}} alt="" class="circle syarif-profil-picture responsive-img">
+        </div>
+        <div class="col s4">
+          <a class='dropdown-trigger right' href='#' data-target='dropdownMenu'><i class="large material-icons center">dehaze</i></a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Dropdown Structure -->
+    <ul id='dropdownMenu' class='dropdown-content'>
+      <li><a routerLinkActive="active" routerLink="/home"><i class="material-icons">view_module</i>Home</a></li>
+      <li><a class="syarif-separator" routerLinkActive="active" routerLink="/about"><i class="material-icons">view_module</i>Über Mich</a></li>
+      <li class="divider" tabindex="-1"></li>
+      <li [style.display]="loggedIn ? 'none' : 'block'"><a routerLinkActive="active" routerLink="/login"><i class="material-icons">face</i>Login</a></li>
+      <li [style.display]="loggedIn ? 'none' : 'block'"><a routerLinkActive="active" routerLink="/register"><i class="material-icons">account_circle</i>Registrieren</a></li>
+      <li [style.display]="loggedIn ? 'block' : 'none'"><a routerLinkActive="active" routerLink="/user"><i class="material-icons">view_module</i>Profile</a></li>
+      <li [style.display]="loggedIn ? 'block' : 'none'"><a routerLinkActive="active" (click)="logout()"><i class="material-icons">view_module</i>Auslogen</a></li>
     </ul>
   </div>
-</nav>
 
+</nav>

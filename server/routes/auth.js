@@ -92,7 +92,21 @@ router.get('/logout',isValidUser, (req,res,next) => {
     when he/she tries to access the member-only page
  */
 router.get('/user', isValidUser, (req, res, next) => {
-  return res.status(200).json({message: 'Sie sind eingeloggt'})
+  let data = {};
+  // console.log(req);
+  if(req.user.dataValues){
+    data = {
+      message: 'Sie sind eingeloggt',
+      username:req.user.dataValues.username,
+      picture:req.user.dataValues.picture
+    }
+  }else {
+    data = {
+      message: 'Sie sind eingeloggt',
+      picture: 'assets/img/profil/unknown_profile.png'
+    }
+  }
+  return res.status(200).json(data)
 });
 
 /*  This function will be passed to /user and /logout routes
