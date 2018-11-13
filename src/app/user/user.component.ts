@@ -51,4 +51,8 @@ export class UserComponent implements OnInit {
   ngOnInit() {
   }
 
+  send(){
+    this.socketService.send(new Message(1,'she', 'hallo this is from me'));
+  }
+
 }

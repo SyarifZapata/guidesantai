@@ -8,11 +8,11 @@ import {Observable} from 'rxjs';
 })
 export class SocketService {
 
-  private socket;
+  private socket = io();
 
-  public initSocket(): void {
-    this.socket = io();
-  }
+  // public initSocket(): void {
+  //   this.socket = io();
+  // }
 
   public send(message: Message): void {
     this.socket.emit('message', message);
