@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DataService} from '../data.service';
 import {Router} from '@angular/router';
+import {Message} from '../utility/message';
 
 @Component({
   selector: 'app-user',
@@ -10,9 +11,11 @@ import {Router} from '@angular/router';
 
 export class UserComponent implements OnInit {
     // todo make Msg class
+
+
     msgs = [
-        {id: 1, from: 'me', content: 'Lorem ipsum dolor sit amet'},
-        {id: 2, from: 'she', content: 'Lorem ipsum dolor sit amet'},
+        new Message(1,'me', 'This is a message'),
+        new Message(2,'she', 'An Example of class Message'),
         {id: 3, from: 'me', content: 'Lorem ipsum dolor sit amet'},
         {id: 4, from: 'she', content: 'Lorem ipsum dolor sit amet'},
         {id: 5, from: 'me', content: 'Lorem ipsum dolor sit amet. Very long text. Very long text. Very long text. Very long text.'},
