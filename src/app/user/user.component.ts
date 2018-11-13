@@ -11,8 +11,8 @@ import {SocketService} from '../socket.service';
 })
 
 export class UserComponent implements OnInit {
-    // todo make Msg class
 
+    textValue: string;
 
     msgs = [
         new Message(1,'me', 'This is a message'),
@@ -22,17 +22,13 @@ export class UserComponent implements OnInit {
         {id: 5, from: 'me', content: 'Lorem ipsum dolor sit amet. Very long text. Very long text. Very long text. Very long text.'},
         {id: 6, from: 'me', content: 'Lorem ipsum dolor sit amet'},
         {id: 7, from: 'she', content: 'Lorem ipsum dolor sit amet'},
-        {id: 8, from: 'she', content: 'Lorem ipsum dolor sit amet'},
-        {id: 9, from: 'me', content: 'Lorem ipsum dolor sit amet'},
-        {id: 10, from: 'me', content: 'Lorem ipsum dolor sit amet'},
-        {id: 11, from: 'she', content: 'Lorem ipsum dolor sit amet'},
-        {id: 12, from: 'she', content: 'Lorem ipsum dolor sit amet'},
     ];
 
   constructor(private _dataService: DataService, private _router: Router, private socketService: SocketService) {
     this._dataService.user().subscribe(
       data => {
         this._dataService.setLogginStatus(true);
+
         // data has picture property
         // @ts-ignore
         if(data.picture){
@@ -49,10 +45,23 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.socketService.onMessage().subscribe(
+      data =>{
+        this.msgs.push(data);
+      },
+      error =>{
+        console.log(error);
+      }
+    )
+  }
+
+  onKey(value:string){
+    this.textValue = value;
   }
 
   send(){
-    this.socketService.send(new Message(1,'she', 'hallo this is from me'));
+    const message = new Message(1, 'me', this.textValue);
+    this.socketService.send(message);
   }
 
 }
