@@ -6,6 +6,7 @@ const http = require('http');
 const cookieParser = require('cookie-parser');
 const app = express();
 const passport = require('passport');
+const socket = require('socket.io');
 
 // dotenv allows you to use process.env.<sth> from the .env file
 require('dotenv').config();
@@ -47,6 +48,7 @@ require('./server/passport-config');
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 /* Please declare all routes here */
 const auth = require('./server/routes/auth');
 app.use('/auth/', auth);
@@ -58,11 +60,12 @@ app.get('*', (req,res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'))
 });
 
-
-
 const port = process.env.PORT || '3000';
 app.set('port',port);
 
 const server = http.createServer(app);
-
 server.listen(port, () => console.log(`Running on localhost:${port}`));
+
+const io = socket(server);
+require('./server/socket-io/chat')(io);
+
