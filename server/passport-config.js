@@ -10,8 +10,8 @@ require('dotenv').config();
    be careful when using bcrypt.compare it is an asynchronous function.
  */
 passport.use('local', new LocalStrategy({
-  usernameField: 'email',
-  passwordField: 'password'
+    usernameField: 'email',
+    passwordField: 'password'
   },
   (username, password, done) => {
     let getUserByUsername = User.findOne({where:{username: username}});
@@ -33,8 +33,8 @@ passport.use('local', new LocalStrategy({
         }
       })
     }).catch((err) =>{
-        console.log(err);
-        return done(err);
+      console.log(err);
+      return done(err);
     })
   }
 ));
@@ -50,10 +50,13 @@ passport.use('facebook',new FacebookStrategy({
     // #1 firsttime login => create new FacebookUser
     // #2 other times
     FacebookUser.findOne({where:{facebook_id:profile.id}}).then((user) =>{
-      if(user !== null) {return done(null,user)}
+      if(user !== null) {
+        return done(null,user)
+      }
       FacebookUser.create({
         facebook_id: profile.id,
-        username: profile.displayName
+        username: profile.displayName,
+        picture: profile.photos[0].value
       }).then((newUser) => {
         done(null,newUser)
       })
