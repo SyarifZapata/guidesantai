@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {DataService} from '../data.service';
 import {Router} from '@angular/router';
 import {Message} from '../utility/message';
+import {SocketService} from '../socket.service';
 
 @Component({
   selector: 'app-user',
@@ -28,7 +29,7 @@ export class UserComponent implements OnInit {
         {id: 12, from: 'she', content: 'Lorem ipsum dolor sit amet'},
     ];
 
-  constructor(private _dataService: DataService, private _router: Router) {
+  constructor(private _dataService: DataService, private _router: Router, private socketService: SocketService) {
     this._dataService.user().subscribe(
       data => {
         this._dataService.setLogginStatus(true);
