@@ -18,6 +18,10 @@ export class SocketService {
     this.socket.emit('message', message);
   }
 
+  public sendFeedback(name): void {
+    this.socket.emit('typing', name);
+  }
+
   public onMessage(): Observable<Message> {
     return new Observable<Message>(observer => {
       this.socket.on('message', (data: Message) => observer.next(data));
@@ -27,6 +31,12 @@ export class SocketService {
   public onEvent(event: Event): Observable<any> {
     return new Observable<Event>(observer => {
       this.socket.on(event, () => observer.next());
+    });
+  }
+
+  public onFeedback(): Observable<string> {
+    return new Observable<string>(observer => {
+      this.socket.on('typing', (data: string) => observer.next(data));
     });
   }
 }

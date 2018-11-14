@@ -92,6 +92,7 @@ router.get('/logout',isValidUser, (req,res,next) => {
     when he/she tries to access the member-only page
  */
 router.get('/user', isValidUser, (req, res, next) => {
+  console.log(req);
   let data = {};
   // console.log(req);
   if(req.user.dataValues){

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {DataService} from '../data.service';
 import {Router} from '@angular/router';
 import {Message} from '../utility/message';
@@ -13,6 +13,10 @@ import {SocketService} from '../socket.service';
 export class UserComponent implements OnInit {
 
     textValue: string;
+    feedback: string;
+
+    @ViewChild('chatInput')
+    myChatInput: any;
 
     msgs = [
         new Message(1,'me', 'This is a message'),
@@ -48,20 +52,42 @@ export class UserComponent implements OnInit {
     this.socketService.onMessage().subscribe(
       data =>{
         this.msgs.push(data);
+        this.feedback = '';
       },
       error =>{
         console.log(error);
       }
-    )
+    );
+
+    this.socketService.onFeedback().subscribe(
+      data =>{
+        this.feedback = data + 'is typing a message';
+      },
+      error =>{
+        console.log(error);
+      }
+    );
   }
 
-  onKey(value:string){
+  resetInput(){
+    this.myChatInput.nativeElement.value = '';
+    this.textValue = '';
+  }
+
+  onKey(value:string, event){
     this.textValue = value;
+    this.socketService.sendFeedback('syarif');
+    if(event.keyCode === 13){
+      this.send();
+    }
   }
 
   send(){
-    const message = new Message(1, 'me', this.textValue);
-    this.socketService.send(message);
+    if(!(this.textValue.trim() === '')){
+      const message = new Message(1, 'me', this.textValue);
+      this.socketService.send(message);
+      this.resetInput();
+    }
   }
 
 }

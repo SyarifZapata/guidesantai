@@ -1,4 +1,6 @@
 <div class="content" id="msgPool">
+  <div id="feedback"><em>{{feedback}}</em></div>
+
   <div class="row" *ngFor="let msg of msgs">
 
 	<div class="col m12 s12 msg">
@@ -13,7 +15,7 @@
 <div class="content" id="footer">
 	<div class="row">
 		<div class="col s12 m12" id="sendArea">
-			<input #chatInput (keyup)="onKey(chatInput.value)" type="text" id="chatInput" placeholder="chat">
+			<input #chatInput (keyup)="onKey(chatInput.value, $event)" type="text" id="chatInput" placeholder="chat">
 			<a class="btn-floating waves-effect waves-light red" (click)="send()" id="sendMsg"><i class="material-icons">send</i></a>
 		</div>
 	</div>

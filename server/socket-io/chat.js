@@ -7,6 +7,10 @@ module.exports = function(io) {
       io.sockets.emit('message',message)
     });
 
+    socket.on('typing', function (data) {
+      socket.broadcast.emit('typing', data)
+    })
+
   });
 
 };
