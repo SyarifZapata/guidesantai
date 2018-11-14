@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {DataService} from '../data.service';
 import {Router} from '@angular/router';
 import {Message} from '../utility/message';
 import {SocketService} from '../socket.service';
 import * as $ from 'jquery';
+import * as M from 'materialize-css';
 
 @Component({
   selector: 'app-user',
@@ -11,7 +12,7 @@ import * as $ from 'jquery';
   styleUrls: ['./user.component.scss']
 })
 
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit,AfterViewInit {
 
     textValue: string;
     feedback: string;
@@ -36,6 +37,7 @@ export class UserComponent implements OnInit {
         this._dataService.setLogginStatus(true);
         // @ts-ignore
         this.username = data.username;
+        this.socketService.online(this.username);
         // data has picture property
         // @ts-ignore
         if(data.picture){
@@ -71,6 +73,13 @@ export class UserComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  ngAfterViewInit(){
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('.sidenav');
+      var instances = M.Sidenav.init(elems, {});
+    });
   }
 
   resetInput(){

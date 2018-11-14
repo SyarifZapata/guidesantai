@@ -10,9 +10,9 @@ export class SocketService {
 
   private socket = io();
 
-  // public initSocket(): void {
-  //   this.socket = io();
-  // }
+  public online(username){
+    this.socket.emit('username', username);
+  }
 
   public send(message: Message): void {
     this.socket.emit('message', message);
