@@ -3,6 +3,7 @@ import {DataService} from '../data.service';
 import {Router} from '@angular/router';
 import {Message} from '../utility/message';
 import {SocketService} from '../socket.service';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-user',
@@ -91,5 +92,6 @@ export class UserComponent implements OnInit {
       this.resetInput();
     }
   }
+
 
 }
