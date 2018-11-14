@@ -14,6 +14,7 @@ export class UserComponent implements OnInit {
 
     textValue: string;
     feedback: string;
+    username: string;
 
     @ViewChild('chatInput')
     myChatInput: any;
@@ -32,7 +33,8 @@ export class UserComponent implements OnInit {
     this._dataService.user().subscribe(
       data => {
         this._dataService.setLogginStatus(true);
-
+        // @ts-ignore
+        this.username = data.username;
         // data has picture property
         // @ts-ignore
         if(data.picture){
@@ -61,7 +63,7 @@ export class UserComponent implements OnInit {
 
     this.socketService.onFeedback().subscribe(
       data =>{
-        this.feedback = data + 'is typing a message';
+        this.feedback = data + ' is typing a message...';
       },
       error =>{
         console.log(error);
@@ -74,9 +76,9 @@ export class UserComponent implements OnInit {
     this.textValue = '';
   }
 
-  onKey(value:string, event){
+  onKey(value: string, event){
     this.textValue = value;
-    this.socketService.sendFeedback('syarif');
+    this.socketService.sendFeedback(this.username);
     if(event.keyCode === 13){
       this.send();
     }
