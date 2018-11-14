@@ -56,6 +56,7 @@ export class UserComponent implements OnInit {
       data =>{
         this.msgs.push(data);
         this.feedback = '';
+        window.setTimeout(function(){$('#msgPool').scrollTop($('#msgPool')[0].scrollHeight)},50);//wait 50ms until new message appears, else it will scroll to second last message.
       },
       error =>{
         console.log(error);
@@ -90,6 +91,7 @@ export class UserComponent implements OnInit {
       const message = new Message(1, 'me', this.textValue);
       this.socketService.send(message);
       this.resetInput();
+      window.setTimeout(function(){$('#msgPool').scrollTop($('#msgPool')[0].scrollHeight)},50);//wait 50ms until new message appears, else it will scroll to second last message.
     }
   }
 
