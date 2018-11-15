@@ -1,27 +1,15 @@
-import {AfterContentInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, AfterContentInit {
-  @ViewChild('ref') sliderValue: ElementRef;
-  value = 0;
+export class HomeComponent implements OnInit {
 
-  constructor() {
-  }
+  constructor() { }
 
   ngOnInit() {
-  }
-
-  ngAfterContentInit() {
-    this.value = this.sliderValue.nativeElement.value;
-  }
-
-  onSliderChange(value: number) {
-    this.value = value;
   }
 
 }
