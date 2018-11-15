@@ -13,7 +13,8 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   loggedIn: boolean;
   profilPicture: string;
 
-  constructor(private _dataService: DataService, private _router: Router) { }
+  constructor(private _dataService: DataService, private _router: Router) {
+  }
 
   ngOnInit() {
     // The value of logged in always get updated whenever it is changed by other component.
@@ -21,15 +22,15 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     this._dataService.profilPicture.subscribe(value => this.profilPicture = value);
   }
 
-  ngAfterViewInit(){
-    document.addEventListener('DOMContentLoaded', function() {
+  ngAfterViewInit() {
+    document.addEventListener('DOMContentLoaded', function () {
       const elems = document.querySelectorAll('.dropdown-trigger');
       const instances = M.Dropdown.init(elems, {
         widthConstraint: true
       });
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const elems = document.querySelectorAll('.dropdown-trigger1');
       const instances = M.Dropdown.init(elems, {
         coverTrigger: false,
@@ -37,7 +38,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     });
   }
 
-  logout(){
+  logout() {
     this._dataService.logout().subscribe(
       data => {
         console.log(data);
@@ -49,7 +50,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
         console.log(error);
         console.log('mama mia');
       }
-    )
+    );
   }
 
 }
