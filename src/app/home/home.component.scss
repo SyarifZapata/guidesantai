@@ -1,0 +1,49 @@
+#friend-list{
+  margin: 0;
+}
+#friend-list li{
+  border-bottom:1px #ccc solid;
+  display: flex;
+  position: relative;
+  padding: 5px;
+  width: 100%;
+  img{
+    position: relative;
+    float: left;
+    border-radius:100%;
+  }
+  .middle{
+    position: relative;
+    float: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    margin-left: 10px;
+    h5{
+      margin: 0;
+      font-size: 1.3rem;
+    }
+    .msg-preview{
+      color: #777;
+      /* allow only 1 line: */
+      max-height: 1.3rem;
+      overflow: hidden;
+    }
+  }
+  .badge{
+    background: #ee6e73;
+    position: absolute;
+    right: 10%;
+    top: 25%;
+    min-width: 0;
+    border-radius: 100%;
+    color: white;
+  }
+  .time{
+    position: absolute;
+    right: 5px;
+    top:25%;
+    color: #999;
+  }
+}
