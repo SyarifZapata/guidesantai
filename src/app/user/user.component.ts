@@ -12,24 +12,24 @@ import * as M from 'materialize-css';
   styleUrls: ['./user.component.scss']
 })
 
-export class UserComponent implements OnInit,AfterViewInit {
+export class UserComponent implements OnInit, AfterViewInit {
 
-    textValue: string;
-    feedback: string;
-    username: string;
+  textValue: string;
+  feedback: string;
+  username: string;
 
-    @ViewChild('chatInput')
-    myChatInput: any;
+  @ViewChild('chatInput')
+  myChatInput: any;
 
-    msgs = [
-        new Message(1,'me', 'This is a message'),
-        new Message(2,'she', 'An Example of class Message'),
-        {id: 3, from: 'me', content: 'Lorem ipsum dolor sit amet'},
-        {id: 4, from: 'she', content: 'Lorem ipsum dolor sit amet'},
-        {id: 5, from: 'me', content: 'Lorem ipsum dolor sit amet. Very long text. Very long text. Very long text. Very long text.'},
-        {id: 6, from: 'me', content: 'Lorem ipsum dolor sit amet'},
-        {id: 7, from: 'she', content: 'Lorem ipsum dolor sit amet'},
-    ];
+  msgs = [
+    new Message(1, 'me', 'This is a message'),
+    new Message(2, 'she', 'An Example of class Message'),
+    {id: 3, from: 'me', content: 'Lorem ipsum dolor sit amet'},
+    {id: 4, from: 'she', content: 'Lorem ipsum dolor sit amet'},
+    {id: 5, from: 'me', content: 'Lorem ipsum dolor sit amet. Very long text. Very long text. Very long text. Very long text.'},
+    {id: 6, from: 'me', content: 'Lorem ipsum dolor sit amet'},
+    {id: 7, from: 'she', content: 'Lorem ipsum dolor sit amet'},
+  ];
 
   constructor(private _dataService: DataService, private _router: Router, private socketService: SocketService) {
     this._dataService.user().subscribe(
@@ -40,7 +40,7 @@ export class UserComponent implements OnInit,AfterViewInit {
         this.socketService.online(this.username);
         // data has picture property
         // @ts-ignore
-        if(data.picture){
+        if (data.picture) {
           // @ts-ignore
           this._dataService.setProfilPicture(data.picture);
         }
@@ -55,52 +55,56 @@ export class UserComponent implements OnInit,AfterViewInit {
 
   ngOnInit() {
     this.socketService.onMessage().subscribe(
-      data =>{
+      data => {
         this.msgs.push(data);
         this.feedback = '';
-        window.setTimeout(function(){$('#msgPool').scrollTop($('#msgPool')[0].scrollHeight)},50);//wait 50ms until new message appears, else it will scroll to second last message.
+        window.setTimeout(function () {
+          $('#msgPool').scrollTop($('#msgPool')[0].scrollHeight);
+        }, 50);//wait 50ms until new message appears, else it will scroll to second last message.
       },
-      error =>{
+      error => {
         console.log(error);
       }
     );
 
     this.socketService.onFeedback().subscribe(
-      data =>{
+      data => {
         this.feedback = data + ' is typing a message...';
       },
-      error =>{
+      error => {
         console.log(error);
       }
     );
   }
 
-  ngAfterViewInit(){
-    document.addEventListener('DOMContentLoaded', function() {
+  ngAfterViewInit() {
+    document.addEventListener('DOMContentLoaded', function () {
       var elems = document.querySelectorAll('.sidenav');
       var instances = M.Sidenav.init(elems, {});
     });
   }
 
-  resetInput(){
+  resetInput() {
     this.myChatInput.nativeElement.value = '';
     this.textValue = '';
   }
 
-  onKey(value: string, event){
+  onKey(value: string, event) {
     this.textValue = value;
     this.socketService.sendFeedback(this.username);
-    if(event.keyCode === 13){
+    if (event.keyCode === 13) {
       this.send();
     }
   }
 
-  send(){
-    if(!(this.textValue.trim() === '')){
+  send() {
+    if (!(this.textValue.trim() === '')) {
       const message = new Message(1, 'me', this.textValue);
       this.socketService.send(message);
       this.resetInput();
-      window.setTimeout(function(){$('#msgPool').scrollTop($('#msgPool')[0].scrollHeight)},50);//wait 50ms until new message appears, else it will scroll to second last message.
+      window.setTimeout(function () {
+        $('#msgPool').scrollTop($('#msgPool')[0].scrollHeight);
+      }, 50);//wait 50ms until new message appears, else it will scroll to second last message.
     }
   }
 

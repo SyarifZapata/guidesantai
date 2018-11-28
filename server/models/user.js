@@ -6,7 +6,8 @@ const User = connection.define('user', {
   username: { type: Sequelize.STRING(30), allowNull:false },
   email: { type: Sequelize.STRING(50), allowNull: false },
   password: { type: Sequelize.STRING(100), allowNull: false },
-  login_strategy: { type: Sequelize.STRING(10), defaultValue: 'local'}
+  login_strategy: { type: Sequelize.STRING(10), defaultValue: 'local'},
+  twoFASecret: {type: Sequelize.STRING(100)}
 });
 
 

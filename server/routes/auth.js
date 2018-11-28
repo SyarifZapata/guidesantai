@@ -5,6 +5,8 @@ const connection = require('../connection');
 const User = require('../models/user');
 const FacebookUser = require('../models/facebookUser');
 const passport = require('passport');
+const speakeasy = require('speakeasy');
+const QRCode = require('qrcode');
 
 /* Test the connection, you should see this message
    when you are able to establish connection with the database
@@ -109,6 +111,41 @@ router.get('/user', isValidUser, (req, res, next) => {
     }
   }
   return res.status(200).json(data)
+});
+
+let secret;
+
+router.get('/getCode', (req,res,next) => {
+  let token = speakeasy.totp({
+    secret: secret.base32,
+    encoding: 'base32'
+  });
+  res.json({message:token})
+});
+
+
+router.post('/generateSecret', isValidUser, (req,res,next) => {
+  secret = speakeasy.generateSecret({length:20});
+  let userid = -1;
+
+  // if(req.user.dataValues){
+  //
+  //   userid = req.user.dataValues.facebook_id;
+  //   FacebookUser.update({twoFASecret:secret.base32},{where:{facebook_id:userid}}).then((rows_updated) => {
+  //     console.log(rows_updated)
+  //   }).catch((error) => {
+  //     console.log(error)
+  //   })
+  // }else {
+  //   userid = req.user.user_id;
+  // }
+
+  QRCode.toDataURL(secret.otpauth_url, (err, image_data) => {
+    // console.log(image_data);
+    if(image_data){
+      res.status(200).json({qrcode:image_data})
+    }
+  });
 });
 
 /*  This function will be passed to /user and /logout routes
