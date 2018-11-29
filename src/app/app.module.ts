@@ -15,6 +15,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { UserComponent } from './user/user.component';
 import {HttpClientModule} from '@angular/common/http';
 import {SettingsComponent} from './settings/settings.component';
+import { TwoFAComponent } from './two-fa/two-fa.component';
 
 
 const appRoutes: Routes = [
@@ -25,6 +26,7 @@ const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'settings', component: SettingsComponent},
+  {path: 'twofa', component: TwoFAComponent},
   {path: '**', component: NotFoundComponent}
 ];
 
@@ -38,7 +40,8 @@ const appRoutes: Routes = [
     LoginComponent,
     RegisterComponent,
     UserComponent,
-    SettingsComponent
+    SettingsComponent,
+    TwoFAComponent
   ],
   entryComponents: [
   ],
