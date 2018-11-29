@@ -47,6 +47,11 @@ export class DataService {
     this.profilPictureChange.next(value);
   }
 
+  saveSettings(body:any){
+    return this._http.post('http://localhost:3000/auth/saveSettings',
+      body, { observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
 }
 
 

@@ -128,17 +128,17 @@ router.post('/generateSecret', isValidUser, (req,res,next) => {
   secret = speakeasy.generateSecret({length:20});
   let userid = -1;
 
-  // if(req.user.dataValues){
-  //
-  //   userid = req.user.dataValues.facebook_id;
-  //   FacebookUser.update({twoFASecret:secret.base32},{where:{facebook_id:userid}}).then((rows_updated) => {
-  //     console.log(rows_updated)
-  //   }).catch((error) => {
-  //     console.log(error)
-  //   })
-  // }else {
-  //   userid = req.user.user_id;
-  // }
+  if(req.user.dataValues){
+
+    userid = req.user.dataValues.facebook_id;
+    FacebookUser.update({twoFASecret:secret.base32},{where:{facebook_id:userid}}).then((rows_updated) => {
+      console.log(rows_updated)
+    }).catch((error) => {
+      console.log(error)
+    })
+  }else {
+    userid = req.user.user_id;
+  }
 
   QRCode.toDataURL(secret.otpauth_url, (err, image_data) => {
     // console.log(image_data);
@@ -146,6 +146,22 @@ router.post('/generateSecret', isValidUser, (req,res,next) => {
       res.status(200).json({qrcode:image_data})
     }
   });
+});
+
+router.post('/saveSettings', isValidUser, (req,res,next) => {
+  const twoFa = req.body.twoFa;
+  let userid = -1;
+  if(req.user.dataValues){
+    userid = req.user.dataValues.facebook_id;
+    FacebookUser.update({twoFAEnabled:twoFa},{where:{facebook_id:userid}}).then((rows_updated) => {
+      console.log(rows_updated)
+    }).catch((error) => {
+      console.log(error)
+    })
+  }else {
+    userid = req.user.user_id;
+  }
+  res.status(200).json({message:'nice'})
 });
 
 /*  This function will be passed to /user and /logout routes

@@ -23,15 +23,17 @@ export class CryptoService {
       {observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
-  generateSecret(body:any){
+  generateSecret(body:any) {
     return this._http.post('http://localhost:3000/auth/generateSecret',
-      body, { observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+      { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   getCode(){
     return this._http.get('http://localhost:3000/auth/getCode',
       {observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
+
+
 
 }
 

@@ -6,7 +6,8 @@ const FacebookUser = connection.define('fb_user', {
   username: { type: Sequelize.STRING(50), allowNull:false },
   picture: { type: Sequelize.STRING },
   login_strategy: { type: Sequelize.STRING(10), defaultValue: 'facebook'},
-  twoFASecret: {type: Sequelize.STRING(100)}
+  twoFASecret: {type: Sequelize.STRING(100)},
+  twoFAEnabled: {type: Sequelize.BOOLEAN, defaultValue: 'false'}
 });
 
 

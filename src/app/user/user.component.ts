@@ -60,7 +60,7 @@ export class UserComponent implements OnInit, AfterViewInit {
         this.feedback = '';
         window.setTimeout(function () {
           $('#msgPool').scrollTop($('#msgPool')[0].scrollHeight);
-        }, 50);//wait 50ms until new message appears, else it will scroll to second last message.
+        }, 50); // wait 50ms until new message appears, else it will scroll to second last message.
       },
       error => {
         console.log(error);

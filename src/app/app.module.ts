@@ -14,7 +14,7 @@ import { RegisterComponent } from './register/register.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { UserComponent } from './user/user.component';
 import {HttpClientModule} from '@angular/common/http';
-import { SettingsComponent } from './settings/settings.component';
+import {SettingsComponent} from './settings/settings.component';
 
 
 const appRoutes: Routes = [
@@ -38,7 +38,7 @@ const appRoutes: Routes = [
     LoginComponent,
     RegisterComponent,
     UserComponent,
-    SettingsComponent,
+    SettingsComponent
   ],
   entryComponents: [
   ],
