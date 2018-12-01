@@ -1,0 +1,121 @@
+See TODO in friend-list.component.ts. Click here to activate tabs: <a href="javascript:$('.tabs').tabs();">$('.tabs').tabs();</a>
+<ul class="tabs">
+  <li class="tab">
+    <a href="#tab1">All</a>
+  </li>
+  <li class="tab">
+    <a href="#tab2">Facebook</a>
+  </li>
+  <li class="tab">
+    <a href="#tab3">Friend-Requests</a>
+  </li>
+</ul>
+
+<!-- tab1-->
+<div id="tab1">
+  <ul class="friend-list">
+    <li>
+      <div class="input-field search-field">
+        <i class="material-icons prefix">search</i>
+        <input class="search-friends" type="text" placeholder="search">
+        <!--<label for="search-friends">search</label>-->
+      </div>
+    </li>
+    <li>
+      <img src="../../assets/img/profil/unknown_profile.png" alt="">
+      <div class="middle">
+        <h5>Syarif</h5>
+        <span class="msg-preview">Hier sind die laufenden chats.</span>
+      </div>
+      <span class="badge">3</span>
+      <span class="time">10:33</span>
+    </li>
+    <li>
+      <img src="../../assets/img/profil/unknown_profile.png" alt="">
+      <div class="middle">
+        <h5>Adi</h5>
+        <span class="msg-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi asperiores est, ex excepturi provident...</span>
+      </div>
+      <span class="badge">1</span>
+      <span class="time">10:33</span>
+    </li>
+    <li>
+      <img src="../../assets/img/profil/unknown_profile.png" alt="">
+      <div class="middle">
+        <h5>Nils</h5>
+        <span class="msg-preview">Lorem ipsum dolor sit amet.</span>
+      </div>
+      <span class="time">10:33</span>
+    </li>
+  </ul>
+</div>
+
+<!-- tab2 -->
+<div id="tab2">
+  <ul class="friend-list">
+    <li>
+      <div class="input-field" style="width:100%;margin:0;">
+        <i class="material-icons prefix">search</i>
+        <input class="search-friends" type="text" placeholder="search">
+        <!--<label for="search-friends">search</label>-->
+      </div>
+    </li>
+    <li>
+      <img src="../../assets/img/profil/unknown_profile.png" alt="">
+      <div class="middle">
+        <h5>Syarif</h5>
+        <span class="msg-preview">Syarif ist ein FB-Friend mit 3 ungelesenen Nachrichten.</span>
+      </div>
+      <span class="badge">3</span>
+      <span class="time">10:33</span>
+    </li>
+    <li>
+      <img src="../../assets/img/profil/unknown_profile.png" alt="">
+      <div class="middle">
+        <h5>Adi</h5>
+        <span class="msg-preview">Mit Adi wurde auch schon gechattet.</span>
+      </div>
+      <span class="time">10:33</span>
+    </li>
+    <li>
+      <img src="../../assets/img/profil/unknown_profile.png" alt="">
+      <div class="middle">
+        <h5>Nils Hansen</h5>
+        <span class="msg-preview">Lade Nils zum chatten ein!</span>
+      </div>
+      <a class="btn-floating waves-effect waves-light red add-friend"><i class="material-icons">person_add</i></a>
+    </li>
+    <li>
+      <img src="../../assets/img/profil/unknown_profile.png" alt="">
+      <div class="middle">
+        <h5>Fritz</h5>
+        <span class="msg-preview">Deine Einladung wurde noch nicht angenommen.</span>
+      </div>
+      <a class="btn-floating waves-effect waves-light red add-friend"><i class="material-icons">hourglass_empty</i></a>
+    </li>
+  </ul>
+</div>
+
+<!--tab3-->
+<div id="tab3">
+  <ul class="friend-list">
+    <li>
+      <div class="input-field" style="width:100%;margin:0;">
+        <i class="material-icons prefix">search</i>
+        <input class="search-friends" type="text" placeholder="search">
+        <!--<label for="search-friends">search</label>-->
+      </div>
+    </li>
+    <li>
+      <img src="../../assets/img/profil/unknown_profile.png" alt="">
+      <div class="middle">
+        <h5>Nils Hansen</h5>
+        <span class="msg-preview">Einladung annehmen oder ablehnen.</span>
+      </div>
+      <div class="handle-friend-request">
+        <a class="btn-floating waves-effect waves-light red accept-request"><i class="material-icons">check</i></a>
+        <a class="btn-floating waves-effect waves-light red reject-request"><i class="material-icons">clear</i></a>
+      </div>
+    </li>
+  </ul>
+</div>
