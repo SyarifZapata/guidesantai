@@ -7,6 +7,11 @@ const FacebookUser = require('../models/facebookUser');
 const passport = require('passport');
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
+const redis = require('redis');
+
+let client = Object;
+
+//todo check for 2fa
 
 /* Test the connection, you should see this message
    when you are able to establish connection with the database
@@ -101,18 +106,21 @@ router.get('/user', isValidUser, (req, res, next) => {
     data = {
       message: 'Sie sind eingeloggt',
       username:req.user.dataValues.username,
-      picture:req.user.dataValues.picture
+      picture:req.user.dataValues.picture,
+      twoFAEnabled: req.user.dataValues.twoFAEnabled
     }
   }else {
     data = {
       message: 'Sie sind eingeloggt',
       username: req.user.username,
-      picture: 'assets/img/profil/unknown_profile.png'
+      picture: 'assets/img/profil/unknown_profile.png',
+      twoFAEnabled: req.user.twoFAEnabled
     }
   }
   return res.status(200).json(data)
 });
 
+/* this might cause problem */
 let secret;
 
 router.get('/getCode', (req,res,next) => {
@@ -160,8 +168,37 @@ router.post('/saveSettings', isValidUser, (req,res,next) => {
     })
   }else {
     userid = req.user.user_id;
+    User.update({twoFAEnabled:twoFa},{where:{user_id:userid}}).then((rows_updated) => {
+      console.log(rows_updated)
+    }).catch((error) => {
+      console.log(error)
+    })
   }
   res.status(200).json({message:'nice'})
+});
+
+router.post('/compareToken', isValidUser, (req,res,next)=> {
+  console.log('compare Token');
+
+  let token = req.body.token;
+  if(req.user.dataValues){
+    const secret = req.user.dataValues.twoFASecret;
+    console.log(req.body);
+    let verified = speakeasy.totp.verify({
+      secret: secret,
+      encoding: 'base32',
+      token:token
+    });
+
+    console.log(verified);
+    if(verified){
+      client.hset(req.user.dataValues.username, "twoFaLoggedin", "true", redis.print);
+      res.status(200).json({verified: verified})
+    }else{
+      res.status(401).json({verified: !verified})
+    }
+
+  }
 });
 
 /*  This function will be passed to /user and /logout routes
@@ -176,9 +213,22 @@ function isValidUser(req,res,next){
 router.get('/facebook', passport.authenticate('facebook'));
 
 router.get('/facebook/callback', passport.authenticate('facebook'), (req,res,next) =>{
-  res.redirect('http://localhost:3000/user');
+  let user = req.user.dataValues;
+  client.hget(user.username, "twoFaLoggedin", (err, value) => {
+    if(user.twoFAEnabled && value !== true){
+      res.redirect('http://localhost:3000/twofa');
+    }else {
+      res.redirect('http://localhost:3000/user');
+    }
+  });
+
 });
 
 
 
-module.exports = router;
+module.exports = {
+  setClient : function (inClient) {
+    client = inClient;
+  },
+  authRouter:router
+};

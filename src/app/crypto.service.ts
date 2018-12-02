@@ -33,7 +33,10 @@ export class CryptoService {
       {observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
-
+  login2fa(body:any){
+    return this._http.post('http://localhost:3000/auth/compareToken', body,
+      { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
 
 }
 

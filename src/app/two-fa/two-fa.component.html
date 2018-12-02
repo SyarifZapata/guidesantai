@@ -6,11 +6,11 @@
       <div class="row">
         <div class="input-field col m6 offset-m3 s12">
           <i class="material-icons prefix">devices</i>
-          <input id="twofa" type="text" required>
+          <input (keyup)="onKey($event)" id="twofa" type="text" required>
           <label for="twofa">2FA Code</label>
         </div>
         <div class="col m6 offset-m3 s12 syarif-submit">
-          <a class="waves-effect waves-light btn-small" ><i class="material-icons right">chevron_right</i>CONTINUE</a>
+          <a class="waves-effect waves-light btn-small" (click)="login2fa()"><i class="material-icons right">chevron_right</i>CONTINUE</a>
         </div>
       </div>
       <div class="row">

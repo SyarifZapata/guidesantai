@@ -11,18 +11,21 @@ import * as $ from 'jquery';
 })
 export class SettingsComponent implements OnInit, AfterViewInit {
   qrcode: string;
-  code:string;
-  isDisabled:boolean = true;
+  code: string;
+  isDisabled = true;
   twoFa = false;
-  savedMessage: string = '';
+  savedMessage = '';
 
   constructor(private _dataService: DataService, private _router: Router, private _cryptoService: CryptoService) {
     this._dataService.user().subscribe(
       data => {
         // @ts-ignore
         this.username = data.username;
-        // data has picture property
         // @ts-ignore
+        this.twoFa = data.twoFAEnabled;
+        if(this.twoFa === true){
+          this.isDisabled = false;
+        }
       },
       error => {
         console.log(error);
@@ -37,7 +40,7 @@ export class SettingsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(){
   }
 
-  getCode(){
+  getCode() {
     this._cryptoService.getCode().subscribe(
       data => {
         // @ts-ignore
@@ -46,7 +49,7 @@ export class SettingsComponent implements OnInit, AfterViewInit {
     );
   }
 
-  generateSecret(){
+  generateSecret() {
     if(!this.isDisabled){
       this.qrcode = '';
       this.isDisabled = true;
@@ -75,7 +78,7 @@ export class SettingsComponent implements OnInit, AfterViewInit {
   clearMessage(){
     setTimeout(() => {
       this.savedMessage = '';
-    }, 5000);
+    }, 3000);
   }
 
 }

@@ -11,6 +11,7 @@ const socket = require('socket.io');
 // dotenv allows you to use process.env.<sth> from the .env file
 require('dotenv').config();
 require('./server/crypto-config');
+require('./server/redis-config');
 
 //parsers
 app.use(bodyParser.json());
@@ -51,7 +52,7 @@ app.use(passport.session());
 
 
 /* Please declare all routes here */
-const auth = require('./server/routes/auth');
+const auth = require('./server/routes/auth').authRouter;
 const cryptoKeys = require('./server/routes/crypto-keys');
 app.use('/auth/', auth);
 app.use('/crypto-keys/',cryptoKeys);
@@ -70,5 +71,5 @@ const server = http.createServer(app);
 server.listen(port, () => console.log(`Running on localhost:${port}`));
 
 const io = socket(server);
-require('./server/socket-io/chat')(io);
+require('./server/socket-io/chat').chatSocket(io);
 
