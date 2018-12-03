@@ -78,10 +78,12 @@ router.post('/login', (req,res,next) => {
       res.status(401).json({message:'Die E-Mail, der Benutzername oder das Passwort ist falsch'});
     }
     if(user){
+      console.log(user);
       req.logIn(user,(err) =>{
         if(err) {
           console.log(err.message);
         }
+
         return res.status(200).json({
           message: 'Erfolgreich eingeloggt'
         })
@@ -102,22 +104,34 @@ router.get('/user', isValidUser, (req, res, next) => {
   // console.log(req.user.username);
   let data = {};
   // console.log(req);
+
   if(req.user.dataValues){
-    data = {
-      message: 'Sie sind eingeloggt',
-      username:req.user.dataValues.username,
-      picture:req.user.dataValues.picture,
-      twoFAEnabled: req.user.dataValues.twoFAEnabled
-    }
+    client.hget(req.user.dataValues.username, "twoFaLoggedin", (err, value) =>{
+      data = {
+        message: 'Sie sind eingeloggt',
+        username:req.user.dataValues.username,
+        picture:req.user.dataValues.picture,
+        twoFAEnabled: req.user.dataValues.twoFAEnabled,
+        twoFALoggedIn: value
+      };
+      return res.status(200).json(data)
+    });
+
   }else {
-    data = {
-      message: 'Sie sind eingeloggt',
-      username: req.user.username,
-      picture: 'assets/img/profil/unknown_profile.png',
-      twoFAEnabled: req.user.twoFAEnabled
-    }
+    client.hget(req.user.username, "twoFaLoggedin", (err, value) =>{
+      console.log(value);
+      data = {
+        message: 'Sie sind eingeloggt',
+        username: req.user.username,
+        picture: 'assets/img/profil/unknown_profile.png',
+        twoFAEnabled: req.user.twoFAEnabled,
+        twoFALoggedIn: value
+      };
+      return res.status(200).json(data)
+    });
+
   }
-  return res.status(200).json(data)
+
 });
 
 /* this might cause problem */
@@ -146,6 +160,11 @@ router.post('/generateSecret', isValidUser, (req,res,next) => {
     })
   }else {
     userid = req.user.user_id;
+    User.update({twoFASecret:secret.base32},{where:{user_id:userid}}).then((rows_updated) => {
+      console.log(rows_updated)
+    }).catch((error) => {
+      console.log(error)
+    })
   }
 
   QRCode.toDataURL(secret.otpauth_url, (err, image_data) => {
@@ -181,24 +200,31 @@ router.post('/compareToken', isValidUser, (req,res,next)=> {
   console.log('compare Token');
 
   let token = req.body.token;
+  let secret;
   if(req.user.dataValues){
-    const secret = req.user.dataValues.twoFASecret;
-    console.log(req.body);
-    let verified = speakeasy.totp.verify({
-      secret: secret,
-      encoding: 'base32',
-      token:token
-    });
-
-    console.log(verified);
-    if(verified){
-      client.hset(req.user.dataValues.username, "twoFaLoggedin", "true", redis.print);
-      res.status(200).json({verified: verified})
-    }else{
-      res.status(401).json({verified: !verified})
-    }
-
+    secret = req.user.dataValues.twoFASecret;
+  }else {
+    secret = req.user.twoFASecret;
   }
+  let verified = speakeasy.totp.verify({
+    secret: secret,
+    encoding: 'base32',
+    token:token
+  });
+  console.log(verified);
+  if(verified){
+    let username;
+    if(req.user.dataValues){
+      username = req.user.dataValues.username;
+    }else {
+      username = req.user.username;
+    }
+    client.hset(username, "twoFaLoggedin", "true", redis.print);
+    res.status(200).json({verified: verified})
+  }else{
+    res.status(401).json({verified: !verified})
+  }
+
 });
 
 /*  This function will be passed to /user and /logout routes

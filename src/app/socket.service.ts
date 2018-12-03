@@ -39,4 +39,8 @@ export class SocketService {
       this.socket.on('typing', (data: string) => observer.next(data));
     });
   }
+
+  public logout(){
+    this.socket.emit('logout');
+  }
 }

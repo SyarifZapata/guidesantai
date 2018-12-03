@@ -30,7 +30,6 @@ export class TwoFAComponent implements OnInit {
   }
 
   login2fa() {
-    console.log(this.token);
     this._cryptoService.login2fa({token: this.token}).subscribe(
       data => {
         // @ts-ignore

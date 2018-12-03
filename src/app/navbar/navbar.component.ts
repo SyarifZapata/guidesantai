@@ -2,6 +2,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {DataService} from '../data.service';
 import {Router} from '@angular/router';
 import * as M from 'materialize-css';
+import {SocketService} from '../socket.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,8 +13,9 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   // We use this value to show logout and memberpage button on the navbar
   loggedIn: boolean;
   profilPicture: string;
+  userName: string;
 
-  constructor(private _dataService: DataService, private _router: Router) { }
+  constructor(private _dataService: DataService, private _router: Router, private _socketService: SocketService) { }
 
   ngOnInit() {
     // The value of logged in always get updated whenever it is changed by other component.
@@ -38,6 +40,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   }
 
   logout(){
+    this._socketService.logout();
     this._dataService.logout().subscribe(
       data => {
         console.log(data);

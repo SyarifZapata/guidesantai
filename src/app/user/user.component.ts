@@ -17,6 +17,7 @@ export class UserComponent implements OnInit, AfterViewInit {
   textValue: string;
   feedback: string;
   username: string;
+  isDataLoaded:boolean;
 
   @ViewChild('chatInput')
   myChatInput: any;
@@ -34,17 +35,22 @@ export class UserComponent implements OnInit, AfterViewInit {
   constructor(private _dataService: DataService, private _router: Router, private socketService: SocketService) {
     this._dataService.user().subscribe(
       data => {
-        this._dataService.setLogginStatus(true);
         // @ts-ignore
-        this.username = data.username;
-        this.socketService.online(this.username);
-        // data has picture property
-        // @ts-ignore
-        if (data.picture) {
+        if(data.twoFALoggedIn === 'true'){
+          this.isDataLoaded = true;
+          this._dataService.setLogginStatus(true);
           // @ts-ignore
-          this._dataService.setProfilPicture(data.picture);
+          this.username = data.username;
+          this.socketService.online(this.username);
+          // data has picture property
+          // @ts-ignore
+          if (data.picture) {
+            // @ts-ignore
+            this._dataService.setProfilPicture(data.picture);
+          }
+        }else{
+          this._router.navigate(['/twofa']);
         }
-        console.log(data);
       },
       error => {
         console.log(error);

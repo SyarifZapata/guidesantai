@@ -23,6 +23,11 @@ module.exports = {
         socket.broadcast.emit('typing', data)
       });
 
+      socket.on('logout', function () {
+        console.log('user ' + key + ' disconnected');
+        socket.disconnect();
+      });
+
       socket.on('disconnect', function () {
         client.del(key);
         console.log('user ' + key + ' disconnected')
