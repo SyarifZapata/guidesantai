@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as $ from 'jquery';
+import * as M from 'materialize-css';
 
 @Component({
   selector: 'app-friend-list',
@@ -8,12 +9,12 @@ import * as $ from 'jquery';
 })
 export class FriendListComponent implements OnInit, AfterViewInit {
 
-  //todo put this at the right place so it runs after page is rendered (jQuery.ready())
-  //$('.tabs').tabs();
-
   constructor() {}
 
   ngOnInit() {}
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    var elems = document.querySelectorAll('.tabs');
+    var instance = M.Tabs.init(elems, {});
+  }
 }
