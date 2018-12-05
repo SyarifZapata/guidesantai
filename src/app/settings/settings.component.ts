@@ -23,9 +23,6 @@ export class SettingsComponent implements OnInit, AfterViewInit {
         this.username = data.username;
         // @ts-ignore
         this.twoFa = data.twoFAEnabled;
-        if(this.twoFa === true){
-          this.isDisabled = false;
-        }
       },
       error => {
         console.log(error);

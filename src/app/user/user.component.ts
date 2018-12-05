@@ -36,7 +36,8 @@ export class UserComponent implements OnInit, AfterViewInit {
     this._dataService.user().subscribe(
       data => {
         // @ts-ignore
-        if(data.twoFALoggedIn === 'true'){
+        // @ts-ignore. Value of twoFALoggedIn muss be 'true' or 'false' not just true or false
+        if(data.twoFALoggedIn === 'true' || data.twoFAEnabled === false){
           this.isDataLoaded = true;
           this._dataService.setLogginStatus(true);
           // @ts-ignore
