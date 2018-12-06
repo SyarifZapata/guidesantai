@@ -17,6 +17,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {SettingsComponent} from './settings/settings.component';
 import { TwoFAComponent } from './two-fa/two-fa.component';
 import { FriendListComponent } from './friend-list/friend-list.component';
+import { ChatComponent } from './chat/chat.component';
 
 
 const appRoutes: Routes = [
@@ -43,7 +44,8 @@ const appRoutes: Routes = [
     UserComponent,
     SettingsComponent,
     TwoFAComponent,
-    FriendListComponent
+    FriendListComponent,
+    ChatComponent
   ],
   entryComponents: [
   ],
