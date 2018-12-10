@@ -24,7 +24,10 @@ const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'home', component: HomeComponent},
   {path: 'about', component: AboutComponent},
-  {path: 'user', component: UserComponent},
+  {path: 'user', component: UserComponent,
+    children: [
+      {path: '', component: FriendListComponent}
+    ]},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'settings', component: SettingsComponent},

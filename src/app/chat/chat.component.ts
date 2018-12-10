@@ -16,7 +16,7 @@ export class ChatComponent implements OnInit {
   textValue: string;
   feedback: string;
   username: string;
-  isDataLoaded:boolean;
+  isDataLoaded: boolean;
 
   @ViewChild('chatInput')
   myChatInput: any;
@@ -38,16 +38,9 @@ export class ChatComponent implements OnInit {
         // @ts-ignore. Value of twoFALoggedIn muss be 'true' or 'false' not just true or false
         if(data.twoFALoggedIn === 'true' || data.twoFAEnabled === false){
           this.isDataLoaded = true;
-          this._dataService.setLogginStatus(true);
           // @ts-ignore
           this.username = data.username;
-          this.socketService.online(this.username);
-          // data has picture property
           // @ts-ignore
-          if (data.picture) {
-            // @ts-ignore
-            this._dataService.setProfilPicture(data.picture);
-          }
         }else{
           this._router.navigate(['/twofa']);
         }
