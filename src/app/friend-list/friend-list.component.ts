@@ -15,6 +15,7 @@ export class FriendListComponent implements OnInit, AfterViewInit {
   people = [];
   pendingRequest = [];
   unApprovedRequest = [];
+  chatFriends = [];
 
   constructor(private _dataService: DataService) {}
 
@@ -25,6 +26,8 @@ export class FriendListComponent implements OnInit, AfterViewInit {
         this.unApprovedRequest = data.data;
       }
     );
+
+    this.getFriends();
   }
 
   ngAfterViewInit() {
@@ -60,6 +63,16 @@ export class FriendListComponent implements OnInit, AfterViewInit {
     this.peopleSearchChanged.next(value);
   }
 
+  getFriends(){
+    this.chatFriends = [];
+    this._dataService.getFriends().subscribe(
+      data => {
+        // @ts-ignore
+        this.chatFriends = data.data;
+      }
+    );
+  }
+
   inviteFriend(value: any){
     // Todo send Invitation
     let to_id;
@@ -77,31 +90,63 @@ export class FriendListComponent implements OnInit, AfterViewInit {
     );
   }
 
-    // filter list by friends names
-    onKeyUp(event) {
-        var searchQuery = $(".active .search-friends").val();
-        $(".active ul li:not(:first)").each(function(){
-            if($(this).find(".middle h5").text().toLowerCase().includes(searchQuery.toLowerCase())){
-                $(this).removeClass("hide");
-            }else{
-                $(this).addClass("hide");
-            }
-        });
-    }
+  // filter list by friends names
+  onKeyUp(event) {
+    var searchQuery = $(".active .search-friends").val();
+    $(".active ul li:not(:first)").each(function(){
+      if($(this).find(".middle h5").text().toLowerCase().includes(searchQuery.toLowerCase())){
+        $(this).removeClass("hide");
+      }else{
+        $(this).addClass("hide");
+      }
+    });
+  }
 
-    checkPending(id){
-      return this.pendingRequest.includes(id);
-    }
+  checkPending(id){
+    return this.pendingRequest.includes(id);
+  }
 
-    cancelRequest(id){
-      return this._dataService.cancelRequest({id: id}).subscribe(
-        data => {
-          const i = this.pendingRequest.indexOf(id);
-          if(i !== -1){
-            delete this.pendingRequest[i];
-          }
-          this.onSearchPeople(this.peopleSearchChanged.getValue());
+  cancelRequest(id){
+    return this._dataService.cancelRequest({id: id}).subscribe(
+      data => {
+        const i = this.pendingRequest.indexOf(id);
+        if(i !== -1){
+          delete this.pendingRequest[i];
         }
-      )
+        this.onSearchPeople(this.peopleSearchChanged.getValue());
+      }
+    )
+  }
+
+  rejectRequest(id){
+    return this._dataService.rejectRequest({id: id}).subscribe(
+      data => {
+        this.removeByAttr(this.unApprovedRequest, 'facebook_id', id);
+        this.removeByAttr(this.unApprovedRequest, 'user_id', id);
+      }
+    );
+  }
+
+  removeByAttr(arr, attr, value){
+    let i = arr.length;
+    while(i--){
+      if( arr[i]
+        && arr[i].hasOwnProperty(attr)
+        && (arguments.length > 2 && arr[i][attr] === value ) ){
+        arr.splice(i,1);
+      }
     }
+    return arr;
+  }
+
+  acceptRequest(id){
+    return this._dataService.acceptRequest({id: id}).subscribe(
+      data => {
+        console.log(data);
+        // @ts-ignore
+        this.getFriends();
+        this.rejectRequest(id);
+      }
+    );
+  }
 }

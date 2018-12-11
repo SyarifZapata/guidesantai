@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/user');
 const FacebookUser = require('../models/facebookUser');
 const PendingRequest = require('../models/pendingRequest');
+const ChatFriend = require('../models/chatFriend');
 
 
 router.post('/finduser', isValidUser, (req,res,next) => {
@@ -66,7 +67,73 @@ router.post('/findpendingrequest', isValidUser, (req,res,next) => {
 
 router.post('/cancelrequest', isValidUser, (req,res,next) => {
   const id = req.body.id;
-  PendingRequest.destroy({where:{to_id:id}}).then((result) => {
+  let from_id;
+  if(req.user.dataValues){
+    from_id = req.user.dataValues.facebook_id;
+  }else{
+    from_id = req.user.user_id
+  }
+  PendingRequest.destroy({where:{from_id:from_id,to_id:id}}).then((result) => {
+    res.status(200).json(result);
+  })
+});
+
+router.post('/acceptrequest', isValidUser, (req,res,next) => {
+  const from_id = req.body.id;
+  let to_id;
+  if(req.user.dataValues){
+    to_id = req.user.dataValues.facebook_id;
+  }else{
+    to_id = req.user.user_id
+  }
+  ChatFriend.create({
+    user_id1: from_id,
+    user_id2: to_id
+  }).then((data)=>{
+    res.status(200).json({data:data});
+  })
+});
+
+router.get('/getfriends', isValidUser, (req,res,next) => {
+  let yourId;
+  if(req.user.dataValues){
+    yourId = req.user.dataValues.facebook_id;
+  }else{
+    yourId = req.user.user_id
+  }
+  let friendIds = [];
+  let friends = [];
+  ChatFriend.findAll({raw:true, attributes: ['user_id2'], where:{user_id1:yourId}}).then((ids) => {
+    let id = ids.map(a => a.user_id2);
+    friendIds = friendIds.concat(id);
+
+    ChatFriend.findAll({raw:true, attributes: ['user_id1'], where:{user_id2:yourId}}).then((idds) => {
+      let id = idds.map(a => a.user_id1);
+      friendIds = friendIds.concat(id);
+      console.log(friendIds);
+      FacebookUser.findAll({raw:true, attributes: ['facebook_id','username', 'picture'], where:{facebook_id: friendIds}}).then((fbusers) => {
+        friends = friends.concat(fbusers);
+
+        User.findAll({raw:true, attributes: ['user_id','username', 'picture'],where:{user_id:friendIds}}).then((users) => {
+          friends = friends.concat(users);
+
+          res.status(200).json({data:friends})
+
+        });
+      });
+    })
+  })
+});
+
+router.post('/rejectrequest', isValidUser, (req,res,next) => {
+  const from_id = req.body.id;
+  let to_id;
+  if(req.user.dataValues){
+    to_id = req.user.dataValues.facebook_id;
+  }else{
+    to_id = req.user.user_id
+  }
+  PendingRequest.destroy({where:{from_id:from_id,to_id:to_id}}).then((result) => {
     res.status(200).json(result);
   })
 });
