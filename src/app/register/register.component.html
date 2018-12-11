@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row card syarif-register">
-    <form [formGroup]="registerForm" class="col s12">
+    <form [formGroup]="registerForm" (submit)="register()" class="col s12">
       <div class="row">
         <div class="  input-field col m6 offset-m3 s12 center ">
           <a class="syarif-facebook waves-effect waves-light z-depth-1 white-text" href="/auth/facebook">SIGN UP WITH FACEBOOK</a>
@@ -33,7 +33,7 @@
       </div>
       <div class="row">
         <div class="col m6 offset-m3 s12 syarif-submit">
-          <a class="waves-effect waves-light btn-small" (click)="register()"><i class="material-icons right">chevron_right</i>Registrieren</a>
+          <button type="submit" class="waves-effect waves-light btn-small"><i class="material-icons right">chevron_right</i>Registrieren</button>
         </div>
         <div class="input-field col m6 offset-m3 s12">
           <p [style.display]="errorStyle ? 'inline' : 'none'" class="red-text">{{errorMessage}}</p>
