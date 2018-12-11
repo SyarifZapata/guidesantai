@@ -17,7 +17,7 @@
     <li>
       <div class="input-field search-field">
         <i class="material-icons prefix">search</i>
-        <input class="search-friends" type="text" placeholder="search">
+        <input class="search-friends" type="text" placeholder="search" (keyup)="onKeyUp($event)">
         <!--<label for="search-friends">search</label>-->
       </div>
     </li>
@@ -39,7 +39,7 @@
     <li>
       <div class="input-field" style="width:100%;margin:0;">
         <i class="material-icons prefix">search</i>
-        <input class="search-friends" type="text" placeholder="search">
+        <input class="search-friends" type="text" placeholder="search" (keyup)="onKeyUp($event)">
         <!--<label for="search-friends">search</label>-->
       </div>
     </li>

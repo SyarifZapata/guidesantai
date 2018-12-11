@@ -41,4 +41,16 @@ export class FriendListComponent implements OnInit, AfterViewInit {
   onSearchPeople(value:string){
     this.peopleSearchChanged.next(value);
   }
+
+    //filter list by friends names
+    onKeyUp(event) {
+        var searchQuery = $(".active .search-friends").val();
+        $(".active ul li:not(:first)").each(function(){
+            if($(this).find(".middle h5").text().toLowerCase().includes(searchQuery.toLowerCase())){
+                $(this).removeClass("hide");
+            }else{
+                $(this).addClass("hide");
+            }
+        });
+    }
 }
