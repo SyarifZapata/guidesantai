@@ -85,7 +85,8 @@
     <li>
       <div class="input-field" style="width:100%;margin:0;">
         <i class="material-icons prefix">search</i>
-        <input class="search-friends" type="text" placeholder="search by username" (keyup)="onSearchPeople($event.target.value)">
+        <!--<input class="search-friends" type="text" placeholder="search by username" (keyup)="onSearchPeople($event.target.value)">-->
+        <input class="search-friends" type="text" placeholder="search by username" (keyup)="onKeyUp($event)">
         <!--<label for="search-friends">search</label>-->
       </div>
     </li>

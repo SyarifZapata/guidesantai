@@ -38,7 +38,7 @@ export class FriendListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onSearchPeople(value:string){
+  onSearchPeople(value: string){
     this.peopleSearchChanged.next(value);
   }
 
