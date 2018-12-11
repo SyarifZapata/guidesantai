@@ -34,6 +34,11 @@ export class DataService {
       {observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
+  findUser(body:any){
+    return this._http.post('http://localhost:3000/chat/finduser',
+      body, { observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
   logout(){
     return this._http.get('http://localhost:3000/auth/logout',
       {observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});

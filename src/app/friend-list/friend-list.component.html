@@ -7,7 +7,7 @@
     <a href="#tab2">Facebook</a>
   </li>
   <li class="tab">
-    <a href="#tab3">Friend-Requests</a>
+    <a href="#tab3">Find People</a>
   </li>
 </ul>
 
@@ -21,30 +21,13 @@
         <!--<label for="search-friends">search</label>-->
       </div>
     </li>
-    <li>
+    <li *ngFor="let user of users">
       <img src="../../assets/img/profil/unknown_profile.png" alt="">
       <div class="middle">
         <h5>Syarif</h5>
         <span class="msg-preview">Hier sind die laufenden chats.</span>
       </div>
       <span class="badge">3</span>
-      <span class="time">10:33</span>
-    </li>
-    <li>
-      <img src="../../assets/img/profil/unknown_profile.png" alt="">
-      <div class="middle">
-        <h5>Adi</h5>
-        <span class="msg-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi asperiores est, ex excepturi provident...</span>
-      </div>
-      <span class="badge">1</span>
-      <span class="time">10:33</span>
-    </li>
-    <li>
-      <img src="../../assets/img/profil/unknown_profile.png" alt="">
-      <div class="middle">
-        <h5>Nils</h5>
-        <span class="msg-preview">Lorem ipsum dolor sit amet.</span>
-      </div>
       <span class="time">10:33</span>
     </li>
   </ul>
@@ -102,14 +85,14 @@
     <li>
       <div class="input-field" style="width:100%;margin:0;">
         <i class="material-icons prefix">search</i>
-        <input class="search-friends" type="text" placeholder="search">
+        <input class="search-friends" type="text" placeholder="search by username" (keyup)="onSearchPeople($event.target.value)">
         <!--<label for="search-friends">search</label>-->
       </div>
     </li>
-    <li>
+    <li *ngFor="let user of people">
       <img src="../../assets/img/profil/unknown_profile.png" alt="">
       <div class="middle">
-        <h5>Nils Hansen</h5>
+        <h5>{{user.username}}</h5>
         <span class="msg-preview">Einladung annehmen oder ablehnen.</span>
       </div>
       <div class="handle-friend-request">
