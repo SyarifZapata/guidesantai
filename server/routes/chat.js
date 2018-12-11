@@ -13,7 +13,6 @@ router.post('/finduser', isValidUser, (req,res,next) => {
   }else{
     yourId = req.user.user_id;
   }
-  console.log('Dattoooooo');
   let data = [];
   FacebookUser.findAll({attributes: ['facebook_id','username', 'picture'], where:{username: name}}).then((fbusers) => {
     data = data.concat(fbusers);
@@ -69,6 +68,28 @@ router.post('/cancelrequest', isValidUser, (req,res,next) => {
   const id = req.body.id;
   PendingRequest.destroy({where:{to_id:id}}).then((result) => {
     res.status(200).json(result);
+  })
+});
+
+router.get('/needtoapprove', isValidUser, (req,res,next) => {
+  let id;
+  if(req.user.dataValues){
+    id = req.user.dataValues.facebook_id;
+  }else{
+    id = req.user.user_id;
+  }
+  PendingRequest.findAll({where:{to_id:id}}).then((users) => {
+    const result = users.map(a => a.from_id);
+    let data = [];
+    FacebookUser.findAll({attributes: ['facebook_id','username', 'picture'], where:{facebook_id:result}}).then((fbusers) => {
+      data = data.concat(fbusers);
+
+      User.findAll({attributes: ['user_id','username', 'picture'],where:{user_id:result}}).then((users) => {
+        data = data.concat(users);
+        res.status(200).json({data:data})
+      });
+    });
+
   })
 });
 

@@ -48,6 +48,11 @@ export class DataService {
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
+  needToApprove(){
+    return this._http.get('http://localhost:3000/chat/needtoapprove',
+      {observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
   logout(){
     return this._http.get('http://localhost:3000/auth/logout',
       {observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});

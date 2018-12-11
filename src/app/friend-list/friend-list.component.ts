@@ -14,10 +14,18 @@ export class FriendListComponent implements OnInit, AfterViewInit {
   peopleSearchChanged = new BehaviorSubject<string>('');
   people = [];
   pendingRequest = [];
+  unApprovedRequest = [];
 
   constructor(private _dataService: DataService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this._dataService.needToApprove().subscribe(
+      data => {
+        // @ts-ignore
+        this.unApprovedRequest = data.data;
+      }
+    );
+  }
 
   ngAfterViewInit() {
     var elems = document.querySelectorAll('.tabs');
