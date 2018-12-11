@@ -7,6 +7,7 @@ const User = connection.define('user', {
   email: { type: Sequelize.STRING(50), allowNull: false },
   password: { type: Sequelize.STRING(100), allowNull: false },
   login_strategy: { type: Sequelize.STRING(10), defaultValue: 'local'},
+  picture: { type: Sequelize.STRING, defaultValue: './assets/img/profil/unknown_profile.png' },
   twoFASecret: {type: Sequelize.STRING(100)},
   twoFAEnabled: {type: Sequelize.BOOLEAN, defaultValue: 'false'}
 });

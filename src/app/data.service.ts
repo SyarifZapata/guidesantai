@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-// import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {map} from 'rxjs/operators';
 import {BehaviorSubject} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
@@ -14,6 +12,7 @@ export class DataService {
   profilPictureChange: BehaviorSubject<string> = new BehaviorSubject<string>('./assets/img/profil/unknown_profile.png');
   loggedInStatus = this.loggedInStatusChange.asObservable();
   profilPicture = this.profilPictureChange.asObservable();
+  currentUser: any;
 
   constructor(private _http: HttpClient) { }
 
@@ -21,27 +20,37 @@ export class DataService {
   // register new user
   addUser(body:any){
     return this._http.post('http://localhost:3000/auth/register',
-      body, { observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+      body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   login(body:any){
     return this._http.post('http://localhost:3000/auth/login',
-      body, { observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+      body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   user(){
     return this._http.get('http://localhost:3000/auth/user',
-      {observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+      {observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   findUser(body:any){
     return this._http.post('http://localhost:3000/chat/finduser',
-      body, { observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+      body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
+  inviteUser(body:any){
+    return this._http.post('http://localhost:3000/chat/invitechat',
+      body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
+  cancelRequest(body:any){
+    return this._http.post('http://localhost:3000/chat/cancelrequest',
+      body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   logout(){
     return this._http.get('http://localhost:3000/auth/logout',
-      {observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+      {observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   setLogginStatus(value){
@@ -55,6 +64,10 @@ export class DataService {
   saveSettings(body:any){
     return this._http.post('http://localhost:3000/auth/saveSettings',
       body, { observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
+  setClientInfo(value:any){
+    this.currentUser = value;
   }
 
 }

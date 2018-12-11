@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const connection = require('../connection');
 const User = require('../models/user');
 const FacebookUser = require('../models/facebookUser');
+require('../models/pendingRequest');
+require('../models/chatFriend');
 const passport = require('passport');
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
@@ -109,6 +111,7 @@ router.get('/user', isValidUser, (req, res, next) => {
     client.hget(req.user.dataValues.username, "twoFaLoggedin", (err, value) =>{
       data = {
         message: 'Sie sind eingeloggt',
+        user_id : req.user.dataValues.facebook_id,
         username:req.user.dataValues.username,
         picture:req.user.dataValues.picture,
         twoFAEnabled: req.user.dataValues.twoFAEnabled,
@@ -122,6 +125,7 @@ router.get('/user', isValidUser, (req, res, next) => {
       console.log(value);
       data = {
         message: 'Sie sind eingeloggt',
+        user_id : req.user.user_id,
         username: req.user.username,
         picture: 'assets/img/profil/unknown_profile.png',
         twoFAEnabled: req.user.twoFAEnabled,

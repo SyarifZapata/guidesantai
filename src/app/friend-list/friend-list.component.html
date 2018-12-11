@@ -85,20 +85,22 @@
     <li>
       <div class="input-field" style="width:100%;margin:0;">
         <i class="material-icons prefix">search</i>
-        <!--<input class="search-friends" type="text" placeholder="search by username" (keyup)="onSearchPeople($event.target.value)">-->
-        <input class="search-friends" type="text" placeholder="search by username" (keyup)="onKeyUp($event)">
+        <input class="search-friends" type="text" placeholder="search by username" (keyup)="onSearchPeople($event.target.value)">
+        <!--<input class="search-friends" type="text" placeholder="search by username" (keyup)="onKeyUp($event.target.value)">-->
         <!--<label for="search-friends">search</label>-->
       </div>
     </li>
     <li *ngFor="let user of people">
-      <img src="../../assets/img/profil/unknown_profile.png" alt="">
+      <img src="{{user.picture}}" alt="">
       <div class="middle">
         <h5>{{user.username}}</h5>
-        <span class="msg-preview">Einladung annehmen oder ablehnen.</span>
+        <span class="msg-preview">My Status will be here</span>
       </div>
       <div class="handle-friend-request">
-        <a class="btn-floating waves-effect waves-light red accept-request"><i class="material-icons">check</i></a>
-        <a class="btn-floating waves-effect waves-light red reject-request"><i class="material-icons">clear</i></a>
+        <!--<a class="btn-floating waves-effect waves-light red accept-request"><i class="material-icons">check</i></a>-->
+        <!--<a class="btn-floating waves-effect waves-light red reject-request"><i class="material-icons">clear</i></a>-->
+        <a *ngIf="user.user_id && !checkPending(user.user_id); else other_content" class="btn-floating waves-effect waves-light green" (click)="inviteFriend(user)"><i class="material-icons">add</i></a>
+        <ng-template #other_content><a class="btn waves-effect waves-light red" (click)="cancelRequest(user.user_id)">Cancel Request</a></ng-template>
       </div>
     </li>
   </ul>
