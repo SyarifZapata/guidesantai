@@ -3,10 +3,12 @@
     <div class="row" *ngFor="let msg of msgs">
 
       <div class="col m12 s12 msg">
+
       <span [ngClass]="{
             'grey lighten-1': msg.from=='she',
             'deep-orange lighten-5': msg.from=='me'}"
-            class="{{msg.from}}">{{msg.content}}</span>
+            class="{{msg.from}}">{{msg.content}}<br><p style="font-size: 80%">{{msg.createdAt}}</p></span>
+
       </div>
 
     </div>

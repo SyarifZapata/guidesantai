@@ -5,6 +5,7 @@ import {SocketService} from '../socket.service';
 import {Message} from '../utility/message';
 import * as $ from 'jquery';
 import * as M from 'materialize-css';
+import {timestamp} from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat',
@@ -55,9 +56,9 @@ export class ChatComponent implements OnInit {
        // @ts-ignore
        data.forEach(element => {
          if(element.from_id === this.my_id){
-           this.msgs.push(new Message( 'me', element.message));
+           this.msgs.push(new Message( 'me', element.message, this.formatDate(new Date(element.createdAt))));
          } else{
-           this.msgs.push(new Message('she', element.message));
+           this.msgs.push(new Message('she', element.message, this.formatDate(new Date(element.createdAt))));
          }
        });
      }
@@ -68,9 +69,9 @@ export class ChatComponent implements OnInit {
     this.socketService.onMessage().subscribe(
       data => {
         if(data.from === this.my_id){
-          this.msgs.push(new Message( 'me', data.content));
+          this.msgs.push(new Message( 'me', data.content, data.createdAt));
         }else{
-          this.msgs.push(new Message('she', data.content));
+          this.msgs.push(new Message('she', data.content, data.createdAt));
         }
         this.feedback = '';
         window.setTimeout(function () {
@@ -107,7 +108,7 @@ export class ChatComponent implements OnInit {
 
   send() {
     if (!(this.textValue.trim() === '')) {
-      const message = new Message(this.my_id, this.textValue);
+      const message = new Message(this.my_id, this.textValue, this.formatDate(new Date()));
       this._dataService.sendMessage({room_id:this.room_id, from_id:this.my_id, message:this.textValue}).subscribe(
         data => {
           console.log(data);
@@ -119,6 +120,11 @@ export class ChatComponent implements OnInit {
         $('#msgPool').scrollTop($('#msgPool')[0].scrollHeight);
       }, 50); // wait 50ms until new message appears, else it will scroll to second last message.
     }
+  }
+
+  formatDate(date:Date){
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return days[date.getDay()] + ", "+ date.getHours() +":"+ date.getMinutes();
   }
 
 
