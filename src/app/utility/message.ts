@@ -1,10 +1,8 @@
 export class Message {
-  id: number;
   from: string;
   content: string;
 
-  constructor(id:number, from:string, content:string){
-    this.id = id;
+  constructor(from:string, content:string){
     this.from = from;
     this.content = content;
   }

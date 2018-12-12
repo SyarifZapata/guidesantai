@@ -4,6 +4,7 @@ const User = require('../models/user');
 const FacebookUser = require('../models/facebookUser');
 const PendingRequest = require('../models/pendingRequest');
 const ChatFriend = require('../models/chatFriend');
+const Conversation = require('../models/conversation');
 
 
 router.post('/finduser', isValidUser, (req,res,next) => {
@@ -156,7 +157,6 @@ router.get('/needtoapprove', isValidUser, (req,res,next) => {
         res.status(200).json({data:data})
       });
     });
-
   })
 });
 
@@ -193,6 +193,23 @@ router.post('/getuser', isValidUser, (req,res,next) => {
       })
     }
   });
+});
+
+router.post('/send', isValidUser, (req, res, next) => {
+  Conversation.create({
+    room_id: req.body.room_id,
+    from_id: req.body.from_id,
+    message: req.body.message
+  }).then((result) => {
+    res.status(200).json(result)
+  })
+});
+
+router.post('/getmessages', isValidUser, (req, res, next) => {
+ const room_id = req.body.room_id;
+ Conversation.findAll({raw:true, where:{room_id:room_id}}).then((messages)=>{
+   res.status(200).json(messages)
+ })
 });
 
 function isValidUser(req,res,next){

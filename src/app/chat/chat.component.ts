@@ -27,11 +27,7 @@ export class ChatComponent implements OnInit {
   @ViewChild('chatInput')
   myChatInput: any;
 
-  msgs = [
-    new Message(1, 'me', 'This is a message'),
-    new Message(2, 'she', 'An Example of class Message'),
-
-  ];
+  msgs = [];
 
   constructor(private _dataService: DataService, private _route: ActivatedRoute, private socketService: SocketService) {
    this.room_id = this._route.snapshot.params.room_id;
@@ -45,23 +41,36 @@ export class ChatComponent implements OnInit {
    this.username = this._dataService.currentUser.username;
    this._dataService.getUser({id: this.to_id}).subscribe(
      data => {
-       this.isDataLoaded = true;
        // @ts-ignore
        this.partnerName = data.username;
        // @ts-ignore
        this.partnerPicture = data.picture;
        console.log(data);
      }
-   )
+   );
+   this._dataService.getMessages({room_id: this.room_id}).subscribe(
+     data => {
+       this.isDataLoaded = true;
+       console.log(data);
+       // @ts-ignore
+       data.forEach(element => {
+         if(element.from_id === this.my_id){
+           this.msgs.push(new Message( 'me', element.message));
+         } else{
+           this.msgs.push(new Message('she', element.message));
+         }
+       });
+     }
+   );
   }
 
   ngOnInit() {
     this.socketService.onMessage().subscribe(
       data => {
         if(data.from === this.my_id){
-          this.msgs.push(new Message(0, 'me', data.content));
+          this.msgs.push(new Message( 'me', data.content));
         }else{
-          this.msgs.push(new Message(0, 'she', data.content));
+          this.msgs.push(new Message('she', data.content));
         }
         this.feedback = '';
         window.setTimeout(function () {
@@ -98,7 +107,12 @@ export class ChatComponent implements OnInit {
 
   send() {
     if (!(this.textValue.trim() === '')) {
-      const message = new Message(1, this.my_id, this.textValue);
+      const message = new Message(this.my_id, this.textValue);
+      this._dataService.sendMessage({room_id:this.room_id, from_id:this.my_id, message:this.textValue}).subscribe(
+        data => {
+          console.log(data);
+        }
+      );
       this.socketService.send(message);
       this.resetInput();
       window.setTimeout(function () {

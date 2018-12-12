@@ -105,6 +105,16 @@ export class DataService {
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
+  sendMessage(body:any){
+    return this._http.post('http://localhost:3000/chat/send',
+      body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
+  getMessages(body: any){
+    return this._http.post('http://localhost:3000/chat/getmessages',
+      body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
 }
 
 
