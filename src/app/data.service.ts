@@ -13,6 +13,7 @@ export class DataService {
   loggedInStatus = this.loggedInStatusChange.asObservable();
   profilPicture = this.profilPictureChange.asObservable();
   currentUser: any;
+  chatPatner: any;
 
   constructor(private _http: HttpClient) { }
 
@@ -68,6 +69,11 @@ export class DataService {
       { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
+  getRoom(body:any){
+    return this._http.post('http://localhost:3000/chat/getroom',
+      body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
   logout(){
     return this._http.get('http://localhost:3000/auth/logout',
       {observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
@@ -88,6 +94,15 @@ export class DataService {
 
   setClientInfo(value:any){
     this.currentUser = value;
+  }
+
+  setChatPatner(value:any){
+    this.chatPatner = value;
+  }
+
+  getUser(body:any){
+    return this._http.post('http://localhost:3000/chat/getuser',
+      body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
 }

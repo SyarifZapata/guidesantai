@@ -28,6 +28,7 @@ const appRoutes: Routes = [
     children: [
       {path: '', component: FriendListComponent}
     ]},
+  {path: 'chat/:room_id/:to_id', component: ChatComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'settings', component: SettingsComponent},

@@ -160,6 +160,41 @@ router.get('/needtoapprove', isValidUser, (req,res,next) => {
   })
 });
 
+router.post('/getroom', isValidUser, (req,res,next) => {
+  let yourId;
+  if(req.user.dataValues){
+    yourId = req.user.dataValues.facebook_id;
+  }else{
+    yourId = req.user.user_id
+  }
+  const their_id = req.body.id;
+  ChatFriend.findOne({raw:true, attributes: ['room_id'], where:{user_id1:yourId, user_id2:their_id}}).then((room) => {
+    if(room){
+      res.status(200).json({room_id:room, user:their_id})
+    }else{
+      ChatFriend.findOne({raw:true, attributes: ['room_id'], where:{user_id1:their_id, user_id2:yourId}}).then((theroom) => {
+        if(theroom) {
+          res.status(200).json({room_id:theroom, user:their_id})
+        }
+      })
+
+    }
+  })
+});
+
+router.post('/getuser', isValidUser, (req,res,next) => {
+  const userid = req.body.id;
+  FacebookUser.findOne({raw:true, where:{facebook_id:userid}}).then((fbUser) => {
+    if(fbUser){
+      res.status(200).json({user:fbUser})
+    }else {
+      User.findOne({raw:true, where:{user_id:userid}}).then((user)=>{
+        res.status(200).json({user:user})
+      })
+    }
+  });
+});
+
 function isValidUser(req,res,next){
   if(req.isAuthenticated()) {next();}
   else return res.status(401).json({message:'Memberbereich, bitte einloggen'})

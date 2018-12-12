@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {DataService} from '../data.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {SocketService} from '../socket.service';
 import {Message} from '../utility/message';
 import * as $ from 'jquery';
@@ -18,44 +18,51 @@ export class ChatComponent implements OnInit {
   username: string;
   isDataLoaded: boolean;
 
+  partnerName:string;
+  partnerPicture:string;
+  room_id;
+  my_id;
+  to_id;
+
   @ViewChild('chatInput')
   myChatInput: any;
 
   msgs = [
     new Message(1, 'me', 'This is a message'),
     new Message(2, 'she', 'An Example of class Message'),
-    {id: 3, from: 'me', content: 'Lorem ipsum dolor sit amet'},
-    {id: 4, from: 'she', content: 'Lorem ipsum dolor sit amet'},
-    {id: 5, from: 'me', content: 'Lorem ipsum dolor sit amet. Very long text. Very long text. Very long text. Very long text.'},
-    {id: 6, from: 'me', content: 'Lorem ipsum dolor sit amet'},
-    {id: 7, from: 'she', content: 'Lorem ipsum dolor sit amet'},
+
   ];
 
-  constructor(private _dataService: DataService, private _router: Router, private socketService: SocketService) {
-    this._dataService.user().subscribe(
-      data => {
-        // @ts-ignore
-        // @ts-ignore. Value of twoFALoggedIn muss be 'true' or 'false' not just true or false
-        if(data.twoFALoggedIn === 'true' || data.twoFAEnabled === false){
-          this.isDataLoaded = true;
-          // @ts-ignore
-          this.username = data.username;
-          // @ts-ignore
-        }else{
-          this._router.navigate(['/twofa']);
-        }
-      },
-      error => {
-        console.log(error);
-        this._router.navigate(['/login']);
-      }
-    );
+  constructor(private _dataService: DataService, private _route: ActivatedRoute, private socketService: SocketService) {
+   this.room_id = this._route.snapshot.params.room_id;
+   this.to_id = this._route.snapshot.params.to_id;
+   console.log(this._dataService.currentUser);
+   if(_dataService.currentUser.user_id){
+     this.my_id = this._dataService.currentUser.user_id;
+   } else{
+     this.my_id = this._dataService.currentUser.facebook_id;
+   }
+   this.username = this._dataService.currentUser.username;
+   this._dataService.getUser({id: this.to_id}).subscribe(
+     data => {
+       this.isDataLoaded = true;
+       // @ts-ignore
+       this.partnerName = data.username;
+       // @ts-ignore
+       this.partnerPicture = data.picture;
+       console.log(data);
+     }
+   )
   }
 
   ngOnInit() {
     this.socketService.onMessage().subscribe(
       data => {
-        this.msgs.push(data);
+        if(data.from === this.my_id){
+          this.msgs.push(new Message(0, 'me', data.content));
+        }else{
+          this.msgs.push(new Message(0, 'she', data.content));
+        }
         this.feedback = '';
         window.setTimeout(function () {
           $('#msgPool').scrollTop($('#msgPool')[0].scrollHeight);
@@ -91,7 +98,7 @@ export class ChatComponent implements OnInit {
 
   send() {
     if (!(this.textValue.trim() === '')) {
-      const message = new Message(1, 'me', this.textValue);
+      const message = new Message(1, this.my_id, this.textValue);
       this.socketService.send(message);
       this.resetInput();
       window.setTimeout(function () {

@@ -19,7 +19,7 @@ export class UserComponent implements OnInit {
         // @ts-ignore
         // @ts-ignore. Value of twoFALoggedIn muss be 'true' or 'false' not just true or false
         if(data.twoFALoggedIn === 'true' || data.twoFAEnabled === false){
-          this._dataService.currentUser = data;
+          this._dataService.setClientInfo(data);
           this._dataService.setLogginStatus(true);
           // @ts-ignore
           this.username = data.username;

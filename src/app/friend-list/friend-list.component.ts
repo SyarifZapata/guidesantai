@@ -4,6 +4,7 @@ import * as M from 'materialize-css';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {DataService} from '../data.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-friend-list',
@@ -17,7 +18,7 @@ export class FriendListComponent implements OnInit, AfterViewInit {
   unApprovedRequest = [];
   chatFriends = [];
 
-  constructor(private _dataService: DataService) {}
+  constructor(private _dataService: DataService, private _router: Router) {}
 
   ngOnInit() {
     this._dataService.needToApprove().subscribe(
@@ -148,5 +149,19 @@ export class FriendListComponent implements OnInit, AfterViewInit {
         this.rejectRequest(id);
       }
     );
+  }
+
+  enterChatRoom(id){
+    this._dataService.getRoom({id: id}).subscribe(
+      data => {
+        // @ts-ignore
+        const room_id = data.room_id.room_id;
+        // @ts-ignore
+        const their_id = data.user;
+        // @ts-ignore
+        this._router.navigate(['/chat', room_id, id]);
+      }
+    );
+
   }
 }

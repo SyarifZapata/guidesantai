@@ -23,13 +23,27 @@
     </li>
 
     <li *ngFor="let user of chatFriends">
-      <img src="{{user.picture}}" alt="">
-      <div class="middle">
-        <h5>{{user.username}}</h5>
-        <span class="msg-preview">My Status will be here</span>
+      <div *ngIf="user.facebook_id; else normal_user" (click)="enterChatRoom(user.facebook_id)">
+        <img src="{{user.picture}}" alt="">
+        <div class="middle">
+          <h5>{{user.username}}</h5>
+          <span class="msg-preview">My Status will be here</span>
+        </div>
+        <span class="badge">3</span>
+        <span class="time">10:33</span>
       </div>
-      <span class="badge">3</span>
-      <span class="time">10:33</span>
+      <ng-template #normal_user>
+        <div (click)="enterChatRoom(user.user_id)">
+          <img src="{{user.picture}}" alt="">
+          <div class="middle">
+            <h5>{{user.username}}</h5>
+            <span class="msg-preview">My Status will be here</span>
+          </div>
+          <span class="badge">3</span>
+          <span class="time">10:33</span>
+        </div>
+
+      </ng-template>
     </li>
 
   </ul>
