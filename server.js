@@ -2,7 +2,8 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
-const http = require('http');
+const https = require('https');
+const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const app = express();
 const passport = require('passport');
@@ -55,9 +56,11 @@ app.use(passport.session());
 const auth = require('./server/routes/auth').authRouter;
 const cryptoKeys = require('./server/routes/crypto-keys');
 const chat = require('./server/routes/chat');
+const u2f = require('./server/routes/u2f');
 app.use('/auth/', auth);
 app.use('/crypto-keys/',cryptoKeys);
 app.use('/chat/',chat);
+app.use('/u2f/', u2f);
 
 
 
@@ -69,7 +72,12 @@ app.get('*', (req,res) => {
 const port = process.env.PORT || '3000';
 app.set('port',port);
 
-const server = http.createServer(app);
+const httpsOptions = {
+  key: fs.readFileSync('/home/arkad/key.pem'),
+  cert: fs.readFileSync('/home/arkad/cert.pem')
+};
+
+const server = https.createServer(httpsOptions,app);
 server.listen(port, () => console.log(`Running on localhost:${port}`));
 
 const io = socket(server);

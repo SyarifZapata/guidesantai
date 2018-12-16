@@ -18,6 +18,7 @@ import {SettingsComponent} from './settings/settings.component';
 import { TwoFAComponent } from './two-fa/two-fa.component';
 import { FriendListComponent } from './friend-list/friend-list.component';
 import { ChatComponent } from './chat/chat.component';
+import { U2fComponent } from './u2f/u2f.component';
 
 
 const appRoutes: Routes = [
@@ -33,6 +34,7 @@ const appRoutes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'settings', component: SettingsComponent},
   {path: 'twofa', component: TwoFAComponent},
+  {path: 'u2f', component: U2fComponent},
   {path: '**', component: NotFoundComponent}
 ];
 
@@ -49,7 +51,8 @@ const appRoutes: Routes = [
     SettingsComponent,
     TwoFAComponent,
     FriendListComponent,
-    ChatComponent
+    ChatComponent,
+    U2fComponent
   ],
   entryComponents: [
   ],

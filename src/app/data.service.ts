@@ -20,22 +20,22 @@ export class DataService {
 
   // register new user
   addUser(body:any){
-    return this._http.post('http://localhost:3000/auth/register',
+    return this._http.post('https://localhost:3000/auth/register',
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   login(body:any){
-    return this._http.post('http://localhost:3000/auth/login',
+    return this._http.post('https://localhost:3000/auth/login',
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   user(){
-    return this._http.get('http://localhost:3000/auth/user',
+    return this._http.get('https://localhost:3000/auth/user',
       {observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   findUser(body:any){
-    return this._http.post('http://localhost:3000/chat/finduser',
+    return this._http.post('https://localhost:3000/chat/finduser',
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
@@ -45,27 +45,27 @@ export class DataService {
   }
 
   cancelRequest(body:any){
-    return this._http.post('http://localhost:3000/chat/cancelrequest',
+    return this._http.post('https://localhost:3000/chat/cancelrequest',
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   needToApprove(){
-    return this._http.get('http://localhost:3000/chat/needtoapprove',
+    return this._http.get('https://localhost:3000/chat/needtoapprove',
       {observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   acceptRequest(body:any){
-    return this._http.post('http://localhost:3000/chat/acceptrequest',
+    return this._http.post('https://localhost:3000/chat/acceptrequest',
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   rejectRequest(body:any){
-    return this._http.post('http://localhost:3000/chat/rejectrequest',
+    return this._http.post('https://localhost:3000/chat/rejectrequest',
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   getFriends(){
-    return this._http.get('http://localhost:3000/chat/getfriends',
+    return this._http.get('https://localhost:3000/chat/getfriends',
       { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
@@ -75,7 +75,7 @@ export class DataService {
   }
 
   logout(){
-    return this._http.get('http://localhost:3000/auth/logout',
+    return this._http.get('https://localhost:3000/auth/logout',
       {observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
@@ -88,7 +88,7 @@ export class DataService {
   }
 
   saveSettings(body:any){
-    return this._http.post('http://localhost:3000/auth/saveSettings',
+    return this._http.post('https://localhost:3000/auth/saveSettings',
       body, { observe:'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
@@ -101,17 +101,28 @@ export class DataService {
   }
 
   getUser(body:any){
-    return this._http.post('http://localhost:3000/chat/getuser',
+    return this._http.post('https://localhost:3000/chat/getuser',
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   sendMessage(body:any){
-    return this._http.post('http://localhost:3000/chat/send',
+    return this._http.post('https://localhost:3000/chat/send',
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   getMessages(body: any){
-    return this._http.post('http://localhost:3000/chat/getmessages',
+    return this._http.post('https://localhost:3000/chat/getmessages',
+      body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
+
+  getRegistrationChallenge(){
+    return this._http.get('https://localhost:3000/u2f/u2fregistration',
+      { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
+  sendSolution(body:any){
+    return this._http.post('https://localhost:3000/u2f/solution',
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 

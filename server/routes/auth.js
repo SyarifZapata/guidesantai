@@ -247,9 +247,9 @@ router.get('/facebook/callback', passport.authenticate('facebook'), (req,res,nex
   let user = req.user.dataValues;
   client.hget(user.username, "twoFaLoggedin", (err, value) => {
     if(user.twoFAEnabled && value !== true){
-      res.redirect('http://localhost:3000/twofa');
+      res.redirect('https://localhost:3000/twofa');
     }else {
-      res.redirect('http://localhost:3000/user');
+      res.redirect('https://localhost:3000/user');
     }
   });
 
