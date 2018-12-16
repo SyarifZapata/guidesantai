@@ -40,7 +40,7 @@ export class DataService {
   }
 
   inviteUser(body:any){
-    return this._http.post('http://localhost:3000/chat/invitechat',
+    return this._http.post('https://localhost:3000/chat/invitechat',
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
@@ -70,7 +70,7 @@ export class DataService {
   }
 
   getRoom(body:any){
-    return this._http.post('http://localhost:3000/chat/getroom',
+    return this._http.post('https://localhost:3000/chat/getroom',
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 

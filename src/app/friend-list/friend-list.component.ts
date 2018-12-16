@@ -77,8 +77,8 @@ export class FriendListComponent implements OnInit, AfterViewInit {
   inviteFriend(value: any){
     // Todo send Invitation
     let to_id;
-    if(value.facebook_id){
-      to_id = value.facebook_id;
+    if(value.user_id){
+      to_id = value.user_id;
     }else{
       to_id = value.user_id;
     }
@@ -122,8 +122,8 @@ export class FriendListComponent implements OnInit, AfterViewInit {
   rejectRequest(id){
     return this._dataService.rejectRequest({id: id}).subscribe(
       data => {
-        this.removeByAttr(this.unApprovedRequest, 'facebook_id', id);
         this.removeByAttr(this.unApprovedRequest, 'user_id', id);
+        // this.removeByAttr(this.unApprovedRequest, 'user_id', id);
       }
     );
   }

@@ -23,7 +23,7 @@
     </li>
 
     <li *ngFor="let user of chatFriends">
-      <div *ngIf="user.facebook_id; else normal_user" (click)="enterChatRoom(user.facebook_id)">
+      <div *ngIf="user.user_id; else normal_user" (click)="enterChatRoom(user.user_id)">
         <img src="{{user.picture}}" alt="">
         <div class="middle">
           <h5>{{user.username}}</h5>
@@ -119,8 +119,8 @@
         <a class="btn-floating waves-effect waves-light red" (click)="rejectRequest(user.user_id)" ><i class="material-icons">clear</i></a>
         </div>
         <ng-template #accept_reject>
-          <a class="btn-floating waves-effect waves-light green" (click)="acceptRequest(user.facebook_id)" ><i class="material-icons">check</i></a>
-          <a class="btn-floating waves-effect waves-light red" (click)="rejectRequest(user.facebook_id)"><i class="material-icons">clear</i></a>
+          <a class="btn-floating waves-effect waves-light green" (click)="acceptRequest(user.user_id)" ><i class="material-icons">check</i></a>
+          <a class="btn-floating waves-effect waves-light red" (click)="rejectRequest(user.user_id)"><i class="material-icons">clear</i></a>
         </ng-template>
       </div>
     </li>
@@ -139,8 +139,8 @@
           <ng-template #other_content><a class="btn waves-effect waves-light red" (click)="cancelRequest(user.user_id)">Cancel Request</a></ng-template>
         </div>
         <ng-template #other_div>
-          <a *ngIf="!checkPending(user.facebook_id); else other_other_content" class="btn-floating waves-effect waves-light green" (click)="inviteFriend(user)"><i class="material-icons">add</i></a>
-          <ng-template #other_other_content><a class="btn waves-effect waves-light red" (click)="cancelRequest(user.facebook_id)">Cancel Request</a></ng-template>
+          <a *ngIf="!checkPending(user.user_id); else other_other_content" class="btn-floating waves-effect waves-light green" (click)="inviteFriend(user)"><i class="material-icons">add</i></a>
+          <ng-template #other_other_content><a class="btn waves-effect waves-light red" (click)="cancelRequest(user.user_id)">Cancel Request</a></ng-template>
 
         </ng-template>
 

@@ -11,17 +11,17 @@ router.post('/finduser', isValidUser, (req,res,next) => {
   let name = req.body.username;
   let yourId;
   if (req.user.dataValues){
-    yourId = req.user.dataValues.facebook_id;
+    yourId = req.user.dataValues.user_id;
   }else{
     yourId = req.user.user_id;
   }
   let data = [];
-  FacebookUser.findAll({attributes: ['facebook_id','username', 'picture'], where:{username: name}}).then((fbusers) => {
+  FacebookUser.findAll({attributes: ['user_id','username', 'picture'], where:{username: name}}).then((fbusers) => {
     data = data.concat(fbusers);
     console.log('Yipiiiii');
     User.findAll({attributes: ['user_id','username', 'picture'],where:{username: name}}).then((users) => {
       data = data.concat(users);
-      let fb = fbusers.map(a => a.facebook_id);
+      let fb = fbusers.map(a => a.user_id);
       let normal = users.map(a => a.user_id);
       const result = fb.concat(normal);
       console.log(result);
@@ -37,8 +37,10 @@ router.post('/finduser', isValidUser, (req,res,next) => {
 router.post('/invitechat', isValidUser, (req,res,next) => {
   let to_id = req.body.to_id;
   let from_id;
+  console.log('hallllllloooo');
+  console.log(req.user);
   if(req.user.dataValues){
-    from_id = req.user.dataValues.facebook_id;
+    from_id = req.user.dataValues.user_id;
   }else{
     from_id = req.user.user_id
   }
@@ -54,7 +56,7 @@ router.post('/findpendingrequest', isValidUser, (req,res,next) => {
   let to_id = req.body.to_id;
   let from_id;
   if(req.user.dataValues){
-    from_id = req.user.dataValues.facebook_id;
+    from_id = req.user.dataValues.user_id;
   }else{
     from_id = req.user.user_id
   }
@@ -70,7 +72,7 @@ router.post('/cancelrequest', isValidUser, (req,res,next) => {
   const id = req.body.id;
   let from_id;
   if(req.user.dataValues){
-    from_id = req.user.dataValues.facebook_id;
+    from_id = req.user.dataValues.user_id;
   }else{
     from_id = req.user.user_id
   }
@@ -83,7 +85,7 @@ router.post('/acceptrequest', isValidUser, (req,res,next) => {
   const from_id = req.body.id;
   let to_id;
   if(req.user.dataValues){
-    to_id = req.user.dataValues.facebook_id;
+    to_id = req.user.dataValues.user_id;
   }else{
     to_id = req.user.user_id
   }
@@ -98,7 +100,7 @@ router.post('/acceptrequest', isValidUser, (req,res,next) => {
 router.get('/getfriends', isValidUser, (req,res,next) => {
   let yourId;
   if(req.user.dataValues){
-    yourId = req.user.dataValues.facebook_id;
+    yourId = req.user.dataValues.user_id;
   }else{
     yourId = req.user.user_id
   }
@@ -112,7 +114,7 @@ router.get('/getfriends', isValidUser, (req,res,next) => {
       let id = idds.map(a => a.user_id1);
       friendIds = friendIds.concat(id);
       console.log(friendIds);
-      FacebookUser.findAll({raw:true, attributes: ['facebook_id','username', 'picture'], where:{facebook_id: friendIds}}).then((fbusers) => {
+      FacebookUser.findAll({raw:true, attributes: ['user_id','username', 'picture'], where:{user_id: friendIds}}).then((fbusers) => {
         friends = friends.concat(fbusers);
 
         User.findAll({raw:true, attributes: ['user_id','username', 'picture'],where:{user_id:friendIds}}).then((users) => {
@@ -130,7 +132,7 @@ router.post('/rejectrequest', isValidUser, (req,res,next) => {
   const from_id = req.body.id;
   let to_id;
   if(req.user.dataValues){
-    to_id = req.user.dataValues.facebook_id;
+    to_id = req.user.dataValues.user_id;
   }else{
     to_id = req.user.user_id
   }
@@ -142,14 +144,14 @@ router.post('/rejectrequest', isValidUser, (req,res,next) => {
 router.get('/needtoapprove', isValidUser, (req,res,next) => {
   let id;
   if(req.user.dataValues){
-    id = req.user.dataValues.facebook_id;
+    id = req.user.dataValues.user_id;
   }else{
     id = req.user.user_id;
   }
   PendingRequest.findAll({where:{to_id:id}}).then((users) => {
     const result = users.map(a => a.from_id);
     let data = [];
-    FacebookUser.findAll({attributes: ['facebook_id','username', 'picture'], where:{facebook_id:result}}).then((fbusers) => {
+    FacebookUser.findAll({attributes: ['user_id','username', 'picture'], where:{user_id:result}}).then((fbusers) => {
       data = data.concat(fbusers);
 
       User.findAll({attributes: ['user_id','username', 'picture'],where:{user_id:result}}).then((users) => {
@@ -163,7 +165,7 @@ router.get('/needtoapprove', isValidUser, (req,res,next) => {
 router.post('/getroom', isValidUser, (req,res,next) => {
   let yourId;
   if(req.user.dataValues){
-    yourId = req.user.dataValues.facebook_id;
+    yourId = req.user.dataValues.user_id;
   }else{
     yourId = req.user.user_id
   }
@@ -184,7 +186,7 @@ router.post('/getroom', isValidUser, (req,res,next) => {
 
 router.post('/getuser', isValidUser, (req,res,next) => {
   const userid = req.body.id;
-  FacebookUser.findOne({raw:true, where:{facebook_id:userid}}).then((fbUser) => {
+  FacebookUser.findOne({raw:true, where:{user_id:userid}}).then((fbUser) => {
     if(fbUser){
       res.status(200).json({user:fbUser})
     }else {

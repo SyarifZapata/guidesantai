@@ -37,7 +37,7 @@ export class ChatComponent implements OnInit {
    if(_dataService.currentUser.user_id){
      this.my_id = this._dataService.currentUser.user_id;
    } else{
-     this.my_id = this._dataService.currentUser.facebook_id;
+     this.my_id = this._dataService.currentUser.user_id;
    }
    this.username = this._dataService.currentUser.username;
    this._dataService.getUser({id: this.to_id}).subscribe(

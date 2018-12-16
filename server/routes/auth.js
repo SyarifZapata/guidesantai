@@ -112,7 +112,7 @@ router.get('/user', isValidUser, (req, res, next) => {
     client.hget(req.user.dataValues.username, "twoFaLoggedin", (err, value) =>{
       data = {
         message: 'Sie sind eingeloggt',
-        user_id : req.user.dataValues.facebook_id,
+        user_id : req.user.dataValues.user_id,
         username:req.user.dataValues.username,
         picture:req.user.dataValues.picture,
         twoFAEnabled: req.user.dataValues.twoFAEnabled,
@@ -157,8 +157,8 @@ router.post('/generateSecret', isValidUser, (req,res,next) => {
 
   if(req.user.dataValues){
 
-    userid = req.user.dataValues.facebook_id;
-    FacebookUser.update({twoFASecret:secret.base32},{where:{facebook_id:userid}}).then((rows_updated) => {
+    userid = req.user.dataValues.user_id;
+    FacebookUser.update({twoFASecret:secret.base32},{where:{user_id:userid}}).then((rows_updated) => {
       console.log(rows_updated)
     }).catch((error) => {
       console.log(error)
@@ -184,8 +184,8 @@ router.post('/saveSettings', isValidUser, (req,res,next) => {
   const twoFa = req.body.twoFa;
   let userid = -1;
   if(req.user.dataValues){
-    userid = req.user.dataValues.facebook_id;
-    FacebookUser.update({twoFAEnabled:twoFa},{where:{facebook_id:userid}}).then((rows_updated) => {
+    userid = req.user.dataValues.user_id;
+    FacebookUser.update({twoFAEnabled:twoFa},{where:{user_id:userid}}).then((rows_updated) => {
       console.log(rows_updated)
     }).catch((error) => {
       console.log(error)
