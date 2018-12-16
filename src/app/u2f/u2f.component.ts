@@ -10,6 +10,8 @@ import * as u2f from 'u2f-api-polyfill';
 })
 export class U2fComponent implements OnInit {
   registrationRequest;
+  authRequest;
+  challenge;
 
   constructor(private _dataService: DataService) {
     console.log(u2f);
@@ -29,6 +31,26 @@ export class U2fComponent implements OnInit {
           // Send this registration response to the registration verification server endpoint
           console.log('hallooo');
           this._dataService.sendSolution({registrationResponse: registrationResponse}).subscribe(
+            status => {
+              console.log(status);
+            }
+          );
+        });
+      }
+    );
+  }
+
+  verifyU2f(){
+    this._dataService.askU2f().subscribe(
+      data => {
+        console.log(data);
+        // @ts-ignore
+        this.authRequest = data.authRequest;  // Retrieve this from hitting the authentication challenge endpoint
+        // @ts-ignore
+        this.challenge = data.challenge;
+        // @ts-ignore
+        window.u2f.sign(this.authRequest.appId, this.challenge, [this.authRequest], (authResponse) => {
+          this._dataService.validationU2f({authResponse: authResponse}).subscribe(
             status => {
               console.log(status);
             }

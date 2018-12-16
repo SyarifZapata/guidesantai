@@ -126,6 +126,15 @@ export class DataService {
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
+  askU2f(){
+    return this._http.get('https://localhost:3000/u2f/asku2f',
+      { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
+  validationU2f(body: any){
+    return this._http.post('https://localhost:3000/u2f/validationu2f',
+      body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
 }
 
 

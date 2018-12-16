@@ -37,8 +37,6 @@ router.post('/finduser', isValidUser, (req,res,next) => {
 router.post('/invitechat', isValidUser, (req,res,next) => {
   let to_id = req.body.to_id;
   let from_id;
-  console.log('hallllllloooo');
-  console.log(req.user);
   if(req.user.dataValues){
     from_id = req.user.dataValues.user_id;
   }else{

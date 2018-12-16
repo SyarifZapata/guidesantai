@@ -7,6 +7,7 @@ const FacebookUser = require('../models/facebookUser');
 require('../models/pendingRequest');
 require('../models/chatFriend');
 require('../models/conversation');
+require('../models/u2fKeys');
 const passport = require('passport');
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
