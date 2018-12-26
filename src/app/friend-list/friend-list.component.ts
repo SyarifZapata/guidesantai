@@ -79,7 +79,7 @@ export class FriendListComponent implements OnInit, AfterViewInit {
     let to_id;
     if(value.user_id){
       to_id = value.user_id;
-    }else{
+    } else{
       to_id = value.user_id;
     }
     this._dataService.inviteUser({to_id: to_id}).subscribe(
