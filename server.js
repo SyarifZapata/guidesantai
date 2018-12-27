@@ -16,8 +16,6 @@ const opts = { key: fs.readFileSync('/home/arkad/server_key.pem')
   , ca: [ fs.readFileSync('/home/arkad/server_cert.pem') ]
 };
 
-console.log(opts);
-
 
 // dotenv allows you to use process.env.<sth> from the .env file
 require('dotenv').config();
