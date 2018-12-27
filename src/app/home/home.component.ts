@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {DataService} from '../data.service';
 
 
 @Component({
@@ -8,7 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() {
+  constructor(private _dataService: DataService) {
+    this._dataService.clientCert().subscribe(
+      data =>{
+        console.log(data);
+      }
+    );
   }
 
   ngOnInit() {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {DataService} from '../data.service';
 import * as u2f from 'u2f-api-polyfill';
 import * as $ from 'jquery';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -14,9 +15,19 @@ export class U2fComponent implements OnInit {
   challenge;
   amount;
   message;
+  isDataLoaded = false;
 
-  constructor(private _dataService: DataService) {
+  constructor(private _dataService: DataService, private _router: Router) {
     console.log(u2f);
+    this._dataService.clientCert().subscribe(
+      data => {
+        this.isDataLoaded = true;
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+        this._router.navigate(['/login']);
+      });
   }
 
   ngOnInit() {

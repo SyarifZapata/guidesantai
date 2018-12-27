@@ -135,6 +135,11 @@ export class DataService {
     return this._http.post('https://localhost:3000/u2f/validationu2f',
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
+
+  clientCert(){
+    return this._http.get('https://localhost:3000/auth/clientcertificate',
+      { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
 }
 
 

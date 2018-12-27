@@ -9,6 +9,16 @@ const app = express();
 const passport = require('passport');
 const socket = require('socket.io');
 
+const opts = { key: fs.readFileSync('/home/arkad/server_key.pem')
+  , cert: fs.readFileSync('/home/arkad/server_cert.pem')
+  , requestCert: true
+  , rejectUnauthorized: false
+  , ca: [ fs.readFileSync('/home/arkad/server_cert.pem') ]
+};
+
+console.log(opts);
+
+
 // dotenv allows you to use process.env.<sth> from the .env file
 require('dotenv').config();
 require('./server/crypto-config');
@@ -72,12 +82,7 @@ app.get('*', (req,res) => {
 const port = process.env.PORT || '3000';
 app.set('port',port);
 
-const httpsOptions = {
-  key: fs.readFileSync('/home/arkad/key.pem'),
-  cert: fs.readFileSync('/home/arkad/cert.pem')
-};
-
-const server = https.createServer(httpsOptions,app);
+const server = https.createServer(opts,app);
 server.listen(port, () => console.log(`Running on localhost:${port}`));
 
 const io = socket(server);

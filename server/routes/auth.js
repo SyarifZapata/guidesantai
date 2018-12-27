@@ -15,7 +15,6 @@ const redis = require('redis');
 
 let client = Object;
 
-//todo check for 2fa
 
 /* Test the connection, you should see this message
    when you are able to establish connection with the database
@@ -44,6 +43,13 @@ function validUser(user){
     user.password.trim() !== '';
   return validEmail && validPassword && validUsername;
 }
+
+
+router.get('/clientcertificate', isValidUser, (req,res,next)=> {
+  console.log('enter client certificate');
+  const cert = req.connection.getPeerCertificate();
+  res.send({message:`Hello ${cert.subject.CN}, your certificate was issued by ${cert.issuer.CN}!`})
+});
 
 /*  Register a new user
     TODO: check if username is used.
@@ -237,7 +243,20 @@ router.post('/compareToken', isValidUser, (req,res,next)=> {
     It is built in function provided by passport js
  */
 function isValidUser(req,res,next){
-  if(req.isAuthenticated()) {next();}
+  if(req.isAuthenticated()) {
+    console.log('enter client certificate');
+    const cert = req.connection.getPeerCertificate();
+    if (req.client.authorized) {
+      // res.send({message:`Hello ${cert.subject.CN}, your certificate was issued by ${cert.issuer.CN}!`})
+      next();
+    } else if (cert.subject) {
+      res.status(403)
+        .send({message:`Sorry ${cert.subject.CN}, certificates from ${cert.issuer.CN} are not welcome here.`})
+    } else {
+      res.status(401)
+        .send({message:'Sorry, but you need to provide a client certificate to continue.'})
+    }
+  }
   else return res.status(401).json({message:'Memberbereich, bitte einloggen'})
 }
 
