@@ -49,6 +49,7 @@ export class U2fComponent implements OnInit {
         '                </div>\n' +
         '              </div>');
       $('#mess').text('Please insert your Google Titan and touch the chip!').attr('class', 'red-text');
+      $('.transferbtn').addClass('disabled');
       this._dataService.askU2f().subscribe(
         data => {
           console.log(data);
@@ -67,7 +68,9 @@ export class U2fComponent implements OnInit {
                 }else{
                   $('#mess').text('Sorry we could not validate your key. Your transfer will not be proceeded!').attr('class', 'red-text');
                 }
+                $('#u2f').val('');
                 $('.loading_child').remove();
+                $('.transferbtn').removeClass('disabled');
               }
             );
           });
