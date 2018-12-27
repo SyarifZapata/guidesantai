@@ -84,7 +84,7 @@ router.post('/validationu2f', isValidUser, (req,res,next)=>{
     const publicKey = user.public_key;
     const result = u2f.checkSignature(req.session.authRequest, req.body.authResponse, publicKey);
     if (result.successful) {
-      res.status(200).json({message:'user Authenticated'})
+      res.status(200).json({message:'User validated, We are now processing your transfer'})
     }else{
       return res.send({result});
     }
