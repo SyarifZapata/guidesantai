@@ -1,1 +1,10 @@
-
+<div class="container">
+  <br>
+  <div class="row" *ngIf="infoShown">
+    <div class="col s12 m6 offset-m3">
+      <div class="card-panel teal lighten-4">
+        <span [innerHTML]="info"></span>
+      </div>
+    </div>
+  </div>
+</div>

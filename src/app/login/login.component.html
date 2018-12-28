@@ -27,7 +27,8 @@
         </div>
         <div class="input-field col m6 offset-m3 s12">
           <p [style.display]="errorStyle ? 'inline' : 'none'" class="red-text">{{errorMessage}}</p>
-          <p>Sie haben kein Konto? <a class="anmelden-link green-text" routerLink="/register">Registrieren</a></p>
+          <p style="margin-bottom: -0.5em">Sie haben kein Konto? <a class="anmelden-link green-text" routerLink="/register">Registrieren</a></p>
+          <p><a class="anmelden-link green-text" routerLink="/forgot-password">Forgot your password?</a></p>
         </div>
       </div>
     </form>

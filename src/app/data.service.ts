@@ -140,6 +140,16 @@ export class DataService {
     return this._http.get('https://localhost:3000/auth/clientcertificate',
       { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
+
+  forgotPassword(body:any){
+    return this._http.post('https://localhost:3000/auth/forgot-password',
+      body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
+  resetPassword(body:any, token){
+    return this._http.post('https://localhost:3000/auth/reset/' + token,
+      body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
 }
 
 

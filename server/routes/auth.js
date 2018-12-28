@@ -12,9 +12,14 @@ const passport = require('passport');
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
 const redis = require('redis');
+const nodemailer = require('nodemailer');
+require('dotenv').config({path:'../../.env'});
+const async = require('async');
+const crypto = require('crypto');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 let client = Object;
-
 
 /* Test the connection, you should see this message
    when you are able to establish connection with the database
@@ -88,7 +93,6 @@ router.post('/login', (req,res,next) => {
       res.status(401).json({message:'Die E-Mail, der Benutzername oder das Passwort ist falsch'});
     }
     if(user){
-      console.log(user);
       req.logIn(user,(err) =>{
         if(err) {
           console.log(err.message);
@@ -130,7 +134,6 @@ router.get('/user', isValidUser, (req, res, next) => {
 
   }else {
     client.hget(req.user.username, "twoFaLoggedin", (err, value) =>{
-      console.log(value);
       data = {
         message: 'Sie sind eingeloggt',
         user_id : req.user.user_id,
@@ -247,7 +250,6 @@ function isValidUser(req,res,next){
     console.log('enter client certificate');
     const cert = req.connection.getPeerCertificate();
     if (req.client.authorized) {
-      // res.send({message:`Hello ${cert.subject.CN}, your certificate was issued by ${cert.issuer.CN}!`})
       next();
     } else if (cert.subject) {
       res.status(403)
@@ -275,6 +277,107 @@ router.get('/facebook/callback', passport.authenticate('facebook'), (req,res,nex
 
 });
 
+
+
+
+router.post('/forgot-password', function(req, res, next) {
+  async.waterfall([
+    function(done) {
+      crypto.randomBytes(20, function(err, buf) {
+        var token = buf.toString('hex');
+        done(err, token);
+      });
+    },
+    function(token, done) {
+      User.findOne({ raw:true, where:{email: req.body.email}}).then((user)=>{
+        if (!user) {
+          return res.send({url:'/forgot', message: 'error, No account with that email address exists.'});
+        }
+        User.update({resettoken: token, resettokenexpires: Date.now() + 3600000} , {where:{email: req.body.email}}).then((result) => {
+          console.log(result);
+          done(null,token,user)
+        });
+      });
+    },
+    function(token, user, done) {
+      var smtpTransport = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'syarif.zapata@gmail.com',
+          pass: process.env.EMAIL_PASSWORD
+        }
+      });
+      var mailOptions = {
+        to: req.body.email,
+        from: 'passwordreset@demo.com',
+        subject: 'Node.js Password Reset',
+        text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+          'https://' + req.headers.host + '/auth/reset/' + token + '\n\n' +
+          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+      };
+
+      smtpTransport.sendMail(mailOptions, function(err) {
+        // req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+        done(err, 'done');
+      });
+    }
+  ], function(err) {
+    if (err) return next(err);
+    res.send({url:'/forgot'});
+  });
+});
+
+router.get('/reset/:token', (req,res,next)=> {
+  let token = req.params.token;
+  User.findOne({raw: true, where: {resettoken: token, resettokenexpires: { [Op.gt]: Date.now() }}}).then((user) => {
+    if (!user) {
+      return res.send({url:'/forgot', message: 'error, password reset token is invalid or has expired.'});
+    }
+    res.redirect(`https://localhost:3000/reset/${token}`);
+  });
+});
+
+router.post('/reset/:token', (req, res, next) => {
+  let token = req.params.token;
+  async.waterfall([
+    function(done) {
+      User.findOne({raw: true, where: {resettoken: token, resettokenexpires: { [Op.gt]: Date.now() }}}).then((user) => {
+        if (!user) {
+          return res.send({url:'/forgot', message: 'error, password reset token is invalid or has expired.'});
+        }
+        bcrypt.hash(req.body.password, 10)
+          .then((hash) => {
+            User.update({password:hash, resettoken: '', resettokenexpires: Date.now()} , {where:{user_id: user.user_id}}).then((result) => {
+              done(null,user);
+            });
+          });
+
+      });
+    },
+    function(user, done) {
+      var smtpTransport = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'syarif.zapata@gmail.com',
+          pass: process.env.EMAIL_PASSWORD
+        }
+      });
+      var mailOptions = {
+        to: user.email,
+        from: 'passwordreset@demo.com',
+        subject: 'Your password has been changed',
+        text: 'Hello,\n\n' +
+          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+      };
+      smtpTransport.sendMail(mailOptions, function(err) {
+        done(err);
+      });
+    }
+  ], function(err) {
+    res.send({url:'/'});
+  });
+});
 
 
 module.exports = {
