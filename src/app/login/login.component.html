@@ -1,4 +1,12 @@
 <div class="container">
+  <div class="row" *ngIf="infoShown">
+    <div class="col s12 m6 offset-m3">
+      <div class="card-panel teal lighten-4">
+        <span [innerHTML]="info"></span>
+      </div>
+    </div>
+  </div>
+
   <div class="row card syarif-login">
     <form [formGroup]="loginForm" (submit)="login()" class="col s12">
       <div class="row">

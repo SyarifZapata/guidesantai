@@ -36,6 +36,7 @@ const appRoutes: Routes = [
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'chat/:room_id/:to_id', component: ChatComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'login/:message_id', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'settings', component: SettingsComponent},
   {path: 'twofa', component: TwoFAComponent},

@@ -42,7 +42,7 @@ export class ResetComponent implements OnInit {
       this._dataService.resetPassword(this.resetForm.value, this.token)
         .subscribe((res) =>{
             console.log(res);
-            this._router.navigate(['/login']);
+            this._router.navigate(['/login', 357]);
           },
           error => {
             console.log(error);
