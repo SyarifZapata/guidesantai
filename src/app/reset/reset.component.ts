@@ -30,8 +30,8 @@ export class ResetComponent implements OnInit {
     this.token = this._route.snapshot.params.token;
   }
 
-  resetPassword(){
-    if(!this.resetForm.valid || (this.resetForm.controls.password.value !== this.resetForm.controls.password2.value)){
+  resetPassword() {
+    if (!this.resetForm.valid || (this.resetForm.controls.password.value !== this.resetForm.controls.password2.value)) {
       console.log('Passwords are not equal');
       this.errorMessage = 'The passwords are not equal!';
       this.errorStyle = true;
@@ -40,7 +40,7 @@ export class ResetComponent implements OnInit {
     } else {
       console.log(this.resetForm.value);
       this._dataService.resetPassword(this.resetForm.value, this.token)
-        .subscribe((res) =>{
+        .subscribe((res) => {
             console.log(res);
             this._router.navigate(['/login', 357]);
           },
@@ -52,5 +52,6 @@ export class ResetComponent implements OnInit {
           }
         );
     }
+  }
 
 }
