@@ -14,6 +14,7 @@ export class DataService {
   profilPicture = this.profilPictureChange.asObservable();
   currentUser: any;
   chatPatner: any;
+  chatPassword: string;
 
   constructor(private _http: HttpClient) { }
 
@@ -22,6 +23,10 @@ export class DataService {
   addUser(body:any){
     return this._http.post('https://localhost:3000/auth/register',
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
+  setChatPassword(password){
+    this.chatPassword = password;
   }
 
   login(body:any){
@@ -71,6 +76,11 @@ export class DataService {
 
   getRoom(body:any){
     return this._http.post('https://localhost:3000/chat/getroom',
+      body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
+  updateSecret(body: any){
+    return this._http.post('https://localhost:3000/chat/update-secret',
       body, { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 

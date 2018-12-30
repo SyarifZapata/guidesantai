@@ -89,7 +89,9 @@ router.post('/acceptrequest', isValidUser, (req,res,next) => {
   }
   ChatFriend.create({
     user_id1: from_id,
-    user_id2: to_id
+    user_id2: to_id,
+    secretkey_id2: req.body.key,
+    pending_secret: req.body.pending
   }).then((data)=>{
     res.status(200).json({data:data});
   })
@@ -160,6 +162,21 @@ router.get('/needtoapprove', isValidUser, (req,res,next) => {
   })
 });
 
+
+router.post('/update-secret', isValidUser, (req,res,next) => {
+  let yourId;
+  if(req.user.dataValues){
+    yourId = req.user.dataValues.user_id;
+  }else{
+    yourId = req.user.user_id
+  }
+  const their_id = req.body.id;
+  ChatFriend.update({secretkey_id1: req.body.secret, pending_secret: ''},{where:{user_id1:yourId, user_id2:their_id}}).then((success) => {
+    res.send({success:success});
+  });
+});
+
+
 router.post('/getroom', isValidUser, (req,res,next) => {
   let yourId;
   if(req.user.dataValues){
@@ -168,13 +185,22 @@ router.post('/getroom', isValidUser, (req,res,next) => {
     yourId = req.user.user_id
   }
   const their_id = req.body.id;
-  ChatFriend.findOne({raw:true, attributes: ['room_id'], where:{user_id1:yourId, user_id2:their_id}}).then((room) => {
+  ChatFriend.findOne({raw:true, where:{user_id1:yourId, user_id2:their_id}}).then((room) => {
     if(room){
-      res.status(200).json({room_id:room, user:their_id})
+      if(room.secretkey_id1){
+        res.status(200).json({room_id:room.room_id, user:their_id, secret:room.secretkey_id1})
+      }else {
+        res.status(200).json({room_id:room.room_id, user:their_id, pending:room.pending_secret})
+      }
+
     }else{
-      ChatFriend.findOne({raw:true, attributes: ['room_id'], where:{user_id1:their_id, user_id2:yourId}}).then((theroom) => {
+      ChatFriend.findOne({raw:true, where:{user_id1:their_id, user_id2:yourId}}).then((theroom) => {
         if(theroom) {
-          res.status(200).json({room_id:theroom, user:their_id})
+          if(theroom.secretkey_id2){
+            res.status(200).json({room_id:theroom.room_id, user:their_id, secret:theroom.secretkey_id2})
+          }else {
+            res.status(200).json({room_id:theroom.room_id, user:their_id, pending:theroom.pending_secret})
+          }
         }
       })
 
@@ -207,9 +233,24 @@ router.post('/send', isValidUser, (req, res, next) => {
 
 router.post('/getmessages', isValidUser, (req, res, next) => {
  const room_id = req.body.room_id;
- Conversation.findAll({raw:true, where:{room_id:room_id}}).then((messages)=>{
-   res.status(200).json(messages)
- })
+  let yourId;
+  if(req.user.dataValues){
+    yourId = req.user.dataValues.user_id;
+  }else{
+    yourId = req.user.user_id
+  }
+ ChatFriend.findOne({raw:true, where:{room_id:room_id}}).then((result)=>{
+   let secret;
+   if(result.user_id1 === yourId){
+     secret = result.secretkey_id1;
+   }else {
+     secret = result.secretkey_id2;
+   }
+   Conversation.findAll({raw:true, where:{room_id:room_id}}).then((messages)=>{
+     res.status(200).json({messages:messages, secret:secret})
+   })
+ });
+
 });
 
 function isValidUser(req,res,next){

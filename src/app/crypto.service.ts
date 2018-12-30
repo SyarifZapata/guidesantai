@@ -18,6 +18,11 @@ export class CryptoService {
     });
   }
 
+  storeSecret(body:any){
+    return this._http.post('https://localhost:3000/crypto-keys/store-secret',
+      { observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});
+  }
+
   getPrimeAndGen() {
     return this._http.get('https://localhost:3000/cryptoKey/getKeys',
       {observe: 'body', headers: new HttpHeaders().append('Content-Type', 'application/json')});

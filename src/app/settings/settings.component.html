@@ -3,6 +3,21 @@
 
   <div class="row">
     <div class="col s12 m6 offset-m3">
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="chat-password" class="materialize-textarea" type="password" (keyup)="onKey($event)" name="chat-password">
+            <label for="chat-password">Chat Password</label>
+          </div>
+        </div>
+      </form>
+      <button class="waves-effect waves-light btn" (click)="addChatPassword()" >Add chat password</button>
+    </div>
+  </div>
+  <br>
+
+  <div class="row">
+    <div class="col s12 m6 offset-m3">
       <div class="card">
         <div class="card-content">
           <span class="card-title">Card Title</span>
@@ -33,6 +48,7 @@
       <button class="waves-effect waves-light btn" (click)="addUserKey()" >Add user key</button>
     </div>
   </div>
+  <br>
 
   <div class="row">
     <div class="col s12 m6 offset-m3">
