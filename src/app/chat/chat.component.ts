@@ -1,19 +1,70 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Injectable, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DataService} from '../data.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {SocketService} from '../socket.service';
 import {Message} from '../utility/message';
 import * as $ from 'jquery';
 import * as M from 'materialize-css';
 import {timestamp} from 'rxjs/operators';
+import * as io from 'socket.io-client';
 import * as sjcl from 'sjcl';
 import * as ab2str from 'arraybuffer-to-string';
 import * as str2ab from 'string-to-arraybuffer';
+import {Observable} from 'rxjs';
+
+
+@Injectable()
+export class SocketService implements OnDestroy{
+  socket;
+  constructor(){
+  this.socket = io();
+  }
+
+
+
+  public online(username){
+    this.socket.emit('username', username);
+  }
+
+  public send(message: Message): void {
+    this.socket.emit('message', message);
+  }
+
+  public sendFeedback(name): void {
+    this.socket.emit('typing', name);
+  }
+
+  public onMessage(): Observable<Message> {
+    return new Observable<Message>(observer => {
+      this.socket.on('message', (data: Message) => observer.next(data));
+    });
+  }
+
+  public onEvent(event: Event): Observable<any> {
+    return new Observable<Event>(observer => {
+      this.socket.on(event, () => observer.next());
+    });
+  }
+
+  public onFeedback(): Observable<string> {
+    return new Observable<string>(observer => {
+      this.socket.on('typing', (data: string) => observer.next(data));
+    });
+  }
+
+  public logout(){
+    this.socket.emit('logout');
+  }
+
+  ngOnDestroy(){
+  }
+}
+
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  styleUrls: ['./chat.component.scss'],
+  providers: [SocketService]
 })
 export class ChatComponent implements OnInit {
 

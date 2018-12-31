@@ -17,6 +17,7 @@ require('dotenv').config({path:'../../.env'});
 const async = require('async');
 const crypto = require('crypto');
 const Sequelize = require('sequelize');
+const socket = require('../socket-io/chat');
 const Op = Sequelize.Op;
 
 let client = Object;
