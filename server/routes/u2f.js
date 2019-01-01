@@ -6,13 +6,11 @@ const U2fKey = require('../models/u2fKeys');
 // The app ID is a string used to uniquely identify your U2F app, for both registration requests and
 // authentication requests. It is usually the fully qualified URL of your website. The website MUST
 // be HTTPS, otherwise the registration will fail client-side.
-const APP_ID = 'https://localhost:3000';
+const APP_ID = 'https://localhost:3003';
 
 router.get('/u2fregistration', isValidUser, (req, res, next) => {
   const registrationRequest = u2f.request(APP_ID);
   req.session.registrationRequest = registrationRequest;
-  console.log('yuhuuuuu');
-  console.log(registrationRequest);
   res.send(registrationRequest);
 });
 

@@ -63,7 +63,7 @@ export class SettingsComponent implements OnInit, AfterViewInit {
       this.qrcode = '';
       this.isDisabled = true;
     } else {
-      this._cryptoService.generateSecret({}).subscribe(
+      this._cryptoService.generateSecret().subscribe(
         data => {
           // @ts-ignore
           this.qrcode = data.qrcode;

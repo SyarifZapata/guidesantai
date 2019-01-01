@@ -162,7 +162,7 @@ router.get('/getCode', (req,res,next) => {
 });
 
 
-router.post('/generateSecret', isValidUser, (req,res,next) => {
+router.get('/generateSecret', isValidUser, (req,res,next) => {
   secret = speakeasy.generateSecret({length:20});
   let userid = -1;
 
@@ -270,9 +270,9 @@ router.get('/facebook/callback', passport.authenticate('facebook'), (req,res,nex
   let user = req.user.dataValues;
   client.hget(user.username, "twoFaLoggedin", (err, value) => {
     if(user.twoFAEnabled && value !== true){
-      res.redirect('https://localhost:3000/twofa');
+      res.redirect('https://localhost:3003/twofa');
     }else {
-      res.redirect('https://localhost:3000/user');
+      res.redirect('https://localhost:3003/user');
     }
   });
 
@@ -335,7 +335,7 @@ router.get('/reset/:token', (req,res,next)=> {
     if (!user) {
       return res.send({url:'/forgot', message: 'error, password reset token is invalid or has expired.'});
     }
-    res.redirect(`https://localhost:3000/reset/${token}`);
+    res.redirect(`https://localhost:3003/reset/${token}`);
   });
 });
 
