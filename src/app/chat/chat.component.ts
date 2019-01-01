@@ -4,7 +4,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Message} from '../utility/message';
 import * as $ from 'jquery';
 import * as M from 'materialize-css';
-import {timestamp} from 'rxjs/operators';
 import * as io from 'socket.io-client';
 import * as sjcl from 'sjcl';
 import * as ab2str from 'arraybuffer-to-string';
@@ -153,11 +152,11 @@ export class ChatComponent implements OnInit {
             console.log('heeh');
             this.msgs.push(new Message('she', ab2str(decrypted), data.createdAt));
           }
+          this.feedback = '';
+          window.setTimeout(function () {
+            $('#msgPool').scrollTop($('#msgPool')[0].scrollHeight);
+          }, 50); // wait 50ms until new message appears, else it will scroll to second last message.
         });
-        this.feedback = '';
-        window.setTimeout(function () {
-          $('#msgPool').scrollTop($('#msgPool')[0].scrollHeight);
-        }, 50); // wait 50ms until new message appears, else it will scroll to second last message.
       },
       error => {
         console.log(error);
