@@ -18,7 +18,8 @@ const opts = { key: fs.readFileSync('/home/arkad/server_key.pem')
 };
 
 app.use(cors({
-  origin:['https://localhost:3003', 'https://127.0.0.1:3003'],
+  // origin:['https://localhost:3003', 'https://127.0.0.1:3003'],
+  origin: true,
   credentials:true
 }));
 
