@@ -62,7 +62,7 @@ router.get('/clientcertificate', isValidUser, (req,res,next)=> {
  */
 router.post('/register', (req,res,next) => {
   if (validUser(req.body)){
-    let getUserByUsername = User.findOne({where:{username: req.body.username}});
+    let getUserByUsername = User.findOne({where:{username: req.body.username}});r
     let getUserByEmail = User.findOne({where:{email: req.body.email}});
 
     getUserByUsername.then((result) => {
@@ -116,18 +116,18 @@ router.get('/logout',isValidUser, (req,res,next) => {
     when he/she tries to access the member-only page
  */
 router.get('/user', isValidUser, (req, res, next) => {
-  // console.log(req.user.username);
+  console.log(req.user);
   let data = {};
   // console.log(req);
 
-  if(req.user.dataValues){
-    client.hget(req.user.dataValues.username, "twoFaLoggedin", (err, value) =>{
+  if(req.user){
+    client.hget(req.user.username, "twoFaLoggedin", (err, value) =>{
       data = {
         message: 'Sie sind eingeloggt',
-        user_id : req.user.dataValues.user_id,
-        username:req.user.dataValues.username,
-        picture:req.user.dataValues.picture,
-        twoFAEnabled: req.user.dataValues.twoFAEnabled,
+        user_id : req.user.user_id,
+        username:req.user.username,
+        picture:req.user.picture,
+        twoFAEnabled: req.user.twoFAEnabled,
         twoFALoggedIn: value
       };
       return res.status(200).json(data)
@@ -166,15 +166,8 @@ router.get('/generateSecret', isValidUser, (req,res,next) => {
   secret = speakeasy.generateSecret({length:20});
   let userid = -1;
 
-  if(req.user.dataValues){
+  if(req.user){
 
-    userid = req.user.dataValues.user_id;
-    FacebookUser.update({twoFASecret:secret.base32},{where:{user_id:userid}}).then((rows_updated) => {
-      console.log(rows_updated)
-    }).catch((error) => {
-      console.log(error)
-    })
-  }else {
     userid = req.user.user_id;
     User.update({twoFASecret:secret.base32},{where:{user_id:userid}}).then((rows_updated) => {
       console.log(rows_updated)
@@ -194,14 +187,7 @@ router.get('/generateSecret', isValidUser, (req,res,next) => {
 router.post('/saveSettings', isValidUser, (req,res,next) => {
   const twoFa = req.body.twoFa;
   let userid = -1;
-  if(req.user.dataValues){
-    userid = req.user.dataValues.user_id;
-    FacebookUser.update({twoFAEnabled:twoFa},{where:{user_id:userid}}).then((rows_updated) => {
-      console.log(rows_updated)
-    }).catch((error) => {
-      console.log(error)
-    })
-  }else {
+  if(req.user){
     userid = req.user.user_id;
     User.update({twoFAEnabled:twoFa},{where:{user_id:userid}}).then((rows_updated) => {
       console.log(rows_updated)
@@ -217,8 +203,8 @@ router.post('/compareToken', isValidUser, (req,res,next)=> {
 
   let token = req.body.token;
   let secret;
-  if(req.user.dataValues){
-    secret = req.user.dataValues.twoFASecret;
+  if(req.user){
+    secret = req.user.twoFASecret;
   }else {
     secret = req.user.twoFASecret;
   }
@@ -230,8 +216,8 @@ router.post('/compareToken', isValidUser, (req,res,next)=> {
   console.log(verified);
   if(verified){
     let username;
-    if(req.user.dataValues){
-      username = req.user.dataValues.username;
+    if(req.user){
+      username = req.user.username;
     }else {
       username = req.user.username;
     }
@@ -248,17 +234,7 @@ router.post('/compareToken', isValidUser, (req,res,next)=> {
  */
 function isValidUser(req,res,next){
   if(req.isAuthenticated()) {
-    console.log('enter client certificate');
-    const cert = req.connection.getPeerCertificate();
-    if (req.client.authorized) {
-      next();
-    } else if (cert.subject) {
-      res.status(403)
-        .send({message:`Sorry ${cert.subject.CN}, certificates from ${cert.issuer.CN} are not welcome here.`})
-    } else {
-      res.status(401)
-        .send({message:'Sorry, but you need to provide a client certificate to continue.'})
-    }
+    next();
   }
   else return res.status(401).json({message:'Memberbereich, bitte einloggen'})
 }
@@ -267,12 +243,13 @@ function isValidUser(req,res,next){
 router.get('/facebook', passport.authenticate('facebook'));
 
 router.get('/facebook/callback', passport.authenticate('facebook'), (req,res,next) =>{
-  let user = req.user.dataValues;
+  console.log(req.user);
+  let user = req.user;
   client.hget(user.username, "twoFaLoggedin", (err, value) => {
     if(user.twoFAEnabled && value !== true){
-      res.redirect('https://localhost:3003/twofa');
+      res.redirect('http://localhost:3003/twofa');
     }else {
-      res.redirect('https://localhost:3003/user');
+      res.redirect('http://localhost:3003/user');
     }
   });
 
@@ -314,7 +291,7 @@ router.post('/forgot-password', function(req, res, next) {
         subject: 'Node.js Password Reset',
         text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'https://' + req.headers.host + '/auth/reset/' + token + '\n\n' +
+          'http://' + req.headers.host + '/auth/reset/' + token + '\n\n' +
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
       };
 
@@ -335,7 +312,7 @@ router.get('/reset/:token', (req,res,next)=> {
     if (!user) {
       return res.send({url:'/forgot', message: 'error, password reset token is invalid or has expired.'});
     }
-    res.redirect(`https://localhost:3003/reset/${token}`);
+    res.redirect(`http://localhost:3003/reset/${token}`);
   });
 });
 

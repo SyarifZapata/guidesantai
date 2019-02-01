@@ -42,23 +42,29 @@ passport.use('local', new LocalStrategy({
 passport.use('facebook',new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_SECRET,
-    callbackURL: "https://localhost:3000/auth/facebook/callback",
+    callbackURL: "http://localhost:3000/auth/facebook/callback",
     profileFields: ['id','displayName','picture']
   },
   (accessToken, refreshToken, profile, done) => {
     // two cases
     // #1 firsttime login => create new FacebookUser
     // #2 other times
-    FacebookUser.findOne({where:{user_id:profile.id}}).then((user) =>{
+    FacebookUser.findOne({raw:true, where:{facebook_id:profile.id}}).then((user) =>{
       if(user !== null) {
         return done(null,user)
       }
-      FacebookUser.create({
-        user_id: profile.id,
+      User.create({
         username: profile.displayName,
-        picture: profile.photos[0].value
-      }).then((newUser) => {
-        done(null,newUser)
+        picture: profile.photos[0].value,
+        login_strategy: 'facebook'
+      }).then((newUser)=>{
+        FacebookUser.create({
+          user_id: newUser.user_id,
+          facebook_id: profile.id,
+          fb_username: profile.displayName,
+        }).then((newUser) => {
+          done(null,newUser)
+        })
       })
     }).catch((err) => {
       console.log(err);
@@ -77,7 +83,7 @@ passport.serializeUser(function(user, done) {
 //TODO still errror, find the error hier
 passport.deserializeUser((id, done) => {
   User.findOne({where:{user_id:id}}).then((user)=>{
-    if(user === null) return FacebookUser.findOne({where:{user_id: id}});
+    // if(user === null) return FacebookUser.findOne({where:{user_id: id}});
     // we forwarded the result to the next then()
     // not null, this method only get called if local strategy is used.
     return user.get()

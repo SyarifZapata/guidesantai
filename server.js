@@ -2,7 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
-const https = require('https');
+const http = require('http');
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const app = express();
@@ -10,12 +10,12 @@ const passport = require('passport');
 const socket = require('socket.io');
 const cors = require('cors');
 
-const opts = { key: fs.readFileSync('/home/arkad/server_key.pem')
-  , cert: fs.readFileSync('/home/arkad/server_cert.pem')
-  , requestCert: true
-  , rejectUnauthorized: false
-  , ca: [ fs.readFileSync('/home/arkad/server_cert.pem') ]
-};
+// const opts = { key: fs.readFileSync('/home/arkad/server_key.pem')
+//   , cert: fs.readFileSync('/home/arkad/server_cert.pem')
+//   , requestCert: true
+//   , rejectUnauthorized: false
+//   , ca: [ fs.readFileSync('/home/arkad/server_cert.pem') ]
+// };
 
 app.use(cors({
   // origin:['https://localhost:3003', 'https://127.0.0.1:3003'],
@@ -78,6 +78,6 @@ app.use('/u2f/', u2f);
 const port = process.env.PORT || '3000';
 app.set('port',port);
 
-const server = https.createServer(opts,app);
+const server = http.createServer(app);
 server.listen(port, () => console.log(`Running on localhost:${port}`));
 

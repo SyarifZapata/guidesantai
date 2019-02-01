@@ -1,13 +1,13 @@
 const express = require('express');
 const path = require('path');
-const https = require('https');
+const http = require('http');
 const app = express();
 const socket = require('socket.io');
 const fs = require('fs');
 
-const opts = { key: fs.readFileSync('/home/arkad/server_key.pem')
-  , cert: fs.readFileSync('/home/arkad/server_cert.pem')
-};
+// const opts = { key: fs.readFileSync('/home/arkad/server_key.pem')
+//   , cert: fs.readFileSync('/home/arkad/server_cert.pem')
+// };
 
 // dotenv allows you to use process.env.<sth> from the .env file
 require('dotenv').config();
@@ -24,7 +24,7 @@ app.get('*', (req,res) => {
 const port = process.env.ANGULAR_PORT || '3003';
 app.set('port',port);
 
-const server = https.createServer(opts,app);
+const server = http.createServer(app);
 server.listen(port, () => console.log(`Running on localhost:${port}`));
 
 const io = socket(server);

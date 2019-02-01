@@ -10,35 +10,29 @@ const Conversation = require('../models/conversation');
 router.post('/finduser', isValidUser, (req,res,next) => {
   let name = req.body.username;
   let yourId;
-  if (req.user.dataValues){
-    yourId = req.user.dataValues.user_id;
-  }else{
+  if (req.user){
     yourId = req.user.user_id;
   }
   let data = [];
-  FacebookUser.findAll({attributes: ['user_id','username', 'picture'], where:{username: name}}).then((fbusers) => {
-    data = data.concat(fbusers);
-    console.log('Yipiiiii');
-    User.findAll({attributes: ['user_id','username', 'picture'],where:{username: name}}).then((users) => {
-      data = data.concat(users);
-      let fb = fbusers.map(a => a.user_id);
-      let normal = users.map(a => a.user_id);
-      const result = fb.concat(normal);
-      console.log(result);
-      PendingRequest.findAll({where: {from_id:yourId, to_id: result }}).then((request) => {
-        console.log(request);
-        res.status(200).json({data:data, pending: request})
-      });
-
+  User.findAll({attributes: ['user_id','username', 'picture'],where:{username: name}}).then((users) => {
+    data = data.concat(users);
+    let fb = fbusers.map(a => a.user_id);
+    let normal = users.map(a => a.user_id);
+    const result = fb.concat(normal);
+    console.log(result);
+    PendingRequest.findAll({where: {from_id:yourId, to_id: result }}).then((request) => {
+      console.log(request);
+      res.status(200).json({data:data, pending: request})
     });
+
   });
 });
 
 router.post('/invitechat', isValidUser, (req,res,next) => {
   let to_id = req.body.to_id;
   let from_id;
-  if(req.user.dataValues){
-    from_id = req.user.dataValues.user_id;
+  if(req.user){
+    from_id = req.user.user_id;
   }else{
     from_id = req.user.user_id
   }
@@ -53,8 +47,8 @@ router.post('/invitechat', isValidUser, (req,res,next) => {
 router.post('/findpendingrequest', isValidUser, (req,res,next) => {
   let to_id = req.body.to_id;
   let from_id;
-  if(req.user.dataValues){
-    from_id = req.user.dataValues.user_id;
+  if(req.user){
+    from_id = req.user.user_id;
   }else{
     from_id = req.user.user_id
   }
@@ -69,8 +63,8 @@ router.post('/findpendingrequest', isValidUser, (req,res,next) => {
 router.post('/cancelrequest', isValidUser, (req,res,next) => {
   const id = req.body.id;
   let from_id;
-  if(req.user.dataValues){
-    from_id = req.user.dataValues.user_id;
+  if(req.user){
+    from_id = req.user.user_id;
   }else{
     from_id = req.user.user_id
   }
@@ -82,8 +76,8 @@ router.post('/cancelrequest', isValidUser, (req,res,next) => {
 router.post('/acceptrequest', isValidUser, (req,res,next) => {
   const from_id = req.body.id;
   let to_id;
-  if(req.user.dataValues){
-    to_id = req.user.dataValues.user_id;
+  if(req.user){
+    to_id = req.user.user_id;
   }else{
     to_id = req.user.user_id
   }
@@ -99,8 +93,8 @@ router.post('/acceptrequest', isValidUser, (req,res,next) => {
 
 router.get('/getfriends', isValidUser, (req,res,next) => {
   let yourId;
-  if(req.user.dataValues){
-    yourId = req.user.dataValues.user_id;
+  if(req.user){
+    yourId = req.user.user_id;
   }else{
     yourId = req.user.user_id
   }
@@ -114,15 +108,11 @@ router.get('/getfriends', isValidUser, (req,res,next) => {
       let id = idds.map(a => a.user_id1);
       friendIds = friendIds.concat(id);
       console.log(friendIds);
-      FacebookUser.findAll({raw:true, attributes: ['user_id','username', 'picture'], where:{user_id: friendIds}}).then((fbusers) => {
-        friends = friends.concat(fbusers);
+      User.findAll({raw:true, attributes: ['user_id','username', 'picture'],where:{user_id:friendIds}}).then((users) => {
+        friends = friends.concat(users);
 
-        User.findAll({raw:true, attributes: ['user_id','username', 'picture'],where:{user_id:friendIds}}).then((users) => {
-          friends = friends.concat(users);
+        res.status(200).json({data:friends})
 
-          res.status(200).json({data:friends})
-
-        });
       });
     })
   })
@@ -131,8 +121,8 @@ router.get('/getfriends', isValidUser, (req,res,next) => {
 router.post('/rejectrequest', isValidUser, (req,res,next) => {
   const from_id = req.body.id;
   let to_id;
-  if(req.user.dataValues){
-    to_id = req.user.dataValues.user_id;
+  if(req.user){
+    to_id = req.user.user_id;
   }else{
     to_id = req.user.user_id
   }
@@ -143,21 +133,17 @@ router.post('/rejectrequest', isValidUser, (req,res,next) => {
 
 router.get('/needtoapprove', isValidUser, (req,res,next) => {
   let id;
-  if(req.user.dataValues){
-    id = req.user.dataValues.user_id;
+  if(req.user){
+    id = req.user.user_id;
   }else{
     id = req.user.user_id;
   }
   PendingRequest.findAll({where:{to_id:id}}).then((users) => {
     const result = users.map(a => a.from_id);
     let data = [];
-    FacebookUser.findAll({attributes: ['user_id','username', 'picture'], where:{user_id:result}}).then((fbusers) => {
-      data = data.concat(fbusers);
-
-      User.findAll({attributes: ['user_id','username', 'picture'],where:{user_id:result}}).then((users) => {
-        data = data.concat(users);
-        res.status(200).json({data:data})
-      });
+    User.findAll({attributes: ['user_id','username', 'picture'],where:{user_id:result}}).then((users) => {
+      data = data.concat(users);
+      res.status(200).json({data:data})
     });
   })
 });
@@ -165,8 +151,8 @@ router.get('/needtoapprove', isValidUser, (req,res,next) => {
 
 router.post('/update-secret', isValidUser, (req,res,next) => {
   let yourId;
-  if(req.user.dataValues){
-    yourId = req.user.dataValues.user_id;
+  if(req.user){
+    yourId = req.user.user_id;
   }else{
     yourId = req.user.user_id
   }
@@ -179,8 +165,8 @@ router.post('/update-secret', isValidUser, (req,res,next) => {
 
 router.post('/getroom', isValidUser, (req,res,next) => {
   let yourId;
-  if(req.user.dataValues){
-    yourId = req.user.dataValues.user_id;
+  if(req.user){
+    yourId = req.user.user_id;
   }else{
     yourId = req.user.user_id
   }
@@ -210,14 +196,8 @@ router.post('/getroom', isValidUser, (req,res,next) => {
 
 router.post('/getuser', isValidUser, (req,res,next) => {
   const userid = req.body.id;
-  FacebookUser.findOne({raw:true, where:{user_id:userid}}).then((fbUser) => {
-    if(fbUser){
-      res.status(200).json({user:fbUser})
-    }else {
-      User.findOne({raw:true, where:{user_id:userid}}).then((user)=>{
-        res.status(200).json({user:user})
-      })
-    }
+  User.findOne({raw:true, where:{user_id:userid}}).then((user)=>{
+    res.status(200).json({user:user})
   });
 });
 
@@ -234,8 +214,8 @@ router.post('/send', isValidUser, (req, res, next) => {
 router.post('/getmessages', isValidUser, (req, res, next) => {
  const room_id = req.body.room_id;
   let yourId;
-  if(req.user.dataValues){
-    yourId = req.user.dataValues.user_id;
+  if(req.user){
+    yourId = req.user.user_id;
   }else{
     yourId = req.user.user_id
   }
