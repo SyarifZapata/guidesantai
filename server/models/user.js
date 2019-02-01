@@ -6,6 +6,8 @@ const User = connection.define('user', {
   username: { type: Sequelize.STRING(30), allowNull:false },
   email: { type: Sequelize.STRING(50), allowNull: false },
   password: { type: Sequelize.STRING(100), allowNull: false },
+  resettoken: { type: Sequelize.STRING},
+  resettokenexpires: { type: Sequelize.DATE},
   login_strategy: { type: Sequelize.STRING(10), defaultValue: 'local'},
   picture: { type: Sequelize.STRING, defaultValue: './assets/img/profil/unknown_profile.png' },
   twoFASecret: {type: Sequelize.STRING(100)},

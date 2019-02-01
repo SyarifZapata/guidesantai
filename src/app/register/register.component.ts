@@ -10,7 +10,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
 
-  registerForm:FormGroup = new FormGroup({
+  registerForm: FormGroup = new FormGroup({
     email: new FormControl(null,[Validators.email, Validators.required]),
     username: new FormControl(null, [Validators.required]),
     cEmail: new FormControl(null, [Validators.required]),

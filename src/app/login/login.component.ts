@@ -15,6 +15,10 @@ export class LoginComponent implements OnInit {
     password:new FormControl(null,Validators.required)
   });
 
+  message_id;
+  infoShown = false;
+  info;
+
   errorMessage = '';
   errorStyle: boolean;
   classValidation = {
@@ -23,11 +27,25 @@ export class LoginComponent implements OnInit {
   };
 
 
-  constructor(private  _dataService: DataService, private route: ActivatedRoute, private router: Router) {
+  constructor(private  _dataService: DataService, private route: ActivatedRoute, private router: Router, private _route: ActivatedRoute) {
 
   }
 
   ngOnInit() {
+    this.message_id = this._route.snapshot.params.message_id;
+    switch (this.message_id) {
+      case '357':
+        this.infoShown = true;
+        this.info = 'Success! Your password has been changed.';
+        setTimeout(() =>{
+          this.switchInfoShwon();
+        }, 4000);
+        break;
+    }
+  }
+
+  switchInfoShwon(){
+    this.infoShown = !this.infoShown;
   }
 
   login(){

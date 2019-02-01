@@ -9,4 +9,6 @@ const getPrime = diffieHellmanKey.getPrime();
 const getGenerator = diffieHellmanKey.getGenerator();
 
 
+
+
 module.exports = {getPrime:getPrime, getGenerator: getGenerator};

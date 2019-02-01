@@ -2,11 +2,27 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
-const http = require('http');
+const https = require('https');
+const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const app = express();
 const passport = require('passport');
 const socket = require('socket.io');
+const cors = require('cors');
+
+const opts = { key: fs.readFileSync('/home/arkad/server_key.pem')
+  , cert: fs.readFileSync('/home/arkad/server_cert.pem')
+  , requestCert: true
+  , rejectUnauthorized: false
+  , ca: [ fs.readFileSync('/home/arkad/server_cert.pem') ]
+};
+
+app.use(cors({
+  // origin:['https://localhost:3003', 'https://127.0.0.1:3003'],
+  origin: true,
+  credentials:true
+}));
+
 
 // dotenv allows you to use process.env.<sth> from the .env file
 require('dotenv').config();
@@ -16,9 +32,6 @@ require('./server/redis-config');
 //parsers
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-
-// dist folder is where all the built app located
-app.use(express.static(path.join(__dirname, 'dist')));
 
 /* cookieParser is actually no longer needed in this current express but we
    let it here until we are sure everything works fine.
@@ -55,23 +68,16 @@ app.use(passport.session());
 const auth = require('./server/routes/auth').authRouter;
 const cryptoKeys = require('./server/routes/crypto-keys');
 const chat = require('./server/routes/chat');
+const u2f = require('./server/routes/u2f');
 app.use('/auth/', auth);
 app.use('/crypto-keys/',cryptoKeys);
 app.use('/chat/',chat);
+app.use('/u2f/', u2f);
 
-
-
-/* send all request to index html in dist folder */
-app.get('*', (req,res) => {
-  res.sendFile(path.join(__dirname, 'dist/index.html'))
-});
 
 const port = process.env.PORT || '3000';
 app.set('port',port);
 
-const server = http.createServer(app);
+const server = https.createServer(opts,app);
 server.listen(port, () => console.log(`Running on localhost:${port}`));
-
-const io = socket(server);
-require('./server/socket-io/chat').chatSocket(io);
 

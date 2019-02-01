@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DataService} from '../data.service';
 import {Router} from '@angular/router';
-import {SocketService} from '../socket.service';
+
 
 @Component({
   selector: 'app-user',
@@ -13,7 +13,7 @@ export class UserComponent implements OnInit {
 
   username: string;
 
-  constructor(private _dataService: DataService, private _router: Router, private _socketService: SocketService) {
+  constructor(private _dataService: DataService, private _router: Router) {
     this._dataService.user().subscribe(
       data => {
         // @ts-ignore
@@ -23,7 +23,6 @@ export class UserComponent implements OnInit {
           this._dataService.setLogginStatus(true);
           // @ts-ignore
           this.username = data.username;
-          this._socketService.online(this.username);
           // data has picture property
           // @ts-ignore
           if (data.picture) {

@@ -1,9 +1,17 @@
 <div class="container">
+  <div class="row" *ngIf="infoShown">
+    <div class="col s12 m6 offset-m3">
+      <div class="card-panel teal lighten-4">
+        <span [innerHTML]="info"></span>
+      </div>
+    </div>
+  </div>
+
   <div class="row card syarif-login">
     <form [formGroup]="loginForm" (submit)="login()" class="col s12">
       <div class="row">
         <div class="  input-field col m6 offset-m3 s12 center ">
-          <a class="syarif-facebook waves-effect waves-light z-depth-1 white-text" href="/auth/facebook">CONTINUE WITH FACEBOOK</a>
+          <a class="syarif-facebook waves-effect waves-light z-depth-1 white-text" href="https://localhost:3000/auth/facebook">CONTINUE WITH FACEBOOK</a>
         </div>
         <div class="col m8 offset-m2 s12">
           <h6><span>OR</span></h6>
@@ -27,7 +35,8 @@
         </div>
         <div class="input-field col m6 offset-m3 s12">
           <p [style.display]="errorStyle ? 'inline' : 'none'" class="red-text">{{errorMessage}}</p>
-          <p>Sie haben kein Konto? <a class="anmelden-link green-text" routerLink="/register">Registrieren</a></p>
+          <p style="margin-bottom: -0.5em">Sie haben kein Konto? <a class="anmelden-link green-text" routerLink="/register">Registrieren</a></p>
+          <p><a class="anmelden-link green-text" routerLink="/forgot-password">Forgot your password?</a></p>
         </div>
       </div>
     </form>

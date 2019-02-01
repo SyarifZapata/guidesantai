@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row card syarif-register">
+    <form [formGroup]="resetForm" (submit)="resetPassword()" class="col s12">
+      <div class="row">
+
+        <div class="input-field col m6 offset-m3 s12">
+          <i class="material-icons prefix">vpn_key</i>
+          <input formControlName="password" id="password" type="password" [ngClass]="classValidation" required>
+          <label for="password">Password</label>
+        </div>
+        <div class="input-field col m6 offset-m3 s12">
+          <i class="material-icons prefix">vpn_key</i>
+          <input formControlName="password2" id="password2" type="password" [ngClass]="classValidation" required>
+          <label for="password2">Confirm password</label>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col m6 offset-m3 s12 syarif-submit">
+          <button type="submit" class="waves-effect waves-light btn-small"><i class="material-icons right">chevron_right</i>Reset Password</button>
+        </div>
+        <div class="input-field col m6 offset-m3 s12">
+          <p [style.display]="errorStyle ? 'inline' : 'none'" class="red-text">{{errorMessage}}</p>
+          <p>Don't have an account? <a class="anmelden-link green-text" routerLink="/register">Sign-up</a></p>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+</div>
