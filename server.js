@@ -10,6 +10,7 @@ const passport = require('passport');
 const socket = require('socket.io');
 const cors = require('cors');
 
+
 // const opts = { key: fs.readFileSync('/home/arkad/server_key.pem')
 //   , cert: fs.readFileSync('/home/arkad/server_cert.pem')
 //   , requestCert: true
@@ -79,5 +80,5 @@ const port = process.env.PORT || '3000';
 app.set('port',port);
 
 const server = http.createServer(app);
-server.listen(port, () => console.log(`Running on localhost:${port}`));
+server.listen(port, () => console.log(`Running on ${process.env.PRODUCTION}:${port}`));
 

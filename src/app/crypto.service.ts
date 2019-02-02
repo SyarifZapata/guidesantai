@@ -6,6 +6,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
   providedIn: 'root'
 })
 export class CryptoService {
+  production = '139.162.182.152';
   diffieHellman: any;
 
   constructor(private _http: HttpClient) {
@@ -19,27 +20,27 @@ export class CryptoService {
   }
 
   storeSecret(body:any){
-    return this._http.post('http://localhost:3000/crypto-keys/store-secret',
+    return this._http.post('http://'+this.production+':3000/crypto-keys/store-secret',
       { observe: 'body', withCredentials: true, headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   getPrimeAndGen() {
-    return this._http.get('http://localhost:3000/cryptoKey/getKeys',
+    return this._http.get('http://'+this.production+':3000/cryptoKey/getKeys',
       {observe: 'body', withCredentials: true, headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   generateSecret() {
-    return this._http.get('http://localhost:3000/auth/generateSecret',
+    return this._http.get('http://'+this.production+':3000/auth/generateSecret',
       { observe: 'body', withCredentials: true, headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   getCode(){
-    return this._http.get('http://localhost:3000/auth/getCode',
+    return this._http.get('http://'+this.production+':3000/auth/getCode',
       {observe: 'body', withCredentials: true, headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 
   login2fa(body:any){
-    return this._http.post('http://localhost:3000/auth/compareToken', body,
+    return this._http.post('http://'+this.production+':3000/auth/compareToken', body,
       { observe: 'body', withCredentials: true, headers: new HttpHeaders().append('Content-Type', 'application/json')});
   }
 

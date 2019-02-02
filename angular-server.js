@@ -25,7 +25,7 @@ const port = process.env.ANGULAR_PORT || '3003';
 app.set('port',port);
 
 const server = http.createServer(app);
-server.listen(port, () => console.log(`Running on localhost:${port}`));
+server.listen(port, () => console.log(`Running on ${process.env.PRODUCTION}:${port}`));
 
 const io = socket(server);
 require('./server/socket-io/chat').chatSocket(io);
