@@ -62,7 +62,7 @@ router.get('/clientcertificate', isValidUser, (req,res,next)=> {
  */
 router.post('/register', (req,res,next) => {
   if (validUser(req.body)){
-    let getUserByUsername = User.findOne({where:{username: req.body.username}});r
+    let getUserByUsername = User.findOne({where:{username: req.body.username}});
     let getUserByEmail = User.findOne({where:{email: req.body.email}});
 
     getUserByUsername.then((result) => {
@@ -247,9 +247,9 @@ router.get('/facebook/callback', passport.authenticate('facebook'), (req,res,nex
   let user = req.user;
   client.hget(user.username, "twoFaLoggedin", (err, value) => {
     if(user.twoFAEnabled && value !== true){
-      res.redirect('http://${process.env.PRODUCTION}:3003/twofa');
+      res.redirect(`http://${process.env.PRODUCTION}:3003/twofa`);
     }else {
-      res.redirect('http://${process.env.PRODUCTION}:3003/user');
+      res.redirect(`http://${process.env.PRODUCTION}:3003/user`);
     }
   });
 

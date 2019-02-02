@@ -6,7 +6,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
   providedIn: 'root'
 })
 export class CryptoService {
-  production = '139.162.182.152';
+  production = 'localhost';
   diffieHellman: any;
 
   constructor(private _http: HttpClient) {

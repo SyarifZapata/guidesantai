@@ -15,7 +15,7 @@ export class DataService {
   currentUser: any;
   chatPatner: any;
   chatPassword: string;
-  production = '139.162.182.152';
+  production = 'localhost';
 
   constructor(private _http: HttpClient) { }
 
