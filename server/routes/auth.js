@@ -8,6 +8,7 @@ require('../models/pendingRequest');
 require('../models/chatFriend');
 require('../models/conversation');
 require('../models/u2fKeys');
+require('../models/session');
 const passport = require('passport');
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
@@ -53,8 +54,9 @@ function validUser(user){
 
 router.get('/clientcertificate', isValidUser, (req,res,next)=> {
   console.log('enter client certificate');
-  const cert = req.connection.getPeerCertificate();
-  res.send({message:`Hello ${cert.subject.CN}, your certificate was issued by ${cert.issuer.CN}!`})
+  // const cert = req.connection.getPeerCertificate();
+  // res.send({message:`Hello ${cert.subject.CN}, your certificate was issued by ${cert.issuer.CN}!`})
+  res.send({message:'No client certificate setup'})
 });
 
 /*  Register a new user
@@ -355,6 +357,11 @@ router.post('/reset/:token', (req, res, next) => {
   ], function(err) {
     res.send({url:'/'});
   });
+});
+
+router.get('/test', (req,res,next)=>{
+  console.log('React Native say hallo');
+  res.status(200).json({message:'hallo react-native'})
 });
 
 

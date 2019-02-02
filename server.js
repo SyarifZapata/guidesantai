@@ -9,6 +9,8 @@ const app = express();
 const passport = require('passport');
 const socket = require('socket.io');
 const cors = require('cors');
+const Sequelize = require('sequelize');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 
 // const opts = { key: fs.readFileSync('/home/arkad/server_key.pem')
@@ -39,15 +41,36 @@ app.use(bodyParser.urlencoded({extended: false}));
  */
 app.use(cookieParser());
 
+
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER,process.env.DB_PASS, {
+  host: process.env.DB_HOST,
+  dialect: 'postgres',
+  storage: './session.postgres',
+  define: {
+    timestamps: true
+  }
+});
+
+// function extendDefaultFields(defaults, session) {
+//   return {
+//     data: defaults.data,
+//     expires: defaults.expires,
+//     user_id: session.user_id
+//   }
+// }
+
+
 /* Dont forget to uncomment the 'store' key for production
    Please install the module, see npm.
  */
 app.use(session({
   name: 'alice.sid',
   secret: process.env.COOKIE_SECRET,
-  //store: new SequelizeStore({
-  //    db: sequelize
-  // })
+  store: new SequelizeStore({
+     db: sequelize,
+     checkExpirationInterval: 15*60*1000,
+     expiration: 24*60*60*1000
+  }),
   resave: false,
   saveUninitialized: false, // only save if loggin is successfully done.
   cookie: {
