@@ -174,7 +174,7 @@ export class ChatComponent implements OnInit {
   }
 
   importAes(jwk){
-    return crypto.subtle.importKey('jwk', jwk, {name: 'AES-GCM'}, true, ['encrypt', 'decrypt']);
+    return crypto.subtle.importKey('jwk', jwk, {name: 'AES-GCM'} as DhImportKeyParams, true, ['encrypt', 'decrypt']);
   }
 
   encryptAes(key, iv, plainText: string){
