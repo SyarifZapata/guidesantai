@@ -2,82 +2,59 @@
 
 //@import "../variables";
 
-#dropdownMenu{
-  width: 250px !important;
+
+.top_bar{
+  height: 50px;
+  padding: 0 1px 0 0;
+  border-bottom: 1px rgba(0,0,0,0.1) solid;
+  //justify-content: space-between;
+  align-items: center;
+  background: white;
+  box-sizing: border-box;
 }
 
-.syarif-profil-picture{
-  display: flex;
-  margin-top: 13px;
-  //margin-right:7px;
-  margin-left: 15px;
-  width: 40px;
-  height: 40px;
+.my-wrapper{
+  height: 100%;
 }
 
-.menu-icon{
-  width: 100%;
-  text-align: left;
-  display: none;
+.menuLabelMobile{
+  display: inline-block;
+  padding: 18px;
+  cursor: pointer;
+  position: relative;
 }
 
-.syarif-logo {
-  font-family: 'Lobster', cursive;
-  margin-left: 15px;
+.logo{
+  max-height: 32px;
 }
 
-.syarif-icon {
-  margin-right: 15px;
-}
 
-ul{
-  a.active{
-    color: black;
+
+@media (min-width: 660px) {
+  .top_bar{
+    height: 60px;
+    padding: 0 24px 0 6px;
+    justify-content: unset;
   }
-  a:hover{
-    background-color: RGBA(0,0,0,0) !important;
-    color: black;
-  }
-
-  .syarif-separator{
-    position: relative;
-    padding-right: 20px;
-
-    &:after{
-      content: '';
-      height: 60%;
-      width: 2px;
-
-      position: absolute;
-      right: 0;
-      top: 15px;
-
-      background-color: rgba(0, 0, 0, 0.25);
-    }
-  }
-}
-
-@media screen and (max-width: 430px) {
-  .syarif-profil-picture{
-    display: flex;
-    margin-top: 8px;
-    //margin-right:7px;
-    margin-left: 15px;
-    width: 40px;
-    height: 40px;
-  }
-
-  .syarif-logo {
-    margin-left: 5px;
-  }
-
-  .syarif-icon {
-    margin-right: 5px;
+  .logo{
+    margin-right: 18px;
+    max-height: 36px;
   }
 }
 
 
 
+@media only screen and (min-width: 1201px) {
+  .top_bar{
+    height: 80px;
+    padding: 0 24px;
+  }
+  .menuLabelMobile{
+    display: none;
+  }
+  .logo{
 
+  }
+}
 
 
