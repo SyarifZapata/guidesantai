@@ -43,10 +43,22 @@
     </div>
   </div>
 
+  <!-- Dropdown Structure Profile-->
+  <ul id="profil-dropdown" class="dropdown-content">
+    <li><a routerLinkActive="active" routerLink="/user">Konto</a></li>
+    <li><a routerLinkActive="active" routerLink="/settings">Settings</a></li>
+    <li><a routerLinkActive="active" routerLink="/u2f">u2f</a></li>
+    <li class="divider" tabindex="-1"></li>
+    <li><a (click)="logout()">Abmelden</a></li>
+  </ul>
+
   <div class="col right my-wrapper valign-wrapper">
     <div class="row">
-      <div class="col" style="padding-top: 15px"><a routerLink="/login">Login</a></div>
-      <div class="col" style="padding-top: 15px"><a routerLink="/register">Signup</a></div>
+      <div class="col" style="padding-top: 15px"><a  [style.display]="loggedIn ? 'none' : 'block'" routerLink="/login">Login</a></div>
+      <div class="col" style="padding-top: 15px"><a  [style.display]="loggedIn ? 'none' : 'block'" routerLink="/register">Signup</a></div>
+      <div [style.display]="loggedIn ? 'block' : 'none'"  class="col dropdown-trigger1" data-target="profil-dropdown" style="padding-top: 25px">
+        <img  src={{profilPicture}} alt="profil-picture" class="circle syarif-profil-picture responsive-img">
+      </div>
     </div>
 
     <button class="btn waves-effect waves-light" type="submit" name="action" style="margin-left: 20px">Posting iklan kamu

@@ -15,8 +15,6 @@ import { UserComponent } from './user/user.component';
 import {HttpClientModule} from '@angular/common/http';
 import {SettingsComponent} from './settings/settings.component';
 import { TwoFAComponent } from './two-fa/two-fa.component';
-import { FriendListComponent } from './friend-list/friend-list.component';
-import { ChatComponent } from './chat/chat.component';
 import { U2fComponent } from './u2f/u2f.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetComponent } from './reset/reset.component';
@@ -27,13 +25,9 @@ const appRoutes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'home/:message_id/:arg', component: HomeComponent},
   {path: 'about', component: AboutComponent},
-  {path: 'user', component: UserComponent,
-    children: [
-      {path: '', component: FriendListComponent}
-    ]},
+  {path: 'user', component: UserComponent},
   {path: 'reset/:token', component: ResetComponent},
   {path: 'forgot-password', component: ForgotPasswordComponent},
-  {path: 'chat/:room_id/:to_id', component: ChatComponent},
   {path: 'login', component: LoginComponent},
   {path: 'login/:message_id', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
@@ -55,8 +49,6 @@ const appRoutes: Routes = [
     UserComponent,
     SettingsComponent,
     TwoFAComponent,
-    FriendListComponent,
-    ChatComponent,
     U2fComponent,
     ForgotPasswordComponent,
     ResetComponent
