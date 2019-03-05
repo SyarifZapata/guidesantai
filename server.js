@@ -90,11 +90,9 @@ app.use(passport.session());
 
 /* Please declare all routes here */
 const auth = require('./server/routes/auth').authRouter;
-const cryptoKeys = require('./server/routes/crypto-keys');
 const chat = require('./server/routes/chat');
 const u2f = require('./server/routes/u2f');
 app.use('/auth/', auth);
-app.use('/crypto-keys/',cryptoKeys);
 app.use('/chat/',chat);
 app.use('/u2f/', u2f);
 
